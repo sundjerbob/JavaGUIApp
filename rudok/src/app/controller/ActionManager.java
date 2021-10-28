@@ -6,13 +6,10 @@ public class ActionManager {
     private InfoAction infoAction;
 
     public ActionManager(){
-        initialise();
-    }
-
-    private void initialise(){
         newAction = new NewAction();
         infoAction = new InfoAction();
     }
+
 
     public NewAction getNewAction(){
         return newAction;

@@ -8,8 +8,11 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private static MainFrame instance = null;
+    private Color color = new Color(109, 23, 23, 247);
     private ToolBar toolBar;
     private ActionManager actionManager;
+    private JMenuBar menuBar;
+
 
     private MainFrame(){}
 
@@ -19,7 +22,19 @@ public class MainFrame extends JFrame {
         return instance;
     }
 
+    //initialising mainFrame
     public void init(){
+
+
+        //Instancing objects for the components of the main window
+
+        actionManager = new ActionManager();
+        toolBar = new ToolBar(color);
+        menuBar = new MenuBar(color);
+
+
+        //Main app window settings
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension d = kit.getScreenSize();
@@ -27,17 +42,29 @@ public class MainFrame extends JFrame {
         d.height /= 2;
         setSize(d);
         setLocationRelativeTo(null);
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        add(mainPanel);
+
+
+
+        //making the components layout
+
         JScrollPane left = new JScrollPane();
-        JPanel right = new JPanel();
+        left.getViewport().setBackground(color);
         left.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+
+        JPanel right = new JPanel();
+        right.setBackground(color);
+
+
         JSplitPane split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,right);
         split.setDividerLocation(d.width/4);
-        actionManager = new ActionManager();
-        toolBar = new ToolBar();
-        mainPanel.add(split);
-        mainPanel.add(toolBar, BorderLayout.NORTH);
+        split.setBackground(color);
+
+        add(toolBar,BorderLayout.NORTH);
+        add(split,BorderLayout.CENTER);
+        setJMenuBar(menuBar);
+
+
 
 
 

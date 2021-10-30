@@ -19,26 +19,31 @@ public class InformationDialog extends JDialog {
 
         //this panel is holding content for the whole info window
         JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         panel.setBackground(Color.cyan);
 
 
         //isert image
-        ImageIcon lableImage  = getImageIcon("moon.jpg");
+        ImageIcon lableImage  = getImageIcon("sunce.png");
 
         //setting size for this window
-        setSize(lableImage.getIconWidth()+100,lableImage.getIconHeight()*3/2);
+        setSize(lableImage.getIconWidth()+100,lableImage.getIconHeight()+250);
 
+        Dimension textDimension = new Dimension(lableImage.getIconWidth()+100,150);
 
         //setting up label for text
         JLabel text = new JLabel("Tadija Simic 74/2019 RN",SwingConstants.CENTER);
-        Dimension textDimension = new Dimension(lableImage.getIconWidth()+100,150);
+        text.setOpaque(true);
+        text.setBackground(Color.CYAN.darker());
         text.setPreferredSize(textDimension);
 
 
-        setBackground(Color.black);
-
         //putting insert image in a label center
-        JLabel label = new JLabel(lableImage,JLabel.CENTER);
+        JLabel label = new JLabel(lableImage);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+
+
 
 
         //adding labels to this panel(content holder)
@@ -61,6 +66,7 @@ public class InformationDialog extends JDialog {
 
 
     //getting image for Information dialog
+
     private ImageIcon getImageIcon(String path){
         URL url = getClass().getResource(path);
         if(url == null) {
@@ -69,4 +75,5 @@ public class InformationDialog extends JDialog {
         }
         return new ImageIcon(url);
     }
+
 }

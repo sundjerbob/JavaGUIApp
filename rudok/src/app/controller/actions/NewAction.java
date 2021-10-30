@@ -1,6 +1,6 @@
-package app.controller;
+package app.controller.actions;
 
-import app.controller.MyAbstractAction;
+import app.controller.actions.MyAbstractAction;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ public class NewAction extends MyAbstractAction {
         putValue(SMALL_ICON, loadIcon("images/new.small.png"));
         putValue(LARGE_ICON_KEY, loadIcon("images/new.png"));
         putValue(NAME,"New");
-        putValue(SHORT_DESCRIPTION,"Information about the softwere");
+        putValue(SHORT_DESCRIPTION,"New");
     }
     @Override
     public void actionPerformed(ActionEvent e) {

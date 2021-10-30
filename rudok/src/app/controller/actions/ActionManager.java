@@ -1,4 +1,7 @@
-package app.controller;
+package app.controller.actions;
+
+import app.controller.actions.InfoAction;
+import app.controller.actions.NewAction;
 
 public class ActionManager {
 

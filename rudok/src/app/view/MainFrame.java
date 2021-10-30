@@ -1,6 +1,7 @@
 package app.view;
 
-import app.controller.ActionManager;
+import app.controller.actions.ActionManager;
+import app.controller.CloseDialogListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private static MainFrame instance = null;
-    private Color color = new Color(109, 23, 23, 247);
+    private Color color = Color.cyan;
     private ToolBar toolBar;
     private ActionManager actionManager;
     private JMenuBar menuBar;
@@ -35,7 +36,6 @@ public class MainFrame extends JFrame {
 
         //Main app window settings
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension d = kit.getScreenSize();
         d.width /= 2;
@@ -44,29 +44,29 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
 
 
+        //listener for custom close popup
 
-        //making the components layout
+        addWindowListener(new CloseDialogListener(this));
 
+
+                                                                                //making the components layout
+        //left side for tree view
         JScrollPane left = new JScrollPane();
         left.getViewport().setBackground(color);
         left.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-
+       //right side for work space panel
         JPanel right = new JPanel();
         right.setBackground(color);
 
-
+        //splitting
         JSplitPane split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,right);
         split.setDividerLocation(d.width/4);
         split.setBackground(color);
 
-        add(toolBar,BorderLayout.NORTH);
-        add(split,BorderLayout.CENTER);
+        add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
+        add(split,BorderLayout.CENTER);         //adding splitPane view to center
         setJMenuBar(menuBar);
-
-
-
-
 
     }
 
@@ -76,6 +76,10 @@ public class MainFrame extends JFrame {
 
     public  ActionManager getActionManager(){
         return actionManager;
+    }
+
+    public Color getColor(){
+        return color;
     }
 
 }

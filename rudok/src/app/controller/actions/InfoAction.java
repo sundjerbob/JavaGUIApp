@@ -1,6 +1,10 @@
-package app.controller;
+package app.controller.actions;
+
+import app.view.InformationDialog;
+import app.view.MainFrame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -17,6 +21,8 @@ public class InfoAction extends MyAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        InformationDialog dialog = new InformationDialog(getImage("images/information.png"));
 
     }
 }

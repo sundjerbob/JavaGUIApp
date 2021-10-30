@@ -22,8 +22,16 @@ public class MenuBar extends JMenuBar {
 
 
         //adding actions to menu fields(actions act like JMenuItem)
-        file.add(MainFrame.getInstance().getActionManager().getNewAction());
-        help.add(MainFrame.getInstance().getActionManager().getInfoAction());
+
+        //setting cursor for JMenuItems
+        JMenuItem item = file.add(MainFrame.getInstance().getActionManager().getNewAction());
+        item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
+        item = help.add(MainFrame.getInstance().getActionManager().getInfoAction());
+        item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
         setVisible(true);
     }
 }

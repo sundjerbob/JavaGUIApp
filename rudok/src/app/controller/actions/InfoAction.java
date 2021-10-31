@@ -1,10 +1,8 @@
 package app.controller.actions;
 
-import app.view.InformationDialog;
-import app.view.MainFrame;
+import app.view.gui.info.InformationDialog;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 

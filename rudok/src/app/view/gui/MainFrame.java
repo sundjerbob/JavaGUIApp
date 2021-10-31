@@ -1,7 +1,10 @@
-package app.view;
+package app.view.gui;
 
 import app.controller.actions.ActionManager;
 import app.controller.CloseDialogListener;
+import app.model.repository.Workspace;
+import app.view.tree.ITree;
+import app.view.tree.TreeImplementation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +16,7 @@ public class MainFrame extends JFrame {
     private ToolBar toolBar;
     private ActionManager actionManager;
     private JMenuBar menuBar;
+    private ITree tree;
 
 
     private MainFrame(){}
@@ -51,9 +55,12 @@ public class MainFrame extends JFrame {
 
                                                                                 //making the components layout
         //left side for tree view
-        JScrollPane left = new JScrollPane();
+        tree = new TreeImplementation();
+        JScrollPane left = new JScrollPane(tree.gerateTreeView(new Workspace("workspace")));
         left.getViewport().setBackground(color);
         left.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+
 
        //right side for work space panel
         JPanel right = new JPanel();

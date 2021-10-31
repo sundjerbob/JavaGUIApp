@@ -20,12 +20,12 @@ public abstract class MyAbstractAction extends AbstractAction {
 
     public Image getImage(String fileName){
         URL imageURL = getClass().getResource(fileName);
-        Image image = null;
+
 
         if(imageURL != null)
-            image = new ImageIcon(imageURL).getImage();
-        else
-            System.out.println("file not found");
-        return image;
+            return new ImageIcon(imageURL).getImage();
+
+        System.out.println("file not found");
+        return null;
     }
 }

@@ -1,11 +1,9 @@
-package app.view;
+package app.view.gui;
 
-import app.Main;
-import app.controller.*;
+import app.view.gui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class ToolBar extends JToolBar {
 

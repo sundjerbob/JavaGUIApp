@@ -1,5 +1,7 @@
-package app.view;
+package app.view.gui;
 
+
+import app.view.gui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;

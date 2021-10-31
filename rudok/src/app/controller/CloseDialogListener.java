@@ -1,9 +1,8 @@
 package app.controller;
 
-import app.view.MainFrame;
+import app.view.gui.MainFrame;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,7 +17,7 @@ public class CloseDialogListener extends WindowAdapter {
     @Override
     public void windowClosing(WindowEvent e) {
 
-        int out = JOptionPane.showConfirmDialog(mainFrame,"Are you sure you want to exit aplication?","Close dialog",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        int out = JOptionPane.showConfirmDialog(mainFrame,"Are you sure you want to exit aplication?","Closing?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
         if(out == JOptionPane.NO_OPTION)
             mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

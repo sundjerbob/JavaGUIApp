@@ -15,6 +15,6 @@ public interface ITree {
     TreeItem getSelectedTreeIteam();
 
     void addNew(NodeModel node);
-    void delite(NodeModel node);
+    void delete(TreeItem node);
 
 }

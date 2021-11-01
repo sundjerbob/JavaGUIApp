@@ -1,6 +1,5 @@
 package app.controller.actions;
 
-import app.controller.actions.MyAbstractAction;
 import app.model.node.NodeComposit;
 import app.model.node.NodeModel;
 import app.model.repository.Document;
@@ -28,7 +27,7 @@ public class NewAction extends MyAbstractAction {
     public void actionPerformed(ActionEvent e) {
 
         MainFrame frame = MainFrame.getInstance();
-        TreeItem item = frame.getTree().getSelectedTreeIteam();
+        TreeItem item = frame.getiTree().getSelectedTreeIteam();
         NodeModel newNode = null;
         String name;
 
@@ -37,14 +36,14 @@ public class NewAction extends MyAbstractAction {
 
             newNode = new File(name,(Workspace) item.getModel());
             ((Workspace) item.getModel()).addChild(newNode);
-            frame.getTree().addNew(newNode);
+            frame.getiTree().addNew(newNode);
         }
         else if(item.getModel() instanceof File){
             name = getName((File)item.getModel(),"Presentation");
 
             newNode = new Document(name,(File) item.getModel());
             ((File) item.getModel()).addChild(newNode);
-            frame.getTree().addNew(newNode);
+            frame.getiTree().addNew(newNode);
 
         }
         else if(item.getModel() instanceof Document){
@@ -52,7 +51,7 @@ public class NewAction extends MyAbstractAction {
 
             newNode = new Page(name,(Document) item.getModel());
             ((Document) item.getModel()).addChild(newNode);
-            frame.getTree().addNew(newNode);
+            frame.getiTree().addNew(newNode);
 
         }
     }

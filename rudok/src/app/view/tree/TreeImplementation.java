@@ -39,8 +39,10 @@ public class TreeImplementation implements ITree {
     }
 
     @Override
-    public void delite(NodeModel node) {
-
+    public void delete(TreeItem node) {
+        TreeItem delete = (TreeItem) node;
+        ((TreeItem)delete.getParent()).remove(delete);
+        treeView.updateUI();
     }
 
     @Override

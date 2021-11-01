@@ -20,17 +20,19 @@ public class MenuBar extends JMenuBar {
         add(help);
 
         //setting color of menu bar component
-        setBackground(color);
+        setBackground(new Color(0x528B8B));
 
 
         //adding actions to menu fields(actions act like JMenuItem)
 
         //setting cursor for JMenuItems
         JMenuItem item = file.add(MainFrame.getInstance().getActionManager().getNewAction());
+        item.setBackground(new Color(0x528B8B));
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
         item = help.add(MainFrame.getInstance().getActionManager().getInfoAction());
+        item.setBackground(new Color(0x528B8B));
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 

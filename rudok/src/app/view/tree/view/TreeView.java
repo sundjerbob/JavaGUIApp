@@ -13,6 +13,7 @@ public class TreeView extends JTree {
      setBorder(new EmptyBorder(8,8, 10,0));
         setOpaque(false);
      setModel(treeModel);
+     setRootVisible(false);
      setCellRenderer(new CellRenderer());
      setBackground(Color.cyan);
 

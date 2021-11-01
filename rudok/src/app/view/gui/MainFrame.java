@@ -7,7 +7,9 @@ import app.view.tree.ITree;
 import app.view.tree.TreeImplementation;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URL;
 
 public class MainFrame extends JFrame {
 
@@ -34,7 +36,7 @@ public class MainFrame extends JFrame {
         //Instancing objects for the components of the main window
 
         actionManager = new ActionManager();
-        toolBar = new ToolBar(color);
+        toolBar = new ToolBar();
         menuBar = new MenuBar(color);
 
 
@@ -55,21 +57,26 @@ public class MainFrame extends JFrame {
 
                                                                                 //making the components layout
         //left side for tree view
+        JLabel label = new JLabel("Workspace",getLabelIcon("workspace.png"),SwingConstants.CENTER);
+        label.setBorder(new EmptyBorder(6,0,6,0));
+        label.setBackground(new Color(0xC6F9F4));
+        label.setOpaque(true);
+        JPanel left = new JPanel(new BorderLayout());
+        left.add(label,BorderLayout.NORTH);
         iTree = new TreeImplementation();
-        JScrollPane left = new JScrollPane(iTree.gerateTreeView(new Workspace("workspace")));
-        left.getViewport().setBackground(color);
-        left.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
+        JScrollPane scroll = new JScrollPane(iTree.gerateTreeView(new Workspace("workspace")));
+        scroll.getViewport().setBackground(color);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        left.add(scroll,BorderLayout.CENTER);
 
 
        //right side for work space panel
         JPanel right = new JPanel();
-        right.setBackground(color);
+        right.setBackground(new Color(0xC6F9F4));
 
         //splitting
         JSplitPane split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,right);
         split.setDividerLocation(getSize().width/4);
-        split.setBackground(color);
 
         add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
         add(split,BorderLayout.CENTER);         //adding splitPane view to center
@@ -93,5 +100,13 @@ public class MainFrame extends JFrame {
         return iTree;
     }
 
+    private ImageIcon getLabelIcon(String path){
+        URL url = getClass().getResource(path);
+        if(url == null) {
+            System.out.println("problem");
+            return null;
+        }
+        return new ImageIcon(url);
+    }
 }
 

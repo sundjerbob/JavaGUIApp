@@ -25,6 +25,7 @@ public class TreeImplementation implements ITree {
         root = new TreeItem(workspace);
         treeModel = new DefaultTreeModel(root);
         treeView = new TreeView(treeModel);
+        treeView.setSelectionPath(new TreePath(root));
         treeView.setExpandsSelectedPaths(true);
     // treeView.setSelectionPath(new TreePath(root));
         return treeView;

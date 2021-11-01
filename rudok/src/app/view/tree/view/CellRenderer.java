@@ -34,7 +34,7 @@ public class CellRenderer extends DefaultTreeCellRenderer {
         // coloring of the tree cells if they are not selected
         setOpaque(true);
         if (sel) {
-            setBackground(Color.cyan.darker());
+            setBackground(Color.CYAN.darker());
         }
         else {
             setBackground(Color.CYAN);

@@ -1,6 +1,7 @@
 package app.view.tree.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeModel;
 import java.awt.*;
 
@@ -9,10 +10,11 @@ public class TreeView extends JTree {
 
     public TreeView(TreeModel treeModel){
 
+     setBorder(new EmptyBorder(8,8, 10,0));
         setOpaque(false);
      setModel(treeModel);
      setCellRenderer(new CellRenderer());
-        setBackground(Color.cyan);
+     setBackground(Color.cyan);
 
     }
 }

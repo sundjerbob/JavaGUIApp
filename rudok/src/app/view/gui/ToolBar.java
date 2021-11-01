@@ -9,25 +9,37 @@ public class ToolBar extends JToolBar {
 
     public ToolBar(Color color){
 
+        setBackground(color);
+
         //variable for setting toolbar buttons (putting New action)
         JButton b = add(MainFrame.getInstance().getActionManager().getNewAction());
 
+
         //New button visual
-        b.setBorder(null);
+        //b.setBorder(null);
         b.setFocusPainted(false);
-        b.setOpaque(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.setBackground(Color.cyan.darker());
      // b.setRolloverEnabled(false);
 
         //separation between buttons and color of the toolbar component
         addSeparator();
-        setBackground(color);
+
+        //Delete button visual
+        b = add(MainFrame.getInstance().getActionManager().getDeleteAction());
+        b.setFocusPainted(false);
+
+        b.setBackground(Color.cyan.darker());
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        addSeparator();
 
         //Info button visual
         b = add(MainFrame.getInstance().getActionManager().getInfoAction());
-        b.setBorder(null);
-        b.setOpaque(false);
-     // b.setRolloverEnabled(false);
+        //b.setBorder(null);
+        
+        b.setBackground(Color.cyan.darker());
+      //b.setRolloverEnabled(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 

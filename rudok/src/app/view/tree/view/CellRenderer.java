@@ -7,6 +7,7 @@ import app.model.repository.Workspace;
 import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.net.URL;
@@ -33,14 +34,19 @@ public class CellRenderer extends DefaultTreeCellRenderer {
         // coloring of the tree cells if they are not selected
         setOpaque(true);
         if (sel) {
-            setBackground(Color.red);
+            setBackground(Color.cyan.darker());
         }
         else {
             setBackground(Color.CYAN);
         }
+
+        setBorder(new EmptyBorder(2,2,2,2));
+
         if(((TreeItem)value).getModel() instanceof Workspace)
             setIcon(getIcon("icons/workspace.png"));
-        else if(((TreeItem)value).getModel() instanceof File)
+        else if(((TreeItem)value).getModel() instanceof File && expanded)
+            setIcon(getIcon("icons/openFile.png"));
+        else if(((TreeItem)value).getModel() instanceof  File && !expanded)
             setIcon(getIcon("icons/file.png"));
         else if(((TreeItem)value).getModel() instanceof Document)
             setIcon(getIcon("icons/Document.png"));

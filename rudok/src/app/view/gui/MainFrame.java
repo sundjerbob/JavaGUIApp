@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
 
         //splitting
         JSplitPane split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,right);
-        split.setDividerLocation(d.width/4);
+        split.setDividerLocation(getSize().width/4);
         split.setBackground(color);
 
         add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
@@ -87,6 +87,10 @@ public class MainFrame extends JFrame {
 
     public Color getColor(){
         return color;
+    }
+
+    public ITree getTree(){
+        return tree;
     }
 
 }

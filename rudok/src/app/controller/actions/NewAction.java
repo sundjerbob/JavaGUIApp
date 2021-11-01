@@ -1,6 +1,14 @@
 package app.controller.actions;
 
 import app.controller.actions.MyAbstractAction;
+import app.model.node.NodeComposit;
+import app.model.node.NodeModel;
+import app.model.repository.Document;
+import app.model.repository.File;
+import app.model.repository.Page;
+import app.model.repository.Workspace;
+import app.view.gui.MainFrame;
+import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,5 +27,41 @@ public class NewAction extends MyAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        MainFrame frame = MainFrame.getInstance();
+        TreeItem item = frame.getTree().getSelectedTreeIteam();
+        NodeModel newNode = null;
+        String name;
+
+        if(item.getModel() instanceof Workspace){
+            name = getName((Workspace)item.getModel(),"File");
+
+            newNode = new File(name,(Workspace) item.getModel());
+            ((Workspace) item.getModel()).addChild(newNode);
+            frame.getTree().addNew(newNode);
+        }
+        else if(item.getModel() instanceof File){
+            name = getName((File)item.getModel(),"Presentation");
+
+            newNode = new Document(name,(File) item.getModel());
+            ((File) item.getModel()).addChild(newNode);
+            frame.getTree().addNew(newNode);
+
+        }
+        else if(item.getModel() instanceof Document){
+            name = getName((Document)item.getModel(),"Slide");
+
+            newNode = new Page(name,(Document) item.getModel());
+            ((Document) item.getModel()).addChild(newNode);
+            frame.getTree().addNew(newNode);
+
+        }
+    }
+
+    private String getName(NodeComposit model,String name){
+        int num = 1;
+        while(model.getChildByName(name + " " + num ) != null) {
+            ++num;
+        }
+        return name + " " + num;
     }
 }

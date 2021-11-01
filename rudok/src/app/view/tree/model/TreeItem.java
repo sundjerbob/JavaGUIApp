@@ -11,6 +11,7 @@ public class TreeItem extends DefaultMutableTreeNode {
     private NodeModel model;
 
 
+
     @Override
     public boolean isLeaf(){
         if(model instanceof NodeComposit )
@@ -25,12 +26,7 @@ public class TreeItem extends DefaultMutableTreeNode {
         return false;
     }
 
-    @Override
-    public Enumeration children(){
-        if(model instanceof NodeComposit)
-            return (Enumeration)((NodeComposit)model).getChildren();
-        return null;
-    }
+
 
     @Override
     public String toString(){

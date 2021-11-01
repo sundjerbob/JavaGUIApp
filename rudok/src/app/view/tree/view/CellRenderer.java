@@ -1,4 +1,4 @@
-package app.view.tree.controller;
+package app.view.tree.view;
 
 import app.model.repository.Document;
 import app.model.repository.File;
@@ -30,6 +30,14 @@ public class CellRenderer extends DefaultTreeCellRenderer {
              boolean hasFocus){
         super.getTreeCellRendererComponent(treeView,value,sel,expanded,leaf,row,hasFocus);
 
+        // coloring of the tree cells if they are not selected
+        setOpaque(true);
+        if (sel) {
+            setBackground(Color.red);
+        }
+        else {
+            setBackground(Color.CYAN);
+        }
         if(((TreeItem)value).getModel() instanceof Workspace)
             setIcon(getIcon("icons/workspace.png"));
         else if(((TreeItem)value).getModel() instanceof File)

@@ -4,7 +4,9 @@ import app.model.node.*;
 
 public class File extends NodeComposit {
 
-    public File(String name, Document parent) {
+    public File(String name, Workspace parent) {
         super(name, parent);
     }
+
+
 }

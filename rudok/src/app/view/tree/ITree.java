@@ -11,9 +11,10 @@ import javax.swing.tree.MutableTreeNode;
 
 public interface ITree {
 
-    JTree gerateTreeView(Workspace workspace);
+    JTree generateTreeView(Workspace workspace);
     TreeItem getSelectedTreeIteam();
 
+    TreeItem setRootSelected();
     void addNew(NodeModel node);
     void delete(TreeItem node);
 

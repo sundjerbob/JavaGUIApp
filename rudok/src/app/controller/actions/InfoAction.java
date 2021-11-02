@@ -20,7 +20,7 @@ public class InfoAction extends MyAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        InformationDialog dialog = new InformationDialog(getImage("images/information.png"));
+        InformationDialog.showInfoDialog();
 
     }
 }

@@ -27,6 +27,7 @@ public class DeleteAction extends MyAbstractAction{
 
             item.getModel().getParent().removeChild(item.getModel());
             frame.getiTree().delete(item);
+            frame.getiTree().setRootSelected();
 
 
     }

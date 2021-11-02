@@ -5,17 +5,23 @@ import app.controller.actions.NewAction;
 
 public class ActionManager {
 
+    private static ActionManager actionManager;
     private NewAction newAction;
     private DeleteAction deleteAction;
     private InfoAction infoAction;
 
-    public ActionManager(){
+    private ActionManager(){
         newAction = new NewAction();
         deleteAction = new DeleteAction();
         infoAction = new InfoAction();
 
     }
 
+    public static ActionManager getActionManager() {
+        if(actionManager == null)
+            actionManager = new ActionManager();
+        return actionManager;
+    }
 
     public NewAction getNewAction(){
         return newAction;

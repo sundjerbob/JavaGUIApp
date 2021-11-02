@@ -7,7 +7,7 @@ import java.net.URL;
 
 public abstract class MyAbstractAction extends AbstractAction {
 
-    public Icon loadIcon(String fileName){
+    protected Icon loadIcon(String fileName){
         URL imageURL = getClass().getResource(fileName);
         Icon icon = null;
 
@@ -18,14 +18,5 @@ public abstract class MyAbstractAction extends AbstractAction {
         return icon;
     }
 
-    public Image getImage(String fileName){
-        URL imageURL = getClass().getResource(fileName);
 
-
-        if(imageURL != null)
-            return new ImageIcon(imageURL).getImage();
-
-        System.out.println("file not found");
-        return null;
-    }
 }

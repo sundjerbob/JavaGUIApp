@@ -6,18 +6,28 @@ import app.view.gui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 
 public class InformationDialog extends JDialog {
 
+    public static InformationDialog window;
 
-    public InformationDialog(Image image){
+    public static void showInfoDialog(){
+        window = new  InformationDialog();
+
+    }
+
+    private InformationDialog(){
 
         //setting parent component and title for JDialog
         super(MainFrame.getInstance(),"information");
 
         //setting icon of this window
-        setIconImage(image);
+
+        setModal(true);
+        setIconImage(getImage("information"));
 
         //this panel is holding content for the whole info window
         JPanel panel = new JPanel();
@@ -65,6 +75,16 @@ public class InformationDialog extends JDialog {
 
 
     }
+    private Image getImage(String fileName){
+        URL imageURL = getClass().getResource(fileName);
+
+
+        if(imageURL != null)
+            return new ImageIcon(imageURL).getImage();
+
+        System.out.println("file not found");
+        return null;
+    }
 
 
     //getting image for Information dialog
@@ -77,5 +97,6 @@ public class InformationDialog extends JDialog {
         }
         return new ImageIcon(url);
     }
+
 
 }

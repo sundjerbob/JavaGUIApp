@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
 
         //Instancing objects for the components of the main window
 
-        actionManager = new ActionManager();
+        actionManager = ActionManager.getActionManager();
         toolBar = new ToolBar();
         menuBar = new MenuBar(color);
 
@@ -61,11 +61,17 @@ public class MainFrame extends JFrame {
         label.setBorder(new EmptyBorder(6,0,6,0));
         label.setBackground(new Color(0xC6F9F4));
         label.setOpaque(true);
+
+        ////
         JPanel left = new JPanel(new BorderLayout());
         left.add(label,BorderLayout.NORTH);
+
+        /////
         iTree = new TreeImplementation();
-        JScrollPane scroll = new JScrollPane(iTree.gerateTreeView(new Workspace("workspace")));
-        scroll.getViewport().setBackground(color);
+        JScrollPane scroll = new JScrollPane(iTree.generateTreeView(new Workspace("workspace")));
+
+        scroll.getViewport().setBackground(Color.black);
+
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         left.add(scroll,BorderLayout.CENTER);
 

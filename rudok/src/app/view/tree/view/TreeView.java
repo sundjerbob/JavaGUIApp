@@ -1,5 +1,7 @@
 package app.view.tree.view;
 
+import app.view.tree.controller.SelectionListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreeModel;
@@ -11,11 +13,12 @@ public class TreeView extends JTree {
     public TreeView(TreeModel treeModel){
 
      setBorder(new EmptyBorder(8,8, 10,0));
-        setOpaque(false);
+
      setModel(treeModel);
      setRootVisible(false);
      setCellRenderer(new CellRenderer());
-     setBackground(Color.cyan);
+     setBackground(Color.cyan.darker());
+     addTreeSelectionListener(new SelectionListener());
 
     }
 }

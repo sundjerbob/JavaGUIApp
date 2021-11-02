@@ -29,7 +29,6 @@ public class ToolBar extends JToolBar {
         //Delete button visual
         b = add(MainFrame.getInstance().getActionManager().getDeleteAction());
         b.setFocusPainted(false);
-
         b.setBackground(c);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -38,7 +37,7 @@ public class ToolBar extends JToolBar {
         //Info button visual
         b = add(MainFrame.getInstance().getActionManager().getInfoAction());
         //b.setBorder(null);
-        
+        b.setFocusPainted(false);
         b.setBackground(c);
       //b.setRolloverEnabled(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

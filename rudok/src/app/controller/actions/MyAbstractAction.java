@@ -14,7 +14,7 @@ public abstract class MyAbstractAction extends AbstractAction {
         if(imageURL != null)
             icon = new ImageIcon(imageURL);
         else
-            System.out.println("file not found");
+            System.out.println("MyAbstractAction - load icon failed");
         return icon;
     }
 

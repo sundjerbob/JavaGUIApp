@@ -1,4 +1,4 @@
-package app.view.gui.info;
+package app.controller.popup.info;
 
 
 
@@ -6,20 +6,14 @@ import app.view.gui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.URL;
 
-public class InformationDialog extends JDialog {
+public class InformationPopup extends JDialog {
 
-    public static InformationDialog window;
 
-    public static void showInfoDialog(){
-        window = new  InformationDialog();
 
-    }
 
-    private InformationDialog(){
+    public InformationPopup(){
 
         //setting parent component and title for JDialog
         super(MainFrame.getInstance(),"information");
@@ -27,7 +21,7 @@ public class InformationDialog extends JDialog {
         //setting icon of this window
 
         setModal(true);
-        setIconImage(getImage("information"));
+        setIconImage(getImage("information.png"));
 
         //this panel is holding content for the whole info window
         JPanel panel = new JPanel();
@@ -92,7 +86,7 @@ public class InformationDialog extends JDialog {
     private ImageIcon getImageIcon(String path){
         URL url = getClass().getResource(path);
         if(url == null) {
-            System.out.println("problem");
+            System.out.println("InformationPopup getImage failed");
             return null;
         }
         return new ImageIcon(url);

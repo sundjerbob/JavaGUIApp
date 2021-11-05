@@ -24,7 +24,7 @@ public class ToolBar extends JToolBar {
      // b.setRolloverEnabled(false);
 
         //separation between buttons and color of the toolbar component
-        addSeparator();
+        //addSeparator();
 
         //Delete button visual
         b = add(MainFrame.getInstance().getActionManager().getDeleteAction());
@@ -32,7 +32,19 @@ public class ToolBar extends JToolBar {
         b.setBackground(c);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        addSeparator();
+       // addSeparator();
+
+
+        b = add(MainFrame.getInstance().getActionManager().getRenameAction());
+        //b.setBorder(null);
+        b.setFocusPainted(false);
+        b.setBackground(c);
+        //b.setRolloverEnabled(false);
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
+
+
 
         //Info button visual
         b = add(MainFrame.getInstance().getActionManager().getInfoAction());
@@ -41,6 +53,8 @@ public class ToolBar extends JToolBar {
         b.setBackground(c);
       //b.setRolloverEnabled(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
 
 
         setVisible(true);

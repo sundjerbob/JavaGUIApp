@@ -17,7 +17,7 @@ public class SelectionListener implements TreeSelectionListener {
     @Override
     public void valueChanged(TreeSelectionEvent e) {
 
-        ActionManager manager = ActionManager.getActionManager();
+        ActionManager manager = MainFrame.getInstance().getActionManager();
         TreeItem item = (TreeItem)e.getNewLeadSelectionPath().getLastPathComponent();
 
         if(item == null)
@@ -26,19 +26,26 @@ public class SelectionListener implements TreeSelectionListener {
         else if(item.getModel() instanceof Workspace) {
             manager.getDeleteAction().setEnabled(false);
             manager.getNewAction().setEnabled(true);
+            manager.getRenameAction().setEnabled(false);
         }
         else if(item.getModel() instanceof File) {
             manager.getDeleteAction().setEnabled(true);
             manager.getNewAction().setEnabled(true);
+            manager.getRenameAction().setEnabled(true);
         }
         else if(item.getModel() instanceof Document) {
             manager.getDeleteAction().setEnabled(true);
             manager.getNewAction().setEnabled(true);
+            manager.getRenameAction().setEnabled(true);
+
         }
         else if(item.getModel() instanceof Page){
             manager.getNewAction().setEnabled(false);
             manager.getDeleteAction().setEnabled(true);
+            manager.getRenameAction().setEnabled(true);
+
         }
+
 
     }
 }

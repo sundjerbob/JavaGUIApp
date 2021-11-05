@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 public class DeleteAction extends MyAbstractAction{
 
     public DeleteAction(){
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
+        putValue(ACCELERATOR_KEY,KeyEvent.VK_DELETE);
         putValue(SMALL_ICON, loadIcon("images/deleteSmall.png"));
         putValue(LARGE_ICON_KEY, loadIcon("images/delete.png"));
         putValue(NAME,"Delete");

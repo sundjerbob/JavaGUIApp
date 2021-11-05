@@ -1,4 +1,4 @@
-package app.controller.listeners;
+package app.controller.popup;
 
 import app.view.gui.MainFrame;
 
@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class CloseDialogListener extends WindowAdapter {
+public class ClosePopup extends WindowAdapter {
 
     private MainFrame mainFrame;
 
-    public CloseDialogListener(MainFrame mainFrame){
+    public ClosePopup(MainFrame mainFrame){
     this.mainFrame = mainFrame;
     }
 

@@ -1,10 +1,10 @@
 package app.view.gui;
 
 import app.controller.actions.ActionManager;
-import app.controller.listeners.CloseDialogListener;
+import app.controller.popup.ClosePopup;
 import app.model.repository.Workspace;
 import app.view.tree.ITree;
-import app.view.tree.TreeImplementation;
+import app.view.tree.controller.TreeImplementation;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
 
         //Instancing objects for the components of the main window
 
-        actionManager = ActionManager.getActionManager();
+        actionManager = new ActionManager();
         toolBar = new ToolBar();
         menuBar = new MenuBar(color);
 
@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
 
         //listener for custom close popup
 
-        addWindowListener(new CloseDialogListener(this));
+        addWindowListener(new ClosePopup(this));
 
 
                                                                                 //making the components layout

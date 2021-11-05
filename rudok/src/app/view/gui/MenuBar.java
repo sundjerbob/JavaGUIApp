@@ -31,6 +31,7 @@ public class MenuBar extends JMenuBar {
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
+
         item = help.add(MainFrame.getInstance().getActionManager().getInfoAction());
         item.setBackground(new Color(0x528B8B));
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

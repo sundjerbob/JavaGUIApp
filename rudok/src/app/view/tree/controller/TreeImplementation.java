@@ -1,8 +1,9 @@
-package app.view.tree;
+package app.view.tree.controller;
 
 import app.model.node.NodeComposit;
 import app.model.node.NodeModel;
 import app.model.repository.Workspace;
+import app.view.tree.ITree;
 import app.view.tree.model.TreeItem;
 import app.view.tree.view.TreeView;
 import org.w3c.dom.Node;
@@ -57,5 +58,8 @@ public class TreeImplementation implements ITree {
         return root;
     }
 
-
+    @Override
+    public TreeView getTreeView() {
+        return treeView;
+    }
 }

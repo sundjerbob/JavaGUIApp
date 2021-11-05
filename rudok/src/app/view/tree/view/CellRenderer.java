@@ -31,6 +31,7 @@ public class CellRenderer extends DefaultTreeCellRenderer {
              boolean hasFocus){
         super.getTreeCellRendererComponent(treeView,value,sel,expanded,leaf,row,hasFocus);
 
+
         // coloring of the tree cells if they are not selected
         setOpaque(true);
         if (sel) {
@@ -60,7 +61,7 @@ public class CellRenderer extends DefaultTreeCellRenderer {
         URL imageURL = getClass().getResource(path);
         if(imageURL != null)
             return new ImageIcon(imageURL);
-        System.out.println("nema sl");
+        System.out.println("Cell renderer no icon");
         return null;
     }
 }

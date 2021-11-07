@@ -1,6 +1,6 @@
 package app.controller.actions;
 
-import app.controller.popup.info.InformationPopup;
+import app.controller.popup.InformationPopup;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

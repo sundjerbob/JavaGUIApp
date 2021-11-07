@@ -24,7 +24,7 @@ public class RenamePopup extends JDialog implements ActionListener{
 
         setSize(600,400);
         setLocationRelativeTo(null);
-        setIconImage(getImage("editing.png"));
+        setIconImage(getImage("images/editing.png"));
 
 
         //mainPanel the content holder
@@ -77,23 +77,24 @@ public class RenamePopup extends JDialog implements ActionListener{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                System.out.println("radi");
+                //System.out.println("radi");
                 super.mouseClicked(e);
-                item.setName(text.getText());
                 item.getModel().setName(text.getText());
+                item.setName(text.getText());
+
+
                 MainFrame.getInstance().getiTree().getTreeView().updateUI();
                 dispose();
             }
         });
 
-        JButton cancleButton = new JButton("Cancel");
-        cancleButton.setForeground(Color.CYAN);
-        cancleButton.setBackground(new Color(0x528B8B));
-        //cancleButton.setBorder(new EmptyBorder(0, 20, 0, 20));
-        cancleButton.addMouseListener(new MouseAdapter() {
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setForeground(Color.CYAN);
+        cancelButton.setBackground(new Color(0x528B8B));
+        cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("i ovo radi");
+                //System.out.println("i ovo radi");
                 super.mouseClicked(e);
                 dispose();
             }
@@ -101,9 +102,9 @@ public class RenamePopup extends JDialog implements ActionListener{
 
 
         renameButton.setBounds(mainPanel.getLocation().x + 150, mainPanel.getLocation().y + 250, 100, 50);
-        cancleButton.setBounds(mainPanel.getLocation().x + 350,mainPanel.getLocation().y + 250, 100, 50);
+        cancelButton.setBounds(mainPanel.getLocation().x + 350,mainPanel.getLocation().y + 250, 100, 50);
 
-        mainPanel.add(renameButton);    mainPanel.add(cancleButton);
+        mainPanel.add(renameButton);    mainPanel.add(cancelButton);
 
 
 

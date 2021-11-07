@@ -1,5 +1,8 @@
 package app.model.node;
 
+import app.observer.Notification;
+import app.observer.NotificationType;
+
 import java.util.ArrayList;
 
 public abstract class NodeComposit extends NodeModel {
@@ -25,17 +28,20 @@ public abstract class NodeComposit extends NodeModel {
         return children;
     }
 
-
+    //observer
     public void addChild(NodeModel newNode){
         if(children.contains(newNode))
             return;
         children.add(newNode);
+        notifySubscribers(new Notification(newNode, NotificationType.ADD_ACTION));
     }
 
 
     public void removeChild(NodeModel unwantedChild){
-        if(children.contains(unwantedChild))
+        if(children.contains(unwantedChild)) {
             children.remove(unwantedChild);
+            unwantedChild.notifySubscribers(new Notification(unwantedChild,NotificationType.REMOVE_ACTION));
+        }
         return;
     }
 
@@ -48,6 +54,7 @@ public abstract class NodeComposit extends NodeModel {
         System.out.println("there is no child with that name here.");
         return null;
     }
+
 
 
 }

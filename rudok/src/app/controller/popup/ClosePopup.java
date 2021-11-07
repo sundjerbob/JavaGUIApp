@@ -17,7 +17,8 @@ public class ClosePopup extends WindowAdapter {
     @Override
     public void windowClosing(WindowEvent e) {
 
-        int out = JOptionPane.showConfirmDialog(mainFrame,"Are you sure you want to exit aplication?","Closing?",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        int out = JOptionPane.showConfirmDialog(mainFrame,"Are you sure you want to exit aplication?","Closing?",
+                JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
         if(out == JOptionPane.NO_OPTION)
             mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

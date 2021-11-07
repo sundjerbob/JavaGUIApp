@@ -15,6 +15,8 @@ import java.util.EventObject;
 
 public class CellEditor extends DefaultTreeCellEditor implements ActionListener {
 
+    private JTextField text;
+    private TreeItem item;
 
     public CellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
         super(tree, renderer);
@@ -23,13 +25,15 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
 
     @Override
     public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-      super.getTreeCellEditorComponent(tree, value, isSelected, expanded, leaf, row);
 
+        super.getTreeCellEditorComponent(tree, value, isSelected, expanded, leaf, row);
 
-        JTextField text = new JTextField(((TreeItem)value).getModel().getName());
+        item = (TreeItem)value;
+
+        text = new JTextField(((TreeItem)value).getModel().getName());
         text.addActionListener(this);
         text.setOpaque(true);
-        text.setDisabledTextColor(Color.RED);
+
         text.setBackground(Color.cyan);
 
         return text;
@@ -41,19 +45,19 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
 
         if (arg0 instanceof MouseEvent) {
             if (((MouseEvent) arg0).getClickCount() == 3) {
-
                 return true;
             }
-
         }
         return false;
+
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        TreeItem item = MainFrame.getInstance().getiTree().getSelectedTreeIteam();
-        item.getModel().setName(e.getActionCommand());
+
+
         item.setName(e.getActionCommand());
+        item.getModel().setName(e.getActionCommand());
         MainFrame.getInstance().getiTree().getTreeView().updateUI();
     }
 

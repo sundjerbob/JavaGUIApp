@@ -1,4 +1,4 @@
-package app.controller.popup.info;
+package app.controller.popup;
 
 
 
@@ -21,7 +21,7 @@ public class InformationPopup extends JDialog {
         //setting icon of this window
 
         setModal(true);
-        setIconImage(getImage("information.png"));
+        setIconImage(getImage("images/information.png"));
 
         //this panel is holding content for the whole info window
         JPanel panel = new JPanel();
@@ -30,7 +30,7 @@ public class InformationPopup extends JDialog {
 
 
         //isert image
-        ImageIcon lableImage  = getImageIcon("sunce.png");
+        ImageIcon lableImage  = getImageIcon("images/sunce.png");
 
         //setting size for this window
         setSize(lableImage.getIconWidth()+100,lableImage.getIconHeight()+250);

@@ -11,6 +11,12 @@ public class TreeItem extends DefaultMutableTreeNode {
     private NodeModel model;
 
 
+    public TreeItem(NodeModel model){
+        this.model = model;
+        name = model.getName();
+    }
+
+
 
     @Override
     public boolean isLeaf(){
@@ -33,10 +39,7 @@ public class TreeItem extends DefaultMutableTreeNode {
         return name;
     }
 
-    public TreeItem(NodeModel model){
-        this.model = model;
-        name = model.getName();
-    }
+
 
     public String getName() {
         return name;

@@ -62,4 +62,9 @@ public class TreeImplementation implements ITree {
     public TreeView getTreeView() {
         return treeView;
     }
+
+    @Override
+    public TreeItem getRoot() {
+        return root;
+    }
 }

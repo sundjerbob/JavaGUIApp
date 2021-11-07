@@ -30,6 +30,7 @@ public class ToolBar extends JToolBar {
         b = add(MainFrame.getInstance().getActionManager().getDeleteAction());
         b.setFocusPainted(false);
         b.setBackground(c);
+
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
        // addSeparator();

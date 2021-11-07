@@ -15,6 +15,9 @@ import java.util.ArrayList;
 
 public class WorkspaceView extends JPanel implements ISubscriber {
 
+    private static final int colNum = 5; //layout will have 5 previews per row
+
+    private  JPanel currView;
     public JScrollPane pane;
     private Workspace model;
     private ArrayList<FileView> files;
@@ -22,29 +25,35 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
 
 
+
     public WorkspaceView(Workspace root){
+
         super(new BorderLayout());
         model = root;
         root.addSubscriber(this);
+
+        currView = new JPanel(new BorderLayout());
+        add(currView,BorderLayout.CENTER);
+
         fileExplorer = new JPanel();
         fileExplorer.setLayout(null);
         fileExplorer.setBackground(Color.yellow);
-        add(fileExplorer);
+
     }
 
     public void explorerMode(){
 
 
         fileExplorer.removeAll();
+
         if (files == null || files.size() == 0) {
             return;
         }
 
-        int colNum = 5; //layout will have 5 previews per row
-        int rowNum = model.getChildren().size() / 5 + 1;//calculating how many rows we need to display all previews
+        int rowNum = model.getChildren().size() / colNum + 1;//calculating how many rows we need to display previews for all files
 
-        int w  = (fileExplorer.getWidth() - 40) / colNum, h = (int)(w * 1.3); // w is with of FilePreView and h is the height
-        int x = fileExplorer.getLocation().x + 20, y = fileExplorer.getLocation().y + 20; // location where would be the first preview(upper left corner of WorkspaceView)
+        int width  = (fileExplorer.getWidth() - 40) / colNum, h = (int)(width * 1.3); // w is width of FilePreView and h is the height
+        int x = currView.getLocation().x + 20, y = currView.getLocation().y + 20; // location where would be the first preview(upper left corner of WorkspaceView)
 
         fileExplorer.setPreferredSize(new Dimension(getWidth() - 20,
                 rowNum  * h + 40));
@@ -63,20 +72,14 @@ public class WorkspaceView extends JPanel implements ISubscriber {
                 if(index == files.size())
                     break;
                 cur = new FilePreView(files.get(index++));
-                cur.setBounds(x + w * j, y + h * i, w, h);
+                cur.setBounds(x + width * j, y + h * i, width, h);
                 fileExplorer.add(cur);
             }
 
         }
 
 
-        if (pane != null)
-            remove(pane);
-
-        pane = new JScrollPane(fileExplorer);
-        pane.setHorizontalScrollBar(null);
-        add(pane, BorderLayout.CENTER);
-        updateUI();
+        setCurView(fileExplorer,true);
     }
 
 
@@ -103,6 +106,17 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
 
     }
+
+    public  void setCurView(JPanel panel, boolean isExplorer){
+        currView.removeAll();
+        if(isExplorer){
+            JScrollPane k = new JScrollPane(panel);
+            k.setHorizontalScrollBar(null);
+            currView.add(k,BorderLayout.CENTER);
+        }
+        this.updateUI();
+    }
+
 
 
     public void removeFile(FileView toRemove){

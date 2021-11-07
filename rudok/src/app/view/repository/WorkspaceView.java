@@ -39,6 +39,8 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         fileExplorer.setLayout(null);
         fileExplorer.setBackground(Color.yellow);
 
+        setCurView(fileExplorer,true);
+
     }
 
     public void explorerMode(){

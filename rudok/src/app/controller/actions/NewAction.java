@@ -27,7 +27,7 @@ public class NewAction extends MyAbstractAction {
     public void actionPerformed(ActionEvent e) {
 
         MainFrame frame = MainFrame.getInstance();
-        TreeItem item = frame.getiTree().getSelectedTreeIteam();
+        TreeItem item = frame.getITree().getSelectedTreeItem();
         NodeModel newNode = null;
         String name;
 
@@ -36,14 +36,14 @@ public class NewAction extends MyAbstractAction {
 
             newNode = new File(name,(Workspace) item.getModel());
             ((Workspace) item.getModel()).addChild(newNode);
-            frame.getiTree().addNew(newNode);
+            frame.getITree().addNew(newNode);
         }
         else if(item.getModel() instanceof File){
             name = getName((File)item.getModel(),"Presentation");
 
             newNode = new Document(name,(File) item.getModel());
             ((File) item.getModel()).addChild(newNode);
-            frame.getiTree().addNew(newNode);
+            frame.getITree().addNew(newNode);
 
         }
         else if(item.getModel() instanceof Document){
@@ -51,7 +51,7 @@ public class NewAction extends MyAbstractAction {
 
             newNode = new Page(name,(Document) item.getModel());
             ((Document) item.getModel()).addChild(newNode);
-            frame.getiTree().addNew(newNode);
+            frame.getITree().addNew(newNode);
 
         }
     }

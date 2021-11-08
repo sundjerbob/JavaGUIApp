@@ -13,7 +13,8 @@ import javax.swing.tree.MutableTreeNode;
 public interface ITree {
 
     JTree generateTreeView(Workspace workspace);
-    TreeItem getSelectedTreeIteam();
+    TreeItem getSelectedTreeItem();
+    TreeItem findItemByModel(NodeModel node);
 
     TreeView getTreeView();
     TreeItem getRoot();

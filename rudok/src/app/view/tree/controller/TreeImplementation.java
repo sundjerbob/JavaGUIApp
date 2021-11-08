@@ -48,7 +48,7 @@ public class TreeImplementation implements ITree {
     }
 
     @Override
-    public TreeItem getSelectedTreeIteam() {
+    public TreeItem getSelectedTreeItem() {
         return (TreeItem) treeView.getLastSelectedPathComponent();
     }
 
@@ -66,5 +66,15 @@ public class TreeImplementation implements ITree {
     @Override
     public TreeItem getRoot() {
         return root;
+    }
+
+    @Override
+    public TreeItem findItemByModel(NodeModel node){
+        if(node instanceof Workspace){
+            return root;
+        }
+
+        TreeItem item = findItemByModel(node.getParent());
+        return (TreeItem) item.getChildAt(node.getParent().getChildren().indexOf(node));
     }
 }

@@ -22,12 +22,12 @@ public class DeleteAction extends MyAbstractAction{
     public void actionPerformed(ActionEvent e) {
 
         MainFrame frame = MainFrame.getInstance();
-        TreeItem item = frame.getiTree().getSelectedTreeIteam();
+        TreeItem item = frame.getITree().getSelectedTreeItem();
 
 
             item.getModel().getParent().removeChild(item.getModel());
-            frame.getiTree().delete(item);
-            frame.getiTree().setRootSelected();
+            frame.getITree().delete(item);
+            frame.getITree().setRootSelected();
 
 
     }

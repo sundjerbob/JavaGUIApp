@@ -1,9 +1,11 @@
 package app.view.repository;
 
 import app.view.gui.MainFrame;
+import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,7 +33,14 @@ public class FilePreView extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        TreeItem item;
+        setBackground(Color.pink);
+        item = MainFrame.getInstance().getITree().findItemByModel(myView.getModel());
+        MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
 
+        if(e.getClickCount() == 2){
+            myView.getParentView().explorerMode(myView);
+        }
     }
 
     @Override

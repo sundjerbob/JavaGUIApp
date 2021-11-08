@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
 
        //right side for work space panel
         WorkspaceView workspaceView = new WorkspaceView((Workspace) iTree.getRoot().getModel());
-        workspaceView.explorerMode();
+        workspaceView.explorerMode(null);
 
         //rightScroll.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -106,7 +106,7 @@ public class MainFrame extends JFrame {
         return color;
     }
 
-    public ITree getiTree(){
+    public ITree getITree(){
         return iTree;
     }
 

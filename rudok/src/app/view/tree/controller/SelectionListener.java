@@ -21,7 +21,7 @@ public class SelectionListener implements TreeSelectionListener {
         TreeItem item = (TreeItem)e.getNewLeadSelectionPath().getLastPathComponent();
 
         if(item == null)
-            item = MainFrame.getInstance().getiTree().setRootSelected();
+            item = MainFrame.getInstance().getITree().setRootSelected();
 
         else if(item.getModel() instanceof Workspace) {
             manager.getDeleteAction().setEnabled(false);

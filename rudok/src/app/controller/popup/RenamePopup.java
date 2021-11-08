@@ -83,7 +83,7 @@ public class RenamePopup extends JDialog implements ActionListener{
                 item.setName(text.getText());
 
 
-                MainFrame.getInstance().getiTree().getTreeView().updateUI();
+                MainFrame.getInstance().getITree().getTreeView().updateUI();
                 dispose();
             }
         });
@@ -123,7 +123,7 @@ public class RenamePopup extends JDialog implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         item.setName(text.getText());
         item.getModel().setName(text.getText());
-        MainFrame.getInstance().getiTree().getTreeView().updateUI();
+        MainFrame.getInstance().getITree().getTreeView().updateUI();
         dispose();
     }
 

@@ -1,6 +1,5 @@
 package app.view.repository;
 
-import app.model.node.NodeModel;
 import app.model.repository.Document;
 import app.model.repository.File;
 import app.observer.ISubscriber;
@@ -9,28 +8,24 @@ import app.observer.NotificationType;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class FileView extends JPanel implements ISubscriber  {
 
+    private static final int colNum = 5;
     private File model;
-    private JLabel name;
+
     private WorkspaceView parentView;
     private ArrayList<DocumentView> documents;
 
     public FileView(File model,WorkspaceView parentView){
-        super(new BorderLayout());
+        super(null);
         this.model = model;
         model.addSubscriber(this);
         this.parentView = parentView;
-        setBackground(Color.CYAN);
+        setBackground(Color.cyan.darker());
 
-        name = new JLabel(model.getName(),SwingConstants.CENTER);
-        add(name,BorderLayout.NORTH);
+
     }
 
 
@@ -38,29 +33,75 @@ public class FileView extends JPanel implements ISubscriber  {
     @Override
     public void update(Object notification) {
 
-        Notification myNotification = (Notification) notification;
+        Notification n = (Notification) notification;
 
-        if(myNotification.getType() == NotificationType.ADD_ACTION){
+        if(n.getType() == NotificationType.ADD_ACTION){
             if(documents == null)
                 documents = new ArrayList<DocumentView>();
-                documents.add(new DocumentView((Document) myNotification.getNotificationObject(),this));
-                parentView.explorerMode(this);
+            documents.add(new DocumentView((Document) n.getNotificationObject(),this));
+            if(WorkspaceView.getCurrentlyOpened() == this)
+                display();
         }
-
-        else if(myNotification.getType() == NotificationType.REMOVE_ACTION){
-            parentView.removeFile(this);
-
+        else if(n.getType() == NotificationType.REMOVE_ACTION){
+                parentView.removeFile(this);
+           parentView.setFileExplorer();
         }
-        else if(myNotification.getType() == NotificationType.RENAME_ACTION){
-            name.setText(model.getName());
-            parentView.explorerMode(null);
+        else if(n.getType() == NotificationType.RENAME_ACTION){
+            if(WorkspaceView.getCurrentlyOpened() == this)
+                parentView.display(this);
+            else if(WorkspaceView.getCurrentlyOpened() == parentView.getFileExplorer())
+                parentView.setFileExplorer();
         }
     }
 
-    public void removeDocument(DocumentView toRemove){
-        documents.remove(toRemove);
-        parentView.explorerMode(this);
+
+
+
+
+    public void display(){
+
+        removeAll();
+
+        if(documents == null || documents.size() == 0){
+
+            parentView.display(this);
+
+            return;
+        }
+
+        //calculating how many rows we need to display previews for all files
+        int rowNum = (documents.size() % colNum == 0)? documents.size() / colNum : documents.size() / colNum + 1;
+
+        int docPreviewWidth = (parentView.getCurrView().getWidth() - 40) / colNum;
+        int docPreviewHeight = (int) (docPreviewWidth * 1.3);
+
+        int startingLocationX = parentView.getCurrView().getLocation().x ;
+        int startingLocationY = parentView.getCurrView().getLocation().y - 40 ;
+
+        setPreferredSize(new Dimension(parentView.getCurrView().getWidth() - 40,
+                rowNum * docPreviewHeight + 40));
+
+        DocumentPreview curr;
+
+
+        int index;
+
+        for (int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < colNum; j++) {
+                index = i * colNum + j;
+                if ( index == documents.size())
+                    break;
+                curr = new DocumentPreview(documents.get(index));
+                curr.setBounds(startingLocationX + docPreviewWidth * j, startingLocationY + docPreviewHeight * i,
+                        docPreviewWidth, docPreviewHeight);
+                    add(curr);
+            }
+        }
+        parentView.display(this);
     }
+
+
+
 
     public ArrayList<DocumentView> getDocuments() {
         return documents;
@@ -74,8 +115,8 @@ public class FileView extends JPanel implements ISubscriber  {
         return parentView;
     }
 
-
-    public JLabel name() {
-        return name;
+    public void removeDocument(DocumentView doc){
+        documents.remove(doc);
     }
+
 }

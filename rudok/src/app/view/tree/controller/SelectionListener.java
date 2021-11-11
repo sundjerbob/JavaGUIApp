@@ -26,6 +26,7 @@ public class SelectionListener implements TreeSelectionListener {
         else if(item.getModel() instanceof Workspace) {
             manager.getDeleteAction().setEnabled(false);
             manager.getNewAction().setEnabled(true);
+            manager.getRenameAction().setEnabled(false);
 
         }
         else if(item.getModel() instanceof File) {

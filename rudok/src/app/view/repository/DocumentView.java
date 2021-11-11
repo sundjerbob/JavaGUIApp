@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class DocumentView extends JPanel implements ISubscriber {
 
     private Document model;
-    private JLabel name;
     private FileView parentView;
     private ArrayList<PageView> pages;
 
@@ -20,12 +19,10 @@ public class DocumentView extends JPanel implements ISubscriber {
         super(new BorderLayout());
         this.model = model;
         model.addSubscriber(this);
-
+        JLabel label  = new JLabel(model.getName());
+        add(label,BorderLayout.WEST);
         this.parentView = parentView;
-        name = new JLabel(model.getName());
-        name.setPreferredSize(new Dimension((int)parentView.getPreferredSize().getWidth(),30));
 
-        add(name,BorderLayout.NORTH);
 
     }
 
@@ -33,19 +30,20 @@ public class DocumentView extends JPanel implements ISubscriber {
     @Override
     public void update(Object notification) {
 
-        Notification myNotification = (Notification) notification;
-
-        if(myNotification.getType() == NotificationType.REMOVE_ACTION){
-            parentView.removeDocument(this);
+        Notification n = (Notification) notification;
+        if(n.getType() == NotificationType.ADD_ACTION){
 
         }
-        else if(myNotification.getType() == NotificationType.RENAME_ACTION){
-            name.setText(model.getName());
-            parentView.getParentView().explorerMode(parentView);
+        else if(n.getType() == NotificationType.REMOVE_ACTION){
+
         }
     }
 
     public Document getModel() {
         return model;
+    }
+
+    public FileView getParentView() {
+        return parentView;
     }
 }

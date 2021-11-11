@@ -1,5 +1,8 @@
 package app.controller.popup;
 
+import app.factory.AbstractFactory;
+import app.factory.ErrorType;
+import app.factory.NameAlrExists;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -77,10 +80,14 @@ public class RenamePopup extends JDialog implements ActionListener{
             @Override
             public void mouseClicked(MouseEvent e) {
 
+                String t = text.getText();
+                if(t == "")
+
+
                 //System.out.println("radi");
                 super.mouseClicked(e);
-                item.getModel().setName(text.getText());
-                item.setName(text.getText());
+                item.getModel().setName(t);
+                item.setName(t);
 
 
                 MainFrame.getInstance().getITree().getTreeView().updateUI();
@@ -121,10 +128,20 @@ public class RenamePopup extends JDialog implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        item.setName(text.getText());
+        String t = text.getText();
+        System.out.println(t);
+        NameAlrExists d;
+        if(t.equals("")) {
+            d = AbstractFactory.getInstance().createPopup(ErrorType.EMPTY_NAME);
+            d.showError(this);
+
+        }
+        else {
+        item.setName(t);
         item.getModel().setName(text.getText());
         MainFrame.getInstance().getITree().getTreeView().updateUI();
         dispose();
+        }
     }
 
     private Image getImage(String fileName){

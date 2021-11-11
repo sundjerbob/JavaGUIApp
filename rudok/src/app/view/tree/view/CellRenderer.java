@@ -4,20 +4,25 @@ import app.model.repository.Document;
 import app.model.repository.File;
 import app.model.repository.Page;
 import app.model.repository.Workspace;
+import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.net.URL;
 
 
-public class CellRenderer extends DefaultTreeCellRenderer {
+public class CellRenderer extends DefaultTreeCellRenderer  {
 
 
     public CellRenderer(){
-        //TODO Auto-genereted constructor stub
+
+
     }
 
     @Override
@@ -64,4 +69,7 @@ public class CellRenderer extends DefaultTreeCellRenderer {
         System.out.println("Cell renderer no icon");
         return null;
     }
+
+
+
 }

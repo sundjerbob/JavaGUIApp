@@ -74,8 +74,8 @@ public abstract class NodeModel implements IPublisher {
         if(notification == null || subscribers == null || subscribers.isEmpty())
             return;
 
-        for(ISubscriber cur : subscribers){
-            cur.update(notification);
+        for(ISubscriber curr : subscribers){
+            curr.update(notification);
         }
     }
 }

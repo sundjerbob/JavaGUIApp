@@ -1,174 +1,139 @@
 package app.view.repository;
 
-import app.model.node.NodeModel;
 import app.model.repository.File;
 import app.model.repository.Workspace;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
-import app.view.gui.MainFrame;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class WorkspaceView extends JPanel implements ISubscriber {
 
     private static final int colNum = 5; //layout will have 5 previews per row
+    private static JPanel currentlyOpened;
 
-    private  JPanel currView;
-    public JScrollPane pane;
+
+
+
+
+    private  JPanel currView  ;
     private Workspace model;
     private ArrayList<FileView> files;
     private JPanel fileExplorer;
-
+    private Label label;
 
 
 
     public WorkspaceView(Workspace root){
 
         super(new BorderLayout());
+
         model = root;
         root.addSubscriber(this);
 
-        currView = new JPanel(new BorderLayout());
-        add(currView,BorderLayout.CENTER);
+        label = new Label();
+        add(label,BorderLayout.NORTH);
 
-        fileExplorer = new JPanel();
+        currView = new JPanel(new BorderLayout()); //all content that is opened will be in this panel
+        add(currView,BorderLayout.CENTER);
+        currView.setBackground(Color.pink);
+
+        fileExplorer = new JPanel(); //this panel is used for generating a matrix-like view of Previews
         fileExplorer.setLayout(null);
         fileExplorer.setBackground(Color.CYAN.darker());
 
-        setCurView(fileExplorer,true);
+        display(fileExplorer);
+
 
     }
-
-    public void explorerMode(FileView fileView){
-
-        fileExplorer.removeAll();
-
-        if(fileView == null) {
-
-            if (files == null || files.size() == 0) {
-                return;
-            }
-
-            int rowNum = files.size() / colNum + 1;//calculating how many rows we need to display previews for all files
-
-            int width = (fileExplorer.getWidth() - 40) / colNum, h = (int) (width * 1.3); // w is width of File/Doc preview and h is the height(relative)
-            int x = currView.getLocation().x + 20, y = currView.getLocation().y + 20; // location where would be the first preview(upper left corner of WorkspaceView)
-
-            fileExplorer.setPreferredSize(new Dimension(getWidth() - 40,
-                    rowNum * h + 40));
-
-
-            FilePreView cur; //variable to add to our layout
-            int index = 0; //variable for indexing every FileView from files array
-
-
-            for (int i = 0; i < rowNum; i++) {
-                for (int j = 0; j < colNum; j++) {
-                    if (index == files.size())
-                        break;
-                    cur = new FilePreView(files.get(index++));
-                    cur.setBounds(x + width * j, y + h * i, width, h);
-                    fileExplorer.add(cur);
-                }
-
-            }
-
-        }
-
-        else {
-
-            if(fileView.getDocuments() == null || fileView.getDocuments().size() == 0){
-                setCurView(fileView,true);
-                return;
-            }
-
-            int rowNum = fileView.getDocuments().size() / colNum + 1;
-
-            int width = (fileExplorer.getWidth() - 40) / colNum, h = (int) (width * 1.3);
-            int x = currView.getLocation().x + 20, y = currView.getLocation().y ;
-            fileExplorer.setPreferredSize(new Dimension(getWidth() - 40,
-                    rowNum * h + 50));
-
-            JLabel label = fileView.name();
-            label.setBounds(currView.getLocation().x, y,fileExplorer.getWidth(),30);
-            label.setOpaque(true);
-            label.setBackground(new Color(0xC6F9F4));
-            fileExplorer.add(label);
-
-            DocumentPreView cur;
-            int index = 0;
-
-
-
-
-            for (int i = 0; i < rowNum; i++) {
-                for (int j = 0; j < colNum; j++) {
-                    if (index == fileView.getDocuments().size())
-                        break;
-                    cur = new DocumentPreView((DocumentView)fileView.getDocuments().get(index++));
-                    cur.setBounds(x + width * j, y + h * i + 30, width, h);
-                    fileExplorer.add(cur);
-                }
-
-            }
-
-        }
-        setCurView(fileExplorer,true);
-    }
-
-    public void setCurView(JPanel panel, boolean isExplorer){
-
+    public void display(JPanel setView){        //this method is used by FileView and DocumentView to display them
+                                                //on workspace
         currView.removeAll();
 
-        if(isExplorer){
-            JScrollPane k = new JScrollPane(panel);
-            k.setHorizontalScrollBar(null);
-            currView.add(k,BorderLayout.CENTER);
-        }
-        else
-            currView.add(panel,BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(setView);
+        scrollPane.setHorizontalScrollBar(null);
+        currView.add(scrollPane);
 
+        setCurrentlyOpened(setView);
+        label.setCurrPath();
 
-        this.updateUI();
+        updateUI();
     }
-
-
 
 
     @Override
     public void update(Object notification) {
-
-        Notification myNotification = (Notification) notification;
-
-
-        if(myNotification.getType() == NotificationType.ADD_ACTION){
-            if(files == null)
+        Notification n = (Notification) notification;
+        if(n.getNotificationObject() instanceof File && n.getType() == NotificationType.ADD_ACTION){
+            if(files == null){
                 files = new ArrayList<FileView>();
-            files.add(new FileView((File)myNotification.getNotificationObject(), this));
-            explorerMode(null);
+            }
+            files.add(new FileView((File) n.getNotificationObject(),this));
+            if(currentlyOpened == fileExplorer)
+                setFileExplorer();
+        }
 
+    }
+
+    public void setFileExplorer(){              //this method is used by WorkspaceView to display File Explorer view
+
+        fileExplorer.removeAll();
+
+        if (files == null || files.size() == 0) {
+                display(fileExplorer);
+                return;
+            }
+
+        //calculating how many rows we need to display previews for all files
+            int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
+
+            int filePreviewWith = (getWidth() - 40) / colNum, filePreviewHeight = (int) (filePreviewWith * 1.3); // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
+            int x = currView.getLocation().x + 20, y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
+
+            fileExplorer.setPreferredSize(new Dimension(getWidth() - 40, rowNum * filePreviewHeight));
+
+            FilePreview curr;
+            int index ;
+
+
+            for (int i = 0; i < rowNum; i++) {
+                for (int j = 0; j < colNum; j++) {
+                    index = i * colNum + j;
+                    if (index == files.size())
+                        break;
+
+                    curr = new FilePreview(files.get(index));
+                    curr.setBounds(x + filePreviewWith * j, y + filePreviewHeight * i, filePreviewWith, filePreviewHeight);
+                    fileExplorer.add(curr);
+                }
+            }
+            display(fileExplorer);
         }
 
 
-
-
-
+    public void removeFile(FileView me){
+        files.remove(me);
     }
 
-
-
-
-
-    public void removeFile(FileView toRemove){
-        files.remove(toRemove);
-        explorerMode(null);
+    public JPanel getCurrView() {
+        return currView;
     }
 
+    public JPanel getFileExplorer() {
+        return fileExplorer;
+    }
 
+    public static JPanel getCurrentlyOpened() {
+        return currentlyOpened;
+    }
+
+    private static void setCurrentlyOpened(JPanel currentlyOpened) {
+        WorkspaceView.currentlyOpened = currentlyOpened;
+
+    }
 
 
 }

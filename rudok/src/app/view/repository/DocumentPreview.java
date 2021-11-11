@@ -1,24 +1,21 @@
 package app.view.repository;
 
-import app.view.gui.MainFrame;
-import app.view.tree.model.TreeItem;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class FilePreView extends JPanel implements MouseListener {
+public class DocumentPreview extends JPanel implements MouseListener {
+    private DocumentView myView;
+    private JButton shortcut;
 
+    public DocumentPreview(DocumentView document){
+        super(new BorderLayout());
 
-    private FileView myView;
-
-    public FilePreView(FileView file){
-            super(new BorderLayout());
-        myView = file;
-        setBackground(Color.yellow);
+        myView = document;
+        shortcut = new JButton();
+        setBackground(Color.cyan.darker());
         setBorder(new EmptyBorder(30,30,30,30));
         JPanel p = new JPanel();
         p.setBackground(Color.white);
@@ -28,42 +25,33 @@ public class FilePreView extends JPanel implements MouseListener {
 
     }
 
-
-
-
     @Override
     public void mouseClicked(MouseEvent e) {
-        TreeItem item;
-        setBackground(Color.pink);
-        item = MainFrame.getInstance().getITree().findItemByModel(myView.getModel());
-        MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
+
 
         if(e.getClickCount() == 2){
-            myView.getParentView().explorerMode(myView);
+
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        setBackground(Color.gray);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        setBackground(Color.cyan);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
 
-
-        setBackground(Color.GREEN);
-
+        setBackground(Color.cyan);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
-        setBackground(Color.yellow);
+        setBackground(Color.CYAN.darker());
     }
 }

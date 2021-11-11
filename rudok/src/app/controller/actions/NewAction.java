@@ -58,7 +58,7 @@ public class NewAction extends MyAbstractAction {
 
     private String getName(NodeComposit model,String name){
         int num = 1;
-        while(model.getChildByName(name + " " + num ) != null) {
+        while(model.getChildByName(name + " " + num) != null) {
             ++num;
         }
         return name + " " + num;

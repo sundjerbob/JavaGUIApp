@@ -8,7 +8,6 @@ import app.view.tree.ITree;
 import app.view.tree.controller.TreeImplementation;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.net.URL;
 
@@ -59,16 +58,18 @@ public class MainFrame extends JFrame {
         //making the components layout
 
         //left side for tree view
-        JLabel label = new JLabel("Workspace",getLabelIcon("workspace.png"),SwingConstants.CENTER);
-        label.setBorder(new EmptyBorder(6,0,6,0));
+        JPanel left = new JPanel(new BorderLayout());
+        JLabel label = new JLabel("Workspace",getLabelIcon("workspace.png"),SwingConstants.CENTER){};
+        left.add(label,BorderLayout.NORTH);
+        label.setPreferredSize( new Dimension (label.getWidth(),40) ) ;
         label.setBackground(new Color(0xC6F9F4));
         label.setOpaque(true);
 
-        ////
-        JPanel left = new JPanel(new BorderLayout());
-        left.add(label,BorderLayout.NORTH);
 
-        /////
+
+
+
+
         iTree = new TreeImplementation();
         JScrollPane scroll = new JScrollPane(iTree.generateTreeView(new Workspace("workspace")));
 
@@ -77,10 +78,9 @@ public class MainFrame extends JFrame {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         left.add(scroll,BorderLayout.CENTER);
 
-
        //right side for work space panel
         WorkspaceView workspaceView = new WorkspaceView((Workspace) iTree.getRoot().getModel());
-        workspaceView.explorerMode(null);
+
 
         //rightScroll.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 

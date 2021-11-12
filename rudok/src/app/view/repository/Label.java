@@ -2,8 +2,12 @@ package app.view.repository;
 
 
 
+import app.view.gui.MainFrame;
+import app.view.tree.model.TreeItem;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -65,6 +69,19 @@ public class Label extends JPanel   {
 
        }
        if(currView instanceof DocumentView){
+           currFile = new Button(){
+               @Override
+               public void mouseClicked(MouseEvent e) {
+                   super.mouseClicked(e);
+                   if(WorkspaceView.getCurrentlyOpened() instanceof DocumentView){
+                       DocumentView doc = (DocumentView) WorkspaceView.getCurrentlyOpened();
+                       doc.getParentView().display();
+                       TreeItem item = MainFrame.getInstance().getITree().findItemByModel(doc.getParentView().getModel());
+                       MainFrame.getInstance().getITree().getTreeView().setSelectionPath(
+                               new TreePath(item.getPath()));
+                   }
+               }
+           };
            currFile.setText(((DocumentView)currView).getParentView().getModel().getName());
            panel.add(currFile);
 

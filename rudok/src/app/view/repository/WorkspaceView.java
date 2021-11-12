@@ -18,9 +18,8 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
 
 
-
-    private  JPanel currView  ;
     private Workspace model;
+    private  JPanel currView  ;
     private ArrayList<FileView> files;
     private JPanel fileExplorer;
     private Label label;

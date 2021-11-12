@@ -11,31 +11,26 @@ import java.awt.*;
 
 public class PageView extends JPanel implements ISubscriber {
 
-    private NodeModel model;
+    private Page model;
     private JLabel label;
     private DocumentView parent;
 
-    public PageView(NodeModel model,DocumentView parent){
+    public PageView(Page model,DocumentView parent){
         super(new BorderLayout());
         this.model = model;
         this.parent = parent;
 
+        setBackground(Color.red);
         label = new JLabel(model.getName(),SwingConstants.CENTER);
-        label.setPreferredSize(new Dimension(50,100));
-        add(label,BorderLayout.CENTER);
+
+        add(label,BorderLayout.SOUTH);
 
     }
 
 
     @Override
     public void update(Object notification) {
-        Notification myNotification = (Notification) notification;
-        if(myNotification.getType() == NotificationType.RENAME_ACTION){
-            label.setText(model.getName());
-        }
-        else if(myNotification.getType() == NotificationType.REMOVE_ACTION){
 
-        }
     }
 
     public NodeModel getModel() {

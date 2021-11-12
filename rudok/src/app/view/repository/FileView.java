@@ -34,23 +34,29 @@ public class FileView extends JPanel implements ISubscriber  {
     public void update(Object notification) {
 
         Notification n = (Notification) notification;
+        JPanel curr = WorkspaceView.getCurrentlyOpened();
 
         if(n.getType() == NotificationType.ADD_ACTION){
             if(documents == null)
                 documents = new ArrayList<DocumentView>();
             documents.add(new DocumentView((Document) n.getNotificationObject(),this));
-            if(WorkspaceView.getCurrentlyOpened() == this)
+            if(curr == this)
                 display();
         }
         else if(n.getType() == NotificationType.REMOVE_ACTION){
                 parentView.removeFile(this);
-           parentView.setFileExplorer();
+                if(curr == this || curr == parentView.getFileExplorer())
+                    parentView.setFileExplorer();
+                if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
+                    parentView.setFileExplorer();
         }
         else if(n.getType() == NotificationType.RENAME_ACTION){
-            if(WorkspaceView.getCurrentlyOpened() == this)
+            if(curr == this)
                 parentView.display(this);
-            else if(WorkspaceView.getCurrentlyOpened() == parentView.getFileExplorer())
+            else if(curr == parentView.getFileExplorer())
                 parentView.setFileExplorer();
+            else if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
+                ((DocumentView) curr).display();
         }
     }
 
@@ -75,14 +81,13 @@ public class FileView extends JPanel implements ISubscriber  {
         int docPreviewWidth = (parentView.getCurrView().getWidth() - 40) / colNum;
         int docPreviewHeight = (int) (docPreviewWidth * 1.3);
 
-        int startingLocationX = parentView.getCurrView().getLocation().x ;
+        int startingLocationX = parentView.getCurrView().getLocation().x + 20; //20 is te horizontal
         int startingLocationY = parentView.getCurrView().getLocation().y - 40 ;
 
         setPreferredSize(new Dimension(parentView.getCurrView().getWidth() - 40,
                 rowNum * docPreviewHeight + 40));
 
         DocumentPreview curr;
-
 
         int index;
 

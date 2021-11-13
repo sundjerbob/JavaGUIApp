@@ -35,23 +35,22 @@ public class NewAction extends MyAbstractAction {
             name = getName((Workspace)item.getModel(),"File");
 
             newNode = new File(name,(Workspace) item.getModel());
-            ((Workspace) item.getModel()).addChild(newNode);
             frame.getITree().addNew(newNode);
+            ((Workspace) item.getModel()).addChild(newNode);
         }
         else if(item.getModel() instanceof File){
             name = getName((File)item.getModel(),"Presentation");
 
             newNode = new Document(name,(File) item.getModel());
-            ((File) item.getModel()).addChild(newNode);
             frame.getITree().addNew(newNode);
-
+            ((File) item.getModel()).addChild(newNode);
         }
         else if(item.getModel() instanceof Document){
             name = getName((Document)item.getModel(),"Slide");
 
             newNode = new Page(name,(Document) item.getModel());
-            ((Document) item.getModel()).addChild(newNode);
             frame.getITree().addNew(newNode);
+            ((Document) item.getModel()).addChild(newNode);
 
         }
     }

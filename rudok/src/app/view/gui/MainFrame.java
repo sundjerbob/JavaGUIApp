@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
 
         //left side for tree view
         JPanel left = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("Workspace",getLabelIcon("workspace.png"),SwingConstants.CENTER){};
+        JLabel label = new JLabel("Workspace",getLabelIcon("../repository/images/workspace.png"),SwingConstants.CENTER);
         left.add(label,BorderLayout.NORTH);
         label.setPreferredSize( new Dimension (label.getWidth(),40) ) ;
         label.setBackground(new Color(0xC6F9F4));

@@ -51,7 +51,7 @@ public abstract class NodeComposit extends NodeModel {
             if(cur.getName().equals(name))
                 return cur;
         }
-        System.out.println("there is no child with that name here.");
+        //System.out.println("there is no child with that name here.");
         return null;
     }
 

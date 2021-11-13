@@ -55,7 +55,7 @@ public class CellRenderer extends DefaultTreeCellRenderer  {
         else if(((TreeItem)value).getModel() instanceof  File && !expanded)
             setIcon(getIcon("icons/file.png"));
         else if(((TreeItem)value).getModel() instanceof Document)
-            setIcon(getIcon("icons/Document.png"));
+            setIcon(getIcon("icons/presentation.png"));
         else if(((TreeItem)value).getModel() instanceof Page)
             setIcon(getIcon("icons/page.png"));
         return this;

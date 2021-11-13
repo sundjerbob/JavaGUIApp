@@ -4,6 +4,7 @@ import app.model.node.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 public class TreeItem extends DefaultMutableTreeNode {
 
@@ -56,4 +57,6 @@ public class TreeItem extends DefaultMutableTreeNode {
     public void setModel(NodeModel model) {
         this.model = model;
     }
+
+
 }

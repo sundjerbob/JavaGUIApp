@@ -11,6 +11,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 
 public class Label extends JPanel   {
 
@@ -30,7 +31,7 @@ public class Label extends JPanel   {
 
         currFile = new Button();
         currFile.setHorizontalAlignment(SwingConstants.CENTER);
-
+        currFile.setIcon(loadIcon("images/open-folder.png"));
         currFile.setOpaque(true);
 
 
@@ -38,6 +39,7 @@ public class Label extends JPanel   {
 
         currDocument = new Button();
         currDocument.setHorizontalAlignment(SwingConstants.CENTER);
+        currDocument.setIcon(loadIcon("images/presentation.png"));
         currDocument.setOpaque(true);
 
 
@@ -64,7 +66,18 @@ public class Label extends JPanel   {
        JPanel currView = WorkspaceView.getCurrentlyOpened();
 
        if(currView instanceof FileView ){
+           currFile = new Button(){
+               @Override
+               public void mouseClicked(MouseEvent e) {
+                   super.mouseClicked(e);
+                   FileView curr = (FileView) WorkspaceView.getCurrentlyOpened();
+                   TreeItem item = MainFrame.getInstance().getITree().findItemByModel(curr.getModel());
+                   MainFrame.getInstance().getITree().getTreeView().setSelectionPath(
+                           new TreePath(item.getPath()));
+               }
+           };
            currFile.setText(((FileView)currView).getModel().getName());
+           currFile.setIcon(loadIcon("images/open-folder.png"));
            panel.add(currFile);
 
        }
@@ -90,22 +103,20 @@ public class Label extends JPanel   {
            currDocument.setText(((DocumentView)currView).getModel().getName());
            panel.add(currDocument);
        }
-       if(currView instanceof PageView){
-           currFile.setText(((PageView)currView).getParentView().getParentView().getModel().getName());
-           panel.add(currFile);
 
-           panel.add(Box.createHorizontalStrut(25));
-
-           currDocument.setText(((PageView)currView).getParentView().getModel().getName());
-           panel.add(currDocument);
-
-           panel.add(Box.createHorizontalStrut(25));
-
-           currPage.setText(((PageView)currView).getModel().getName());
-           panel.add(currPage);
-       }
 
         add(panel, BorderLayout.CENTER);
+    }
+
+    private Icon loadIcon(String fileName){
+        URL imageURL = getClass().getResource(fileName);
+        Icon icon = null;
+
+        if(imageURL != null)
+            icon = new ImageIcon(imageURL);
+        else
+            System.out.println("MyAbstractAction - load icon failed");
+        return icon;
     }
 
 }

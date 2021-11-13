@@ -13,12 +13,13 @@ public class PageView extends JPanel implements ISubscriber {
 
     private Page model;
     private JLabel label;
-    private DocumentView parent;
+    private DocumentView parentView;
 
     public PageView(Page model,DocumentView parent){
         super(new BorderLayout());
         this.model = model;
-        this.parent = parent;
+        model.addSubscriber(this);
+        parentView = parent;
 
         setBackground(Color.red);
         label = new JLabel(model.getName(),SwingConstants.CENTER);
@@ -30,8 +31,29 @@ public class PageView extends JPanel implements ISubscriber {
 
     @Override
     public void update(Object notification) {
+        Notification n = (Notification) notification;
+        if(n.getType() == NotificationType.RENAME_ACTION){
+            label.setText(model.getName());
+            if(parentView.getCurrentPage() == this){
+                parentView.display();
+            }
+        }
+        else if(n.getType() == NotificationType.REMOVE_ACTION){
+            int i = parentView.getIndexOfPage(this);
+            if(parentView.getCurrentPage() == this ){
+                if(i == 0 ) {
+                    if(parentView.getPages().size() == 1)
+                        parentView.setCurrentPage(null);
+                    else
+                        parentView.setCurrentPage(parentView.getPages().get(i+1));
+                }
+                    else
+                    parentView.setCurrentPage(parentView.getPages().get(--i));
+                }
+            }
+            parentView.removePage(this);
+        }
 
-    }
 
     public NodeModel getModel() {
         return model;
@@ -39,6 +61,6 @@ public class PageView extends JPanel implements ISubscriber {
 
 
     public DocumentView getParentView() {
-        return parent;
+        return parentView;
     }
 }

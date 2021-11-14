@@ -1,5 +1,6 @@
 package app.view.tree.controller;
 
+import app.model.repository.Page;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -30,7 +31,8 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
 
         item = (TreeItem)value;
 
-        text = new JTextField(((TreeItem)value).getModel().getName());
+
+        text = new JTextField(item.getModel().getName());
         text.addActionListener(this);
         text.setOpaque(true);
 
@@ -44,7 +46,12 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
         //System.out.println("MORE LIFE G");
 
         if (arg0 instanceof MouseEvent) {
+
             if (((MouseEvent) arg0).getClickCount() == 3) {
+                TreeItem item = (TreeItem) MainFrame.getInstance().getITree().getTreeView().getLastSelectedPathComponent();
+                if(item.getModel() instanceof Page){
+                    return false;
+                }
                 return true;
             }
         }

@@ -21,7 +21,7 @@ public class PageView extends JPanel implements ISubscriber {
         model.addSubscriber(this);
         parentView = parent;
 
-        setBackground(Color.red);
+        setBackground(new Color(0xFFB8BCB8, true));
         label = new JLabel(model.getName(),SwingConstants.CENTER);
 
         add(label,BorderLayout.SOUTH);
@@ -32,7 +32,14 @@ public class PageView extends JPanel implements ISubscriber {
     @Override
     public void update(Object notification) {
         Notification n = (Notification) notification;
-        if(n.getType() == NotificationType.RENAME_ACTION){
+
+        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+
+            parentView.setCurrentPage(this);
+            parentView.display();
+        }
+
+        else if(n.getType() == NotificationType.RENAME_ACTION){
             label.setText(model.getName());
             if(parentView.getCurrentPage() == this){
                 parentView.display();
@@ -41,18 +48,23 @@ public class PageView extends JPanel implements ISubscriber {
         else if(n.getType() == NotificationType.REMOVE_ACTION){
             int i = parentView.getIndexOfPage(this);
             if(parentView.getCurrentPage() == this ){
-                if(i == 0 ) {
-                    if(parentView.getPages().size() == 1)
+                if(i == 0) {
+                    if(parentView.getPages().size() == 1) {
                         parentView.setCurrentPage(null);
-                    else
+                    }
+                    else if(parentView.getPages().size() > 1){
                         parentView.setCurrentPage(parentView.getPages().get(i+1));
+                    }
                 }
                     else
-                    parentView.setCurrentPage(parentView.getPages().get(--i));
-                }
+                        parentView.setCurrentPage(parentView.getPages().get(i-1));
             }
             parentView.removePage(this);
         }
+
+
+
+    }
 
 
     public NodeModel getModel() {

@@ -33,7 +33,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         model = root;
         root.addSubscriber(this);
 
-        label = new Label();
+        label = new Label(this);
         add(label,BorderLayout.NORTH);
 
         currView = new JPanel(new BorderLayout()); //all content that is opened will be in this panel
@@ -57,7 +57,8 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         currView.add(scrollPane);
 
         setCurrentlyOpened(setView);
-        label.setCurrPath();
+        label.setCurrPath();            //refreshing the upper label every time the displaying content is
+                                            //changed
 
         updateUI();
     }

@@ -10,24 +10,36 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.net.URL;
 
 public class Label extends JPanel   {
 
     Button currFile;
     Button currDocument;
+    Button backToWorkspace;
     Button currPage;
     JPanel panel;
 
 
 
 
-    public Label(){
+    public Label(WorkspaceView workspace){
         super(new BorderLayout());
         setPreferredSize(new Dimension(0,40));
-        setBorder(new EmptyBorder(10,50,10,50));
+        setBorder(new EmptyBorder(10,30,10,50));
         setBackground(new Color(0xC6F9F4));
+
+
+        backToWorkspace = new Button(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                workspace.setFileExplorer();
+            }
+        };
+        backToWorkspace.setIcon(loadIcon("images/backToWorkspace.png"));
+        backToWorkspace.setToolTipText("Go back to this workspace");
 
         currFile = new Button();
         currFile.setHorizontalAlignment(SwingConstants.CENTER);
@@ -39,6 +51,7 @@ public class Label extends JPanel   {
 
         currDocument = new Button();
         currDocument.setHorizontalAlignment(SwingConstants.CENTER);
+        currDocument.setToolTipText("Currently opened presentation");
         currDocument.setIcon(loadIcon("images/presentation.png"));
         currDocument.setOpaque(true);
 
@@ -66,6 +79,11 @@ public class Label extends JPanel   {
        JPanel currView = WorkspaceView.getCurrentlyOpened();
 
        if(currView instanceof FileView ){
+
+           panel.add(backToWorkspace);
+           panel.add(Box.createHorizontalStrut(25));
+
+
            currFile = new Button(){
                @Override
                public void mouseClicked(MouseEvent e) {
@@ -76,12 +94,19 @@ public class Label extends JPanel   {
                            new TreePath(item.getPath()));
                }
            };
+           currFile.setToolTipText("You are currently in this file");
            currFile.setText(((FileView)currView).getModel().getName());
            currFile.setIcon(loadIcon("images/open-folder.png"));
            panel.add(currFile);
 
        }
+
        if(currView instanceof DocumentView){
+
+           panel.add(backToWorkspace);
+
+           panel.add(Box.createHorizontalStrut(25));
+
            currFile = new Button(){
                @Override
                public void mouseClicked(MouseEvent e) {
@@ -95,7 +120,10 @@ public class Label extends JPanel   {
                    }
                }
            };
+
            currFile.setText(((DocumentView)currView).getParentView().getModel().getName());
+           currFile.setToolTipText("Go back to file of this presentation");
+           currFile.setIcon(loadIcon("images/open-folder.png"));
            panel.add(currFile);
 
            panel.add(Box.createHorizontalStrut(25));

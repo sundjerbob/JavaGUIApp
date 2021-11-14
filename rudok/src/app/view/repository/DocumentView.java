@@ -24,6 +24,10 @@ public class DocumentView extends JPanel implements ISubscriber {
     private PageView currentPage;
     private JLabel name;
     private JPanel center;
+    private JPanel left;
+    private JPanel right;
+    Button previousPage;
+    Button nextPage;
 
     public DocumentView(Document model,FileView parentView){
         super(new BorderLayout());
@@ -39,36 +43,21 @@ public class DocumentView extends JPanel implements ISubscriber {
         add(name,BorderLayout.NORTH);
 
         JPanel bottom = new JPanel();
-        bottom.setPreferredSize(new Dimension(0, 40));
+        bottom.setPreferredSize(new Dimension(0,14 ));
         bottom.setBackground(Color.CYAN.darker());
         add(bottom,BorderLayout.SOUTH);
 
-        JPanel left = new JPanel(new BorderLayout());
-        Button previousPage = new Button(){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(getIndexOfPage(currentPage) > 0)
-                    setCurrentPage(pages.get(getIndexOfPage(currentPage) - 1));
-            }
-        };
-        previousPage.setIcon(loadIcon("images/prev.png"));
-        left.setBorder(new EmptyBorder(100, 10, 100, 10));
-        left.add(previousPage,BorderLayout.CENTER);
+        left = new JPanel(new BorderLayout());
+        left.setBackground(new Color(0xC6F9F4));
 
-        JPanel right = new JPanel(new BorderLayout());
-        Button nextPage = new Button(){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(getIndexOfPage(currentPage) != pages.size() - 1){
-                    setCurrentPage(pages.get(getIndexOfPage(currentPage) + 1));
-                }
-            }
-        };
-        nextPage.setIcon(loadIcon("images/next.png"));
+        left.setBorder(new EmptyBorder(100, 10, 100, 10));
+
+
+        right = new JPanel(new BorderLayout());
+
         right.setBorder(new EmptyBorder(100, 10, 100, 10));
-        right.add(nextPage, BorderLayout.CENTER);
+        right.setBackground(new Color(0xC6F9F4));
+
         add(right,BorderLayout.EAST);
         add(left, BorderLayout.WEST);
 
@@ -83,12 +72,18 @@ public class DocumentView extends JPanel implements ISubscriber {
         Notification n = (Notification) notification;
         JPanel curr = WorkspaceView.getCurrentlyOpened();
 
+        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+            if(curr != this)
+                display();
+        }
+
         if(n.getType() == NotificationType.ADD_ACTION){
             if(pages == null)
                 pages = new ArrayList<PageView>();
-           PageView newPage = new PageView((Page) n.getNotificationObject(),this);
-           pages.add(newPage);
-           setCurrentPage(newPage);
+
+            PageView newPage = new PageView((Page) n.getNotificationObject(),this);
+            pages.add(newPage);
+            setCurrentPage(newPage);
             if(curr == this)
                 display(); //setting most resent added page to the
         }
@@ -99,10 +94,10 @@ public class DocumentView extends JPanel implements ISubscriber {
                 parentView.display();
         }
         else if(n.getType() == NotificationType.RENAME_ACTION){
+            name.setText("     " + model.getName());
             if( curr == parentView)
                 parentView.display();
             else if( curr == this ){
-                name.setText("     " + model.getName());
                 display();
             }
 
@@ -110,7 +105,7 @@ public class DocumentView extends JPanel implements ISubscriber {
     }
 
     public void display(){
-        parentView.getParentView().display(this);
+            parentView.getParentView().display(this);
     }
 
     public Document getModel() {
@@ -122,11 +117,9 @@ public class DocumentView extends JPanel implements ISubscriber {
     }
 
     public int getIndexOfPage(PageView page){
-        for(int i = 0; i < pages.size(); i++){
-            if(pages.get(i) == page )
-                return i;
-        }
-        return -1;
+        if(pages == null || pages.size() == 0)
+            return -1;
+        return pages.indexOf(page);
     }
 
     public FileView getParentView() {
@@ -139,12 +132,42 @@ public class DocumentView extends JPanel implements ISubscriber {
 
     public void setCurrentPage(PageView currentPage) {
         center.removeAll();
+        right.removeAll();
+        left.removeAll();
         if(currentPage == null){
             updateUI();
             return;
         }
         this.currentPage = currentPage;
         center.add(currentPage,BorderLayout.CENTER);
+
+        previousPage = new Button(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (currentPage != null) {
+                    if (getIndexOfPage(currentPage) > 0) {
+                        setCurrentPage(pages.get(getIndexOfPage(currentPage) - 1));
+                    }
+                }
+            }
+        };
+        previousPage.setIcon(loadIcon("images/prev.png"));
+        left.add(previousPage,BorderLayout.CENTER);
+
+        nextPage = new Button(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(currentPage != null){
+                    if(getIndexOfPage(currentPage) != pages.size() - 1){
+                        setCurrentPage(pages.get(getIndexOfPage(currentPage) + 1));
+                    }
+                }
+            }
+        };
+        nextPage.setIcon(loadIcon("images/next.png"));
+        right.add(nextPage, BorderLayout.CENTER);
         TreeItem item =  MainFrame.getInstance().getITree().findItemByModel(currentPage.getModel());
         MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
 

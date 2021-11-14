@@ -1,6 +1,7 @@
 package app.view.tree.view;
 
 import app.view.tree.controller.CellEditor;
+import app.view.tree.controller.DoubleClickListener;
 import app.view.tree.controller.SelectionListener;
 import app.view.tree.model.TreeItem;
 
@@ -29,7 +30,7 @@ public class TreeView extends JTree implements MouseListener {
      setCellEditor(new CellEditor(this,r));
      setEditable(true);
      addMouseListener(this);
-
+     addMouseListener(new DoubleClickListener());
     }
 
  @Override

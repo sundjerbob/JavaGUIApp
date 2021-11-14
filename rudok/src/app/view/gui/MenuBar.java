@@ -14,9 +14,13 @@ public class MenuBar extends JMenuBar {
         //making menu fields
         JMenu file = new JMenu("File");
         JMenu help = new JMenu("Help");
+        JMenu editDocument = new JMenu("Edit document.");
+
         file.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         help.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editDocument.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(file);
+        add(editDocument);
         add(help);
 
         //setting color of menu bar component
@@ -30,6 +34,14 @@ public class MenuBar extends JMenuBar {
         item.setBackground(new Color(0x528B8B));
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+
+        item = editDocument.add(MainFrame.getInstance().getActionManager().getSetAuthorAction());
+        item.setBackground(new Color(0x528B8B));
+        item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        item = editDocument.add(MainFrame.getInstance().getActionManager().getEditDocumentAction());
+        item.setBackground(new Color(0x528B8B));
+        item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
         item = help.add(MainFrame.getInstance().getActionManager().getInfoAction());

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class FileView extends JPanel implements ISubscriber  {
 
-    private static final int colNum = 5;
+    private static final int colNum = 4;
     private File model;
 
     private WorkspaceView parentView;
@@ -36,7 +36,11 @@ public class FileView extends JPanel implements ISubscriber  {
         Notification n = (Notification) notification;
         JPanel curr = WorkspaceView.getCurrentlyOpened();
 
-        if(n.getType() == NotificationType.ADD_ACTION){
+        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+            display();
+        }
+
+        else if(n.getType() == NotificationType.ADD_ACTION){
             if(documents == null)
                 documents = new ArrayList<DocumentView>();
             documents.add(new DocumentView((Document) n.getNotificationObject(),this));

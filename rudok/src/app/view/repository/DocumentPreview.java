@@ -9,24 +9,26 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 
 public class DocumentPreview extends JPanel implements MouseListener {
-    private DocumentView myView;
-    private JButton shortcut;
 
+    private DocumentView myView;
+    private JLabel shortcut = new JLabel(getLabelIcon("images/presentationShortcut.png"),SwingConstants.CENTER);
     public DocumentPreview(DocumentView document){
+
         super(new BorderLayout());
 
         myView = document;
-        shortcut = new JButton();
         setBackground(Color.cyan.darker());
         setBorder(new EmptyBorder(30,30,30,30));
-        JPanel p = new JPanel();
+        JPanel p = new JPanel(new BorderLayout());
         p.setBackground(Color.white);
         add(p,BorderLayout.CENTER);
         addMouseListener(this);
         add(new JLabel(myView.getModel().getName(),SwingConstants.CENTER),BorderLayout.SOUTH);
-
+        p.add(shortcut,BorderLayout.CENTER);
+        p.setOpaque(false);
     }
 
     @Override
@@ -57,5 +59,14 @@ public class DocumentPreview extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         setBackground(Color.CYAN.darker());
+    }
+
+    private ImageIcon getLabelIcon(String path){
+        URL url = getClass().getResource(path);
+        if(url == null) {
+            System.out.println("problem");
+            return null;
+        }
+        return new ImageIcon(url);
     }
 }

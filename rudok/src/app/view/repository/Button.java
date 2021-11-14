@@ -22,7 +22,7 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        setBackground(Color.red);
+        setBackground(Color.lightGray);
     }
 
     @Override

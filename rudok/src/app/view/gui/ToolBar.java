@@ -42,8 +42,15 @@ public class ToolBar extends JToolBar {
         //b.setRolloverEnabled(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        b = add(MainFrame.getInstance().getActionManager().getEditDocumentAction());
+        b.setFocusPainted(false);
+        b.setBackground(c);
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-
+        b = add(MainFrame.getInstance().getActionManager().getSetAuthorAction());
+        b.setFocusPainted(false);
+        b.setBackground(c);
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
         //Info button visual

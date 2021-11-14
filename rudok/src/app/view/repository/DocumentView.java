@@ -5,6 +5,7 @@ import app.model.repository.Page;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
+import app.view.gui.Button;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -22,12 +23,12 @@ public class DocumentView extends JPanel implements ISubscriber {
     private FileView parentView;
     private ArrayList<PageView> pages;
     private PageView currentPage;
-    private JLabel name;
+    private JLabel author;
     private JPanel center;
     private JPanel left;
     private JPanel right;
-    Button previousPage;
-    Button nextPage;
+    app.view.gui.Button previousPage;
+    app.view.gui.Button nextPage;
 
     public DocumentView(Document model,FileView parentView){
         super(new BorderLayout());
@@ -36,11 +37,11 @@ public class DocumentView extends JPanel implements ISubscriber {
         model.addSubscriber(this);
 
         setBackground(Color.cyan.darker());
-        name = new JLabel( "     " + model.getName());
-        name.setPreferredSize(new Dimension(0,40));
-        name.setHorizontalAlignment(SwingConstants.LEFT);
-        name.setVerticalAlignment(SwingConstants.CENTER);
-        add(name,BorderLayout.NORTH);
+        author = new JLabel();
+        author.setPreferredSize(new Dimension(0,40));
+        author.setHorizontalAlignment(SwingConstants.LEFT);
+        author.setVerticalAlignment(SwingConstants.CENTER);
+        add(author,BorderLayout.NORTH);
 
         JPanel bottom = new JPanel();
         bottom.setPreferredSize(new Dimension(0,14 ));
@@ -77,29 +78,34 @@ public class DocumentView extends JPanel implements ISubscriber {
                 display();
         }
 
-        if(n.getType() == NotificationType.ADD_ACTION){
+        else if(n.getType() == NotificationType.ADD_ACTION){
             if(pages == null)
                 pages = new ArrayList<PageView>();
-
             PageView newPage = new PageView((Page) n.getNotificationObject(),this);
             pages.add(newPage);
             setCurrentPage(newPage);
             if(curr == this)
                 display(); //setting most resent added page to the
         }
+
         else if(n.getType() == NotificationType.REMOVE_ACTION){
             parentView.removeDocument(this);
             if( curr == this ||
                     WorkspaceView.getCurrentlyOpened() == parentView)
                 parentView.display();
         }
+
         else if(n.getType() == NotificationType.RENAME_ACTION){
-            name.setText("     " + model.getName());
             if( curr == parentView)
                 parentView.display();
-            else if( curr == this ){
+            else if( curr == this )
                 display();
-            }
+        }
+
+        else if(n.getType() == NotificationType.AUTHOR_SET){
+            author.setText("Author : " + model.getAuthor());
+            if(WorkspaceView.getCurrentlyOpened() == this)
+                updateUI();
 
         }
     }
@@ -141,7 +147,7 @@ public class DocumentView extends JPanel implements ISubscriber {
         this.currentPage = currentPage;
         center.add(currentPage,BorderLayout.CENTER);
 
-        previousPage = new Button(){
+        previousPage = new app.view.gui.Button(){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);

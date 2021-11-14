@@ -28,25 +28,29 @@ public class SelectionListener implements TreeSelectionListener {
             manager.getNewAction().setEnabled(true);
             manager.getRenameAction().setEnabled(false);
             manager.getEditDocumentAction().setEnabled(false);
-
+            manager.getSetAuthorAction().setEnabled(false);
         }
         else if(item.getModel() instanceof File) {
             manager.getDeleteAction().setEnabled(true);
             manager.getNewAction().setEnabled(true);
             manager.getRenameAction().setEnabled(true);
             manager.getEditDocumentAction().setEnabled(false);
+            manager.getSetAuthorAction().setEnabled(false);
         }
         else if(item.getModel() instanceof Document) {
             manager.getDeleteAction().setEnabled(true);
             manager.getNewAction().setEnabled(true);
             manager.getRenameAction().setEnabled(true);
             manager.getEditDocumentAction().setEnabled(true);
+            manager.getSetAuthorAction().setEnabled(true);
+
         }
         else if(item.getModel() instanceof Page){
             manager.getNewAction().setEnabled(false);
             manager.getDeleteAction().setEnabled(true);
             manager.getRenameAction().setEnabled(false);
             manager.getEditDocumentAction().setEnabled(false);
+            manager.getSetAuthorAction().setEnabled(false);
         }
 
 

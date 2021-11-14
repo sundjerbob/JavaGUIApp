@@ -14,7 +14,7 @@ public class MenuBar extends JMenuBar {
         //making menu fields
         JMenu file = new JMenu("File");
         JMenu help = new JMenu("Help");
-        JMenu editDocument = new JMenu("Edit document.");
+        JMenu editDocument = new JMenu("Edit");
 
         file.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         help.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

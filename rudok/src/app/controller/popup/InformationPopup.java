@@ -76,7 +76,7 @@ public class InformationPopup extends JDialog {
         if(imageURL != null)
             return new ImageIcon(imageURL).getImage();
 
-        System.out.println("file not found");
+        System.out.println("class: InformationPopup getImage failed.");
         return null;
     }
 

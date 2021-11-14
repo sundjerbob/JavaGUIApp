@@ -12,8 +12,8 @@ public class SetAuthorAction extends MyAbstractAction{
 
         putValue(SMALL_ICON, loadIcon("images/authorSmall.png"));
         putValue(LARGE_ICON_KEY, loadIcon("images/authorLarge.png"));
-        putValue(NAME,"Rename");
-        putValue(SHORT_DESCRIPTION,"Rename");
+        putValue(NAME,"Set author");
+        putValue(SHORT_DESCRIPTION,"Set author.");
     }
 
     @Override

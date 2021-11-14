@@ -2,6 +2,7 @@ package app.view.repository;
 
 
 
+import app.view.gui.Button;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -15,10 +16,10 @@ import java.net.URL;
 
 public class Label extends JPanel   {
 
-    Button currFile;
-    Button currDocument;
-    Button backToWorkspace;
-    Button currPage;
+    app.view.gui.Button currFile;
+    app.view.gui.Button currDocument;
+    app.view.gui.Button backToWorkspace;
+    app.view.gui.Button currPage;
     JPanel panel;
 
 
@@ -31,7 +32,7 @@ public class Label extends JPanel   {
         setBackground(new Color(0xC6F9F4));
 
 
-        backToWorkspace = new Button(){
+        backToWorkspace = new app.view.gui.Button(){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -41,7 +42,7 @@ public class Label extends JPanel   {
         backToWorkspace.setIcon(loadIcon("images/backToWorkspace.png"));
         backToWorkspace.setToolTipText("Go back to this workspace");
 
-        currFile = new Button();
+        currFile = new app.view.gui.Button();
         currFile.setHorizontalAlignment(SwingConstants.CENTER);
         currFile.setIcon(loadIcon("images/open-folder.png"));
         currFile.setOpaque(true);
@@ -49,7 +50,7 @@ public class Label extends JPanel   {
 
 
 
-        currDocument = new Button();
+        currDocument = new app.view.gui.Button();
         currDocument.setHorizontalAlignment(SwingConstants.CENTER);
         currDocument.setToolTipText("Currently opened presentation");
         currDocument.setIcon(loadIcon("images/presentation.png"));
@@ -58,7 +59,7 @@ public class Label extends JPanel   {
 
 
 
-        currPage = new Button();
+        currPage = new app.view.gui.Button();
         currPage.setHorizontalAlignment(SwingConstants.CENTER);
         currPage.setOpaque(true);
 
@@ -84,7 +85,7 @@ public class Label extends JPanel   {
            panel.add(Box.createHorizontalStrut(25));
 
 
-           currFile = new Button(){
+           currFile = new app.view.gui.Button(){
                @Override
                public void mouseClicked(MouseEvent e) {
                    super.mouseClicked(e);

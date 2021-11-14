@@ -21,7 +21,7 @@ public class PageView extends JPanel implements ISubscriber {
         model.addSubscriber(this);
         parentView = parent;
 
-        setBackground(new Color(0xFFB8BCB8, true));
+        setBackground(Color.white);
         label = new JLabel(model.getName(),SwingConstants.CENTER);
 
         add(label,BorderLayout.SOUTH);

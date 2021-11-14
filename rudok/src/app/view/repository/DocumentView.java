@@ -108,15 +108,18 @@ public class DocumentView extends JPanel implements ISubscriber {
                 updateUI();
 
         }
+        else if(n.getType() == NotificationType.THEME_SET){
+            for(PageView pageView : pages){
+                pageView.setBackgroundTheme();
+            }
+        }
     }
 
     public void display(){
             parentView.getParentView().display(this);
     }
 
-    public Document getModel() {
-        return model;
-    }
+
 
     public ArrayList<PageView> getPages(){
         return pages;
@@ -126,6 +129,10 @@ public class DocumentView extends JPanel implements ISubscriber {
         if(pages == null || pages.size() == 0)
             return -1;
         return pages.indexOf(page);
+    }
+
+    public Document getModel() {
+        return model;
     }
 
     public FileView getParentView() {
@@ -145,6 +152,8 @@ public class DocumentView extends JPanel implements ISubscriber {
             return;
         }
         this.currentPage = currentPage;
+
+
         center.add(currentPage,BorderLayout.CENTER);
 
         previousPage = new app.view.gui.Button(){
@@ -174,6 +183,7 @@ public class DocumentView extends JPanel implements ISubscriber {
         };
         nextPage.setIcon(loadIcon("images/next.png"));
         right.add(nextPage, BorderLayout.CENTER);
+
         TreeItem item =  MainFrame.getInstance().getITree().findItemByModel(currentPage.getModel());
         MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
 

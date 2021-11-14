@@ -20,8 +20,9 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
 
     public SetAuthorPopup(){
         super(MainFrame.getInstance());
+        setTitle("Set document author window");
         setModal(true);
-        Image icon = getImage("../images/authorLarge.png");
+        Image icon = getImage("../actions/images/authorLarge.png");
         setIconImage(icon);
         setSize(600,400);
         setLocationRelativeTo(null);

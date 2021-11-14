@@ -1,6 +1,7 @@
 package app.view.repository;
 
 import app.model.node.NodeModel;
+import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
 import app.observer.Notification;
@@ -14,17 +15,32 @@ public class PageView extends JPanel implements ISubscriber {
     private Page model;
     private JLabel label;
     private DocumentView parentView;
+    private Image image;
+    private JPanel bgPanel;
 
-    public PageView(Page model,DocumentView parent){
+    public PageView(Page model,DocumentView parent) {
         super(new BorderLayout());
         this.model = model;
         model.addSubscriber(this);
         parentView = parent;
 
-        setBackground(Color.white);
-        label = new JLabel(model.getName(),SwingConstants.CENTER);
 
-        add(label,BorderLayout.SOUTH);
+        setBackground(Color.white);
+        label = new JLabel(model.getName(), SwingConstants.CENTER);
+
+        add(label, BorderLayout.SOUTH);
+
+        bgPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (image != null)
+                    g.drawImage(image, 0, 0, null);
+            }
+        };
+        setBackgroundTheme();
+        bgPanel.add(label, BorderLayout.SOUTH);
+        add(bgPanel, BorderLayout.CENTER);
 
     }
 
@@ -39,12 +55,7 @@ public class PageView extends JPanel implements ISubscriber {
             parentView.display();
         }
 
-        else if(n.getType() == NotificationType.RENAME_ACTION){
-            label.setText(model.getName());
-            if(parentView.getCurrentPage() == this){
-                parentView.display();
-            }
-        }
+
         else if(n.getType() == NotificationType.REMOVE_ACTION){
             int i = parentView.getIndexOfPage(this);
             if(parentView.getCurrentPage() == this ){
@@ -66,6 +77,16 @@ public class PageView extends JPanel implements ISubscriber {
 
     }
 
+    public void setBackgroundTheme(){
+        image = ((Document) getModel().getParent()).getTheme();
+        if (image == null) {
+            bgPanel.setOpaque(true);
+        } else
+            bgPanel.setOpaque(false);
+
+        bgPanel.updateUI();
+
+    }
 
     public NodeModel getModel() {
         return model;

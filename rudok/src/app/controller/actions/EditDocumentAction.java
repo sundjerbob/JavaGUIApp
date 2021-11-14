@@ -1,6 +1,7 @@
 package app.controller.actions;
 
 import app.controller.popup.SetAuthorPopup;
+import app.controller.popup.SetThemePopup;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +23,7 @@ public class EditDocumentAction extends MyAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SetAuthorPopup popup = new SetAuthorPopup();
+        SetThemePopup popup = new SetThemePopup();
 
     }
 }

@@ -36,16 +36,17 @@ public class Document extends NodeComposit {
 
         String fileName;
         switch (theme){
-            case 1 : fileName = "../../controller/popup/spring.jpg"; break;
-            case 2 : fileName = "../../controller/popup/summer.png"; break;
-            case 3 : fileName = "../../controller/popup/fall.jpg"; break;
-            case 4 : fileName = "../../controller/popup/winter.png"; break;
+            case 1 : fileName = "../../controller/popup/images/spring.jpg"; break;
+            case 2 : fileName = "../../controller/popup/images/summer.png"; break;
+            case 3 : fileName = "../../controller/popup/images/fall.jpg"; break;
+            case 4 : fileName = "../../controller/popup/images/winter.png"; break;
             default: fileName = null;
         }
 
         if(fileName == null){
             this.theme = null;
             notifySubscribers(new Notification(this,NotificationType.THEME_SET));
+            return;
         }
 
         URL imageURL = getClass().getResource(fileName);

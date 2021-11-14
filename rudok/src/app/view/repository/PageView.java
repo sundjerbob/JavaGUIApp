@@ -27,7 +27,7 @@ public class PageView extends JPanel implements ISubscriber {
 
         setBackground(Color.white);
         label = new JLabel(model.getName(), SwingConstants.CENTER);
-
+        label.setOpaque(true);
         add(label, BorderLayout.SOUTH);
 
         bgPanel = new JPanel(new BorderLayout()) {

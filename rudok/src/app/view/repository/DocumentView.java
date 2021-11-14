@@ -109,6 +109,8 @@ public class DocumentView extends JPanel implements ISubscriber {
 
         }
         else if(n.getType() == NotificationType.THEME_SET){
+            if(pages == null)
+               return;
             for(PageView pageView : pages){
                 pageView.setBackgroundTheme();
             }

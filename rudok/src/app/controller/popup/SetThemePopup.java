@@ -16,6 +16,7 @@ public class SetThemePopup extends JDialog {
     public SetThemePopup(){
         super(MainFrame.getInstance());
         setTitle("Set document theme window");
+        setLocationRelativeTo(MainFrame.getInstance());
         setSize(500,250);
         setModal(true);
 

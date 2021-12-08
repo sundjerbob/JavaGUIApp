@@ -19,7 +19,6 @@ public  class AbstractFactory {
         switch (type) {
             case EMPTY_NAME -> {
                 return new NameAlrExists();
-
             }
         }
         return null;

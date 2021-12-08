@@ -5,7 +5,8 @@ public enum NotificationType {
     ADD_ACTION,
     REMOVE_ACTION,
     RENAME_ACTION,
-    DOUBLE_CLICKED,
+    DOUBLE_CLICK,
     AUTHOR_SET,
-    THEME_SET;
+    THEME_SET,
+    SELECTION_EVENT;
 }

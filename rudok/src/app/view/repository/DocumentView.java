@@ -16,7 +16,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
-
 public class DocumentView extends JPanel implements ISubscriber {
 
     private Document model;
@@ -27,8 +26,8 @@ public class DocumentView extends JPanel implements ISubscriber {
     private JPanel center;
     private JPanel left;
     private JPanel right;
-    app.view.gui.Button previousPage;
-    app.view.gui.Button nextPage;
+    Button previousPage;
+    Button nextPage;
 
     public DocumentView(Document model,FileView parentView){
         super(new BorderLayout());
@@ -50,12 +49,10 @@ public class DocumentView extends JPanel implements ISubscriber {
 
         left = new JPanel(new BorderLayout());
         left.setBackground(new Color(0xC6F9F4));
-
         left.setBorder(new EmptyBorder(100, 10, 100, 10));
 
 
         right = new JPanel(new BorderLayout());
-
         right.setBorder(new EmptyBorder(100, 10, 100, 10));
         right.setBackground(new Color(0xC6F9F4));
 
@@ -68,12 +65,12 @@ public class DocumentView extends JPanel implements ISubscriber {
 
 
     @Override
-    public void update(Object notification) {
+    public void update(Notification notification) {
 
-        Notification n = (Notification) notification;
+        Notification n = notification;
         JPanel curr = WorkspaceView.getCurrentlyOpened();
 
-        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+        if(n.getType() == NotificationType.DOUBLE_CLICK){
             if(curr != this)
                 display();
         }
@@ -81,7 +78,8 @@ public class DocumentView extends JPanel implements ISubscriber {
         else if(n.getType() == NotificationType.ADD_ACTION){
             if(pages == null)
                 pages = new ArrayList<PageView>();
-            PageView newPage = new PageView((Page) n.getNotificationObject(),this);
+            PageView newPage = new PageView((Page) n.getNotificationObject(),
+                    this);
             pages.add(newPage);
             setCurrentPage(newPage);
             if(curr == this)
@@ -118,31 +116,13 @@ public class DocumentView extends JPanel implements ISubscriber {
     }
 
     public void display(){
-            parentView.getParentView().display(this);
-    }
-
-
-
-    public ArrayList<PageView> getPages(){
-        return pages;
+        parentView.getParentView().display(this);
     }
 
     public int getIndexOfPage(PageView page){
         if(pages == null || pages.size() == 0)
             return -1;
         return pages.indexOf(page);
-    }
-
-    public Document getModel() {
-        return model;
-    }
-
-    public FileView getParentView() {
-        return parentView;
-    }
-
-    public PageView getCurrentPage() {
-        return currentPage;
     }
 
     public void setCurrentPage(PageView currentPage) {
@@ -155,10 +135,9 @@ public class DocumentView extends JPanel implements ISubscriber {
         }
         this.currentPage = currentPage;
 
-
         center.add(currentPage,BorderLayout.CENTER);
 
-        previousPage = new app.view.gui.Button(){
+        previousPage = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -172,12 +151,12 @@ public class DocumentView extends JPanel implements ISubscriber {
         previousPage.setIcon(loadIcon("images/prev.png"));
         left.add(previousPage,BorderLayout.CENTER);
 
-        nextPage = new Button(){
+        nextPage = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if(currentPage != null){
-                    if(getIndexOfPage(currentPage) != pages.size() - 1){
+                    if(getIndexOfPage(currentPage) < pages.size() - 1){
                         setCurrentPage(pages.get(getIndexOfPage(currentPage) + 1));
                     }
                 }
@@ -188,7 +167,6 @@ public class DocumentView extends JPanel implements ISubscriber {
 
         TreeItem item =  MainFrame.getInstance().getITree().findItemByModel(currentPage.getModel());
         MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
-
 
         updateUI();
     }
@@ -207,5 +185,21 @@ public class DocumentView extends JPanel implements ISubscriber {
         else
             System.out.println("DocumentView - load icon failed");
         return icon;
+    }
+
+    public Document getModel() {
+        return model;
+    }
+
+    public FileView getParentView() {
+        return parentView;
+    }
+
+    public PageView getCurrentPage() {
+        return currentPage;
+    }
+
+    public ArrayList<PageView> getPages(){
+        return pages;
     }
 }

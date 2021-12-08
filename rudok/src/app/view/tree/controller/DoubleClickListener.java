@@ -8,7 +8,6 @@ import app.view.tree.model.TreeItem;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class DoubleClickListener extends MouseAdapter {
 
@@ -23,7 +22,7 @@ public class DoubleClickListener extends MouseAdapter {
         if(itemRow != -1 && e.getClickCount() == 2){
             TreeItem item = (TreeItem) myTree.getLastSelectedPathComponent();
             item.getModel().notifySubscribers(new Notification(item.getModel(),
-                    NotificationType.DOUBLE_CLICKED));
+                    NotificationType.DOUBLE_CLICK));
         }
     }
 }

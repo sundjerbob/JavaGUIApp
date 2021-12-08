@@ -3,7 +3,7 @@ package app.observer;
 public interface IPublisher {
 
     void addSubscriber(ISubscriber subscriber);
-    void removeSubscriber(ISubscriber subscribers);
-    void notifySubscribers(Object notification);
+    void removeSubscriber(ISubscriber subscriber);
+    void notifySubscribers(Notification notification);
 
 }

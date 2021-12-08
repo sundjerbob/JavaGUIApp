@@ -24,8 +24,9 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
         setModal(true);
         Image icon = getImage("../actions/images/authorLarge.png");
         setIconImage(icon);
-        setSize(600,400);
         setLocationRelativeTo(null);
+        setSize(600,400);
+
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);

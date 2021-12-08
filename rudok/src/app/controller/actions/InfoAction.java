@@ -1,6 +1,7 @@
 package app.controller.actions;
 
 import app.controller.popup.InformationPopup;
+import app.observer.Notification;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,5 +22,10 @@ public class InfoAction extends MyAbstractAction {
     public void actionPerformed(ActionEvent e) {
 
         InformationPopup dialog = new InformationPopup();
+    }
+
+    @Override
+    public void update(Notification notification) {
+
     }
 }

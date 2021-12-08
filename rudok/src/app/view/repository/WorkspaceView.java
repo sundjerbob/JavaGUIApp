@@ -5,6 +5,7 @@ import app.model.repository.Workspace;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
+import app.view.gui.Label;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,12 +23,11 @@ public class WorkspaceView extends JPanel implements ISubscriber {
     private  JPanel currView  ;
     private ArrayList<FileView> files;
     private JPanel fileExplorer;
-    private Label label;
+    private app.view.gui.Label label;
 
 
 
     public WorkspaceView(Workspace root){
-
         super(new BorderLayout());
 
         model = root;
@@ -49,8 +49,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
     }
     public void display(JPanel setView){        //this method is used by FileView and DocumentView to display them
-                                                //on workspace
-        currView.removeAll();
+        currView.removeAll();                   //on workspace
 
         JScrollPane scrollPane = new JScrollPane(setView);
         scrollPane.setHorizontalScrollBar(null);
@@ -59,19 +58,19 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         setCurrentlyOpened(setView);
         label.setCurrPath();            //refreshing the upper label every time the displaying content is
                                             //changed
-
         updateUI();
     }
 
 
     @Override
-    public void update(Object notification) {
-        Notification n = (Notification) notification;
-        if(n.getNotificationObject() instanceof File && n.getType() == NotificationType.ADD_ACTION){
+    public void update(Notification notification) {
+
+        if(notification.getNotificationObject() instanceof File &&
+                notification.getType() == NotificationType.ADD_ACTION){
             if(files == null){
                 files = new ArrayList<FileView>();
             }
-            files.add(new FileView((File) n.getNotificationObject(),this));
+            files.add(new FileView((File) notification.getNotificationObject(),this));
             if(currentlyOpened == fileExplorer)
                 setFileExplorer();
         }
@@ -88,30 +87,30 @@ public class WorkspaceView extends JPanel implements ISubscriber {
             }
 
         //calculating how many rows we need to display previews for all files
-            int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
+        int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
 
-            int filePreviewWith = (getWidth() - 40) / colNum, filePreviewHeight = (int) (filePreviewWith * 1.3); // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
-            int x = currView.getLocation().x + 20, y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
+        int filePreviewWith = (getWidth() - 40) / colNum, filePreviewHeight = (int) (filePreviewWith * 1.3); // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
+        int x = currView.getLocation().x + 20, y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
 
-            fileExplorer.setPreferredSize(new Dimension(getWidth() - 40, rowNum * filePreviewHeight));
+        fileExplorer.setPreferredSize(new Dimension(getWidth() - 40, rowNum * filePreviewHeight));
 
-            FilePreview curr;
-            int index ;
+        FilePreview curr;
+        int index ;
 
 
-            for (int i = 0; i < rowNum; i++) {
-                for (int j = 0; j < colNum; j++) {
-                    index = i * colNum + j;
-                    if (index == files.size())
-                        break;
+        for (int i = 0; i < rowNum; i++) {
+            for (int j = 0; j < colNum; j++) {
+                index = i * colNum + j;
+                if (index == files.size())
+                    break;
 
-                    curr = new FilePreview(files.get(index));
-                    curr.setBounds(x + filePreviewWith * j, y + filePreviewHeight * i, filePreviewWith, filePreviewHeight);
-                    fileExplorer.add(curr);
-                }
+                curr = new FilePreview(files.get(index));
+                curr.setBounds(x + filePreviewWith * j, y + filePreviewHeight * i, filePreviewWith, filePreviewHeight);
+                fileExplorer.add(curr);
             }
-            display(fileExplorer);
         }
+        display(fileExplorer);
+    }
 
 
     public void removeFile(FileView me){
@@ -132,9 +131,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
     private static void setCurrentlyOpened(JPanel currentlyOpened) {
         WorkspaceView.currentlyOpened = currentlyOpened;
-
     }
-
 
 }
 

@@ -2,5 +2,5 @@ package app.observer;
 
 public interface ISubscriber {
 
-    void update(Object notification);
+    void update(Notification notification);
 }

@@ -18,23 +18,8 @@ public abstract class NodeModel implements IPublisher {
         this.parent = parent;
     }
 
-    @Override
-    public String toString(){
-        return name;
-    }
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof NodeModel)
-            return ((NodeModel)o).getName().equals(this.name);
-        return false;
-    }
 
-    public String getName(){
-        return name;
-    }
-    public NodeComposit getParent(){
-        return parent;
-    }
+
         //////////////////
 
 
@@ -45,9 +30,6 @@ public abstract class NodeModel implements IPublisher {
 
 
         //////////////////
-    public void setParent(NodeComposit parent) {
-        this.parent = parent;
-    }
 
     @Override
     public void addSubscriber(ISubscriber subscriber) {
@@ -70,7 +52,7 @@ public abstract class NodeModel implements IPublisher {
     }
 
     @Override
-    public void notifySubscribers(Object notification) {
+    public void notifySubscribers(Notification notification) {
         if(notification == null || subscribers == null || subscribers.isEmpty())
             return;
 
@@ -78,4 +60,31 @@ public abstract class NodeModel implements IPublisher {
             curr.update(notification);
         }
     }
+
+    @Override
+    public String toString(){
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof NodeModel)
+            return ((NodeModel)o).getName().equals(this.name);
+        return false;
+    }
+
+    public void setParent(NodeComposit parent) {
+        this.parent = parent;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public NodeComposit getParent(){
+        return parent;
+    }
+
+
+
 }

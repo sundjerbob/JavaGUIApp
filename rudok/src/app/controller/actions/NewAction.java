@@ -6,6 +6,7 @@ import app.model.repository.Document;
 import app.model.repository.File;
 import app.model.repository.Page;
 import app.model.repository.Workspace;
+import app.observer.Notification;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -22,6 +23,7 @@ public class NewAction extends MyAbstractAction {
         putValue(LARGE_ICON_KEY, loadIcon("images/new.png"));
         putValue(NAME,"New");
         putValue(SHORT_DESCRIPTION,"New");
+        MainFrame.getInstance().getITree().getTreeView().getSelectionListener().addSubscriber(this);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -61,5 +63,13 @@ public class NewAction extends MyAbstractAction {
             ++num;
         }
         return name + " " + num;
+    }
+
+    @Override
+    public void update(Notification notification) {
+        if(notification.getNotificationObject() instanceof Page)
+            setEnabled(false);
+        else
+            setEnabled(true);
     }
 }

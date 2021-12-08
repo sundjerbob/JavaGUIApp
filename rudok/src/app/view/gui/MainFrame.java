@@ -6,6 +6,8 @@ import app.model.repository.Workspace;
 import app.view.repository.WorkspaceView;
 import app.view.tree.ITree;
 import app.view.tree.controller.TreeImplementation;
+import app.view.tree.view.TreeView;
+import com.sun.source.tree.Tree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,10 +18,10 @@ public class MainFrame extends JFrame {
 
     private static MainFrame instance = null;
     private Color color = Color.cyan;
-    private ToolBar toolBar;
-    private ActionManager actionManager;
-    private JMenuBar menuBar;
     private ITree iTree;
+    private ActionManager actionManager;
+    private ToolBar toolBar;
+    private JMenuBar menuBar;
 
 
     private MainFrame(){}
@@ -32,10 +34,9 @@ public class MainFrame extends JFrame {
 
     //initialising mainFrame
     public void init(){
-
-
         //Instancing objects for the components of the main window
-
+        iTree = new TreeImplementation();
+        TreeView treeView = (TreeView) iTree.generateTreeView(new Workspace("workspace"));//new JTree
         actionManager = new ActionManager();
         toolBar = new ToolBar();
         menuBar = new MenuBar(color);
@@ -65,15 +66,7 @@ public class MainFrame extends JFrame {
         label.setBackground(new Color(0xC6F9F4));
         label.setOpaque(true);
 
-
-
-
-
-
-        iTree = new TreeImplementation();
-        JScrollPane scroll = new JScrollPane(iTree.generateTreeView(new Workspace("workspace")));
-
-        scroll.getViewport().setBackground(Color.black);
+        JScrollPane scroll = new JScrollPane(treeView);
 
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         left.add(scroll,BorderLayout.CENTER);

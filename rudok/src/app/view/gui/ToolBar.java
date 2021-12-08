@@ -10,61 +10,14 @@ public class ToolBar extends JToolBar {
     public ToolBar(){
 
         setBackground(Color.cyan.darker());
-        //setBackground(new Color(0x528B8B));
-        Color c = Color.CYAN;
-        //variable for setting toolbar buttons (putting New action)
-        JButton b = add(MainFrame.getInstance().getActionManager().getNewAction());
 
+        add(new Button(MainFrame.getInstance().getActionManager().getNewAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getDeleteAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getRenameAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getEditDocumentAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getSetAuthorAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getInfoAction()));
 
-        //New button visual
-        //b.setBorder(null);
-        b.setFocusPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        b.setBackground(c);
-     // b.setRolloverEnabled(false);
-
-        //separation between buttons and color of the toolbar component
-        //addSeparator();
-
-        //Delete button visual
-        b = add(MainFrame.getInstance().getActionManager().getDeleteAction());
-        b.setFocusPainted(false);
-        b.setBackground(c);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-       // addSeparator();
-
-
-        b = add(MainFrame.getInstance().getActionManager().getRenameAction());
-        //b.setBorder(null);
-        b.setFocusPainted(false);
-        b.setBackground(c);
-        //b.setRolloverEnabled(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        b = add(MainFrame.getInstance().getActionManager().getEditDocumentAction());
-        b.setFocusPainted(false);
-        b.setBackground(c);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        b = add(MainFrame.getInstance().getActionManager().getSetAuthorAction());
-        b.setFocusPainted(false);
-        b.setBackground(c);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-
-        //Info button visual
-        b = add(MainFrame.getInstance().getActionManager().getInfoAction());
-        //b.setBorder(null);
-        b.setFocusPainted(false);
-        b.setBackground(c);
-      //b.setRolloverEnabled(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-
-
-
-        setVisible(true);
 
     }
 

@@ -1,6 +1,8 @@
 package app.controller.actions;
 
 import app.model.repository.File;
+import app.model.repository.Workspace;
+import app.observer.Notification;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -16,6 +18,8 @@ public class DeleteAction extends MyAbstractAction{
         putValue(LARGE_ICON_KEY, loadIcon("images/delete.png"));
         putValue(NAME,"Delete");
         putValue(SHORT_DESCRIPTION,"Delete selected component");
+        setEnabled(false);
+        MainFrame.getInstance().getITree().getTreeView().getSelectionListener().addSubscriber(this);
     }
 
     @Override
@@ -30,5 +34,13 @@ public class DeleteAction extends MyAbstractAction{
             frame.getITree().setRootSelected();
 
 
+    }
+
+    @Override
+    public void update(Notification notification) {
+        if(notification.getNotificationObject() instanceof Workspace)
+            setEnabled(false);
+        else
+            setEnabled(true);
     }
 }

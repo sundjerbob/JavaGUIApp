@@ -31,12 +31,12 @@ public class FileView extends JPanel implements ISubscriber  {
 
 
     @Override
-    public void update(Object notification) {
+    public void update(Notification notification) {
 
-        Notification n = (Notification) notification;
+        Notification n = notification;
         JPanel curr = WorkspaceView.getCurrentlyOpened();
 
-        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+        if(n.getType() == NotificationType.DOUBLE_CLICK){
             display();
         }
 

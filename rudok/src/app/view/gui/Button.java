@@ -7,34 +7,68 @@ import java.awt.event.MouseListener;
 
 public class Button extends JButton implements MouseListener {
 
-    public Button(){
-        setBackground(Color.CYAN.darker());
-        setRolloverEnabled(false);
-        setFocusPainted(false);
-        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        addMouseListener(this);
+    public Button(Action action){
+
+            super(action);
+
+            if(action != null)
+                setHideActionText(true);
+
+            setBackground(Color.CYAN.darker());
+            setRolloverEnabled(false);
+            setFocusPainted(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            addMouseListener(this);
+
+
     }
 
     @Override
-    public void mouseClicked(MouseEvent e){}
+    public void mouseClicked(MouseEvent e){
+
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        setBackground(Color.lightGray);
+        if(getAction() != null){
+            if(getAction().isEnabled())
+                setBackground(Color.lightGray);
+        }
+        else
+            setBackground(Color.lightGray);
+
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        setBackground(Color.cyan);
+        if(getAction() != null) {
+            if (getAction().isEnabled())
+                setBackground(Color.cyan);
+            else
+                setBackground(Color.cyan.darker());
+        }
+        else
+            setBackground(Color.cyan.darker());
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        setBackground(Color.cyan);
+        if(getAction() != null) {
+            if (getAction().isEnabled())
+                setBackground(Color.cyan);
+        }
+        else
+            setBackground(Color.cyan);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        setBackground(Color.cyan.darker());
+       if(getAction() != null){
+           if(getAction().isEnabled())
+               setBackground(Color.cyan.darker());
+       }
+       else
+           setBackground(Color.cyan.darker());
     }
 }

@@ -1,9 +1,12 @@
-package app.view.repository;
+package app.view.gui;
 
 
 
-import app.view.gui.Button;
-import app.view.gui.MainFrame;
+
+
+import app.view.repository.DocumentView;
+import app.view.repository.FileView;
+import app.view.repository.WorkspaceView;
 import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
@@ -16,10 +19,10 @@ import java.net.URL;
 
 public class Label extends JPanel   {
 
-    app.view.gui.Button currFile;
-    app.view.gui.Button currDocument;
-    app.view.gui.Button backToWorkspace;
-    app.view.gui.Button currPage;
+    Button currFile;
+    Button currDocument;
+    Button backToWorkspace;
+    Button currPage;
     JPanel panel;
 
 
@@ -32,34 +35,34 @@ public class Label extends JPanel   {
         setBackground(new Color(0xC6F9F4));
 
 
-        backToWorkspace = new app.view.gui.Button(){
+        backToWorkspace = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 workspace.setFileExplorer();
             }
         };
-        backToWorkspace.setIcon(loadIcon("images/backToWorkspace.png"));
+        backToWorkspace.setIcon(loadIcon("../repository/images/backToWorkspace.png"));
         backToWorkspace.setToolTipText("Go back to this workspace");
 
-        currFile = new app.view.gui.Button();
+        currFile = new Button(null);
         currFile.setHorizontalAlignment(SwingConstants.CENTER);
-        currFile.setIcon(loadIcon("images/open-folder.png"));
+        currFile.setIcon(loadIcon("../repository/images/open-folder.png"));
         currFile.setOpaque(true);
 
 
 
 
-        currDocument = new app.view.gui.Button();
+        currDocument = new Button(null);
         currDocument.setHorizontalAlignment(SwingConstants.CENTER);
         currDocument.setToolTipText("Currently opened presentation");
-        currDocument.setIcon(loadIcon("images/presentation.png"));
+        currDocument.setIcon(loadIcon("../repository/images/presentation.png"));
         currDocument.setOpaque(true);
 
 
 
 
-        currPage = new app.view.gui.Button();
+        currPage = new Button(null);
         currPage.setHorizontalAlignment(SwingConstants.CENTER);
         currPage.setOpaque(true);
 
@@ -79,13 +82,13 @@ public class Label extends JPanel   {
 
        JPanel currView = WorkspaceView.getCurrentlyOpened();
 
-       if(currView instanceof FileView ){
+       if(currView instanceof FileView){
 
            panel.add(backToWorkspace);
            panel.add(Box.createHorizontalStrut(25));
 
 
-           currFile = new app.view.gui.Button(){
+           currFile = new Button(null){
                @Override
                public void mouseClicked(MouseEvent e) {
                    super.mouseClicked(e);
@@ -97,7 +100,7 @@ public class Label extends JPanel   {
            };
            currFile.setToolTipText("You are currently in this file");
            currFile.setText(((FileView)currView).getModel().getName());
-           currFile.setIcon(loadIcon("images/open-folder.png"));
+           currFile.setIcon(loadIcon("../repository/images/open-folder.png"));
            panel.add(currFile);
 
        }
@@ -108,7 +111,7 @@ public class Label extends JPanel   {
 
            panel.add(Box.createHorizontalStrut(25));
 
-           currFile = new Button(){
+           currFile = new Button(null){
                @Override
                public void mouseClicked(MouseEvent e) {
                    super.mouseClicked(e);
@@ -124,7 +127,7 @@ public class Label extends JPanel   {
 
            currFile.setText(((DocumentView)currView).getParentView().getModel().getName());
            currFile.setToolTipText("Go back to file of this presentation");
-           currFile.setIcon(loadIcon("images/open-folder.png"));
+           currFile.setIcon(loadIcon("../repository/images/open-folder.png"));
            panel.add(currFile);
 
            panel.add(Box.createHorizontalStrut(25));
@@ -136,6 +139,8 @@ public class Label extends JPanel   {
 
         add(panel, BorderLayout.CENTER);
     }
+
+
 
     private Icon loadIcon(String fileName){
         URL imageURL = getClass().getResource(fileName);

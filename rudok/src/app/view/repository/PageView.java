@@ -46,10 +46,10 @@ public class PageView extends JPanel implements ISubscriber {
 
 
     @Override
-    public void update(Object notification) {
-        Notification n = (Notification) notification;
+    public void update(Notification notification) {
+        Notification n = notification;
 
-        if(n.getType() == NotificationType.DOUBLE_CLICKED){
+        if(n.getType() == NotificationType.DOUBLE_CLICK){
 
             parentView.setCurrentPage(this);
             parentView.display();

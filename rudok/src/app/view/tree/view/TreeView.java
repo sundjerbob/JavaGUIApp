@@ -16,47 +16,55 @@ import java.awt.event.MouseListener;
 public class TreeView extends JTree implements MouseListener {
 
     private TreeItem root;
+    private SelectionListener selectionListener;
 
-    public TreeView(TreeModel treeModel){
-
+     public TreeView(TreeModel treeModel){
      setBorder(new EmptyBorder(8,8, 10,0));
+     setBackground(Color.cyan.darker());
+
      root = (TreeItem) treeModel.getRoot();
      setModel(treeModel);
      setRootVisible(false);
-     CellRenderer r = new CellRenderer();
-     setCellRenderer(r);
-     setBackground(Color.cyan.darker());
-     addTreeSelectionListener(new SelectionListener());
-     setCellEditor(new CellEditor(this,r));
+
+     selectionListener = new SelectionListener();
+     addTreeSelectionListener(selectionListener);
+
+     CellRenderer cellRenderer = new CellRenderer();
+     setCellRenderer(cellRenderer);
+     setCellEditor(new CellEditor(this,cellRenderer));
      setEditable(true);
+
      addMouseListener(this);
      addMouseListener(new DoubleClickListener());
-    }
+     }
 
- @Override
- public void mouseClicked(MouseEvent e) {
-     if(getRowForLocation(e.getX(),e.getY()) == -1)
-      setSelectionPath(new TreePath(root));
- }
+     @Override
+     public void mouseClicked(MouseEvent e) {
+       if(getRowForLocation(e.getX(),e.getY()) == -1)
+       setSelectionPath(new TreePath(root));
+     }
 
- @Override
- public void mousePressed(MouseEvent e) {
+     @Override
+     public void mousePressed(MouseEvent e) {
 
+     }
 
- }
+     @Override
+     public void mouseReleased(MouseEvent e) {
 
- @Override
- public void mouseReleased(MouseEvent e) {
+     }
 
- }
+     @Override
+     public void mouseEntered(MouseEvent e) {
 
- @Override
- public void mouseEntered(MouseEvent e) {
+     }
 
- }
+     @Override
+     public void mouseExited(MouseEvent e) {
 
- @Override
- public void mouseExited(MouseEvent e) {
+     }
 
- }
+     public SelectionListener getSelectionListener() {
+     return selectionListener;
+     }
 }

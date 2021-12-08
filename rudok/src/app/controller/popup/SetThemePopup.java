@@ -32,7 +32,7 @@ public class SetThemePopup extends JDialog {
 
         TreeItem item = MainFrame.getInstance().getITree().getSelectedTreeItem();
 
-        Button spring = new Button(){
+        Button spring = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -49,7 +49,7 @@ public class SetThemePopup extends JDialog {
 
         center.add(Box.createHorizontalStrut(10));
 
-        Button summer = new Button(){
+        Button summer = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -66,7 +66,7 @@ public class SetThemePopup extends JDialog {
 
         center.add(Box.createHorizontalStrut(10));
 
-        Button fall = new Button(){
+        Button fall = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -83,7 +83,7 @@ public class SetThemePopup extends JDialog {
 
         center.add(Box.createHorizontalStrut(10));
 
-        Button winter = new Button(){
+        Button winter = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -100,7 +100,7 @@ public class SetThemePopup extends JDialog {
 
         center.add(Box.createHorizontalStrut(10));
 
-        Button defaultTheme = new Button(){
+        Button defaultTheme = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);

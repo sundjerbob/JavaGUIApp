@@ -19,8 +19,6 @@ public class Button extends JButton implements MouseListener {
             setFocusPainted(false);
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             addMouseListener(this);
-
-
     }
 
     @Override

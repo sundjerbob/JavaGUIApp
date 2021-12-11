@@ -46,8 +46,8 @@ public class MainFrame extends JFrame {
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension d = kit.getScreenSize();
-        d.width /= 2;
-        d.height /= 2;
+        d.width = (int)(d.width * 0.8);
+        d.height = (int)(d.height * 0.8);
         setSize(d);
         setLocationRelativeTo(null);
 

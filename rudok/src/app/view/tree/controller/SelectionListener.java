@@ -19,45 +19,12 @@ public class SelectionListener implements TreeSelectionListener, IPublisher {
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        ActionManager manager = MainFrame.getInstance().getActionManager();
 
         TreeItem item = (TreeItem)e.getNewLeadSelectionPath().getLastPathComponent();
         if(item == null)
             item = MainFrame.getInstance().getITree().setRootSelected();
 
         notifySubscribers(new Notification(item.getModel(),NotificationType.SELECTION_EVENT));
-
-        /*
-        else if(item.getModel() instanceof Workspace) {
-            manager.getDeleteAction().setEnabled(false);
-            manager.getNewAction().setEnabled(true);
-            manager.getRenameAction().setEnabled(false);
-            manager.getEditDocumentAction().setEnabled(false);
-            manager.getSetAuthorAction().setEnabled(false);
-        }
-        else if(item.getModel() instanceof File) {
-            manager.getDeleteAction().setEnabled(true);
-            manager.getNewAction().setEnabled(true);
-            manager.getRenameAction().setEnabled(true);
-            manager.getEditDocumentAction().setEnabled(false);
-            manager.getSetAuthorAction().setEnabled(false);
-        }
-        else if(item.getModel() instanceof Document) {
-            manager.getDeleteAction().setEnabled(true);
-            manager.getNewAction().setEnabled(true);
-            manager.getRenameAction().setEnabled(true);
-            manager.getEditDocumentAction().setEnabled(true);
-            manager.getSetAuthorAction().setEnabled(true);
-
-        }
-        else if(item.getModel() instanceof Page){
-            manager.getNewAction().setEnabled(false);
-            manager.getDeleteAction().setEnabled(true);
-            manager.getRenameAction().setEnabled(false);
-            manager.getEditDocumentAction().setEnabled(false);
-            manager.getSetAuthorAction().setEnabled(false);
-        }
-        */
 
     }
 

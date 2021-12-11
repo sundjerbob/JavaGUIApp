@@ -1,7 +1,7 @@
 package app.model.repository;
 
 
-import app.model.node.NodeComposit;
+import app.model.node.NodeComposite;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class Document extends NodeComposit {
+public class Document extends NodeComposite {
 
     private String author;
     private Image theme;
@@ -19,13 +19,7 @@ public class Document extends NodeComposit {
         super(name, parent);
     }
 
-    public Image getTheme() {
-        return theme;
-    }
 
-    public String getAuthor() {
-        return author;
-    }
 
     public void setAuthor(String author){
         this.author = author;
@@ -40,7 +34,7 @@ public class Document extends NodeComposit {
             case 2 : fileName = "../../controller/popup/images/summer.png"; break;
             case 3 : fileName = "../../controller/popup/images/fall.jpg"; break;
             case 4 : fileName = "../../controller/popup/images/winter.png"; break;
-            default: fileName = null;
+            default : fileName = null;
         }
 
         if(fileName == null){
@@ -61,6 +55,14 @@ public class Document extends NodeComposit {
             return ;
         }
 
+    }
+
+    public Image getTheme() {
+        return theme;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
 }

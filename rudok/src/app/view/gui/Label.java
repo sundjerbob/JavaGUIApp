@@ -1,9 +1,6 @@
 package app.view.gui;
 
 
-
-
-
 import app.view.repository.DocumentView;
 import app.view.repository.FileView;
 import app.view.repository.WorkspaceView;

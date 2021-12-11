@@ -23,7 +23,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
     private  JPanel currView  ;
     private ArrayList<FileView> files;
     private JPanel fileExplorer;
-    private app.view.gui.Label label;
+    private Label label;
 
 
 
@@ -45,9 +45,9 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         fileExplorer.setBackground(Color.CYAN.darker());
 
         display(fileExplorer);
-
-
     }
+
+
     public void display(JPanel setView){        //this method is used by FileView and DocumentView to display them
         currView.removeAll();                   //on workspace
 
@@ -55,9 +55,9 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         scrollPane.setHorizontalScrollBar(null);
         currView.add(scrollPane);
 
-        setCurrentlyOpened(setView);
+        currentlyOpened = setView;      //changed
         label.setCurrPath();            //refreshing the upper label every time the displaying content is
-                                            //changed
+
         updateUI();
     }
 
@@ -77,6 +77,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
     }
 
+
     public void setFileExplorer(){              //this method is used by WorkspaceView to display File Explorer view
 
         fileExplorer.removeAll();
@@ -89,8 +90,10 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         //calculating how many rows we need to display previews for all files
         int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
 
-        int filePreviewWith = (getWidth() - 40) / colNum, filePreviewHeight = (int) (filePreviewWith * 1.3); // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
-        int x = currView.getLocation().x + 20, y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
+        int filePreviewWith = (getWidth() - 40) / colNum;
+        int filePreviewHeight = (int) (filePreviewWith * 1.3); // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
+        int x = currView.getLocation().x + 20;
+        int y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
 
         fileExplorer.setPreferredSize(new Dimension(getWidth() - 40, rowNum * filePreviewHeight));
 
@@ -117,17 +120,21 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         files.remove(me);
     }
 
+
     public JPanel getCurrView() {
         return currView;
     }
+
 
     public JPanel getFileExplorer() {
         return fileExplorer;
     }
 
+
     public static JPanel getCurrentlyOpened() {
         return currentlyOpened;
     }
+
 
     private static void setCurrentlyOpened(JPanel currentlyOpened) {
         WorkspaceView.currentlyOpened = currentlyOpened;

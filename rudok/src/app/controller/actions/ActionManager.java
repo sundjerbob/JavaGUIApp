@@ -2,12 +2,12 @@ package app.controller.actions;
 
 public class ActionManager {
 
-    private NewAction newAction;
-    private DeleteAction deleteAction;
-    private InfoAction infoAction;
-    private RenameAction renameAction;
-    private EditDocumentAction editDocumentAction;
-    private SetAuthorAction setAuthorAction;
+    private final NewAction newAction;
+    private final DeleteAction deleteAction;
+    private final InfoAction infoAction;
+    private final RenameAction renameAction;
+    private final EditDocumentAction editDocumentAction;
+    private final SetAuthorAction setAuthorAction;
 
     public ActionManager(){
         newAction = new NewAction();

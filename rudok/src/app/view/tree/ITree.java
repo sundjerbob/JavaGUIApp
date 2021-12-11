@@ -19,7 +19,6 @@ public interface ITree {
     TreeView getTreeView();
     TreeItem getRoot();
     TreeItem setRootSelected();
-    void addNew(NodeModel node);
-    void delete(TreeItem node);
+
 
 }

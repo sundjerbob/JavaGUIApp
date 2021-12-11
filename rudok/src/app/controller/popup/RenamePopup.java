@@ -44,7 +44,7 @@ public class RenamePopup extends JDialog implements ActionListener{
 
 
 
-        text = new JTextField(item.getName());
+        text = new JTextField(item.getModel().getName());
         text.addActionListener(this);
         text.setOpaque(true);
         text.setBounds(mainPanel.getLocation().x + 250, mainPanel.getLocation().y + 135, 100,30 );
@@ -87,7 +87,7 @@ public class RenamePopup extends JDialog implements ActionListener{
                 //System.out.println("radi");
                 super.mouseClicked(e);
                 item.getModel().setName(t);
-                item.setName(t);
+
 
 
                 MainFrame.getInstance().getITree().getTreeView().updateUI();
@@ -137,7 +137,6 @@ public class RenamePopup extends JDialog implements ActionListener{
 
         }
         else {
-        item.setName(t);
         item.getModel().setName(text.getText());
         MainFrame.getInstance().getITree().getTreeView().updateUI();
         dispose();

@@ -1,6 +1,6 @@
 package app.view.tree.controller;
 
-import app.model.node.NodeComposit;
+import app.model.node.NodeComposite;
 import app.model.node.NodeModel;
 import app.model.repository.Workspace;
 import app.view.tree.ITree;
@@ -32,19 +32,9 @@ public class TreeImplementation implements ITree {
     }
 
 
-    @Override
-    public void addNew(NodeModel newNode) {
-        TreeItem item = (TreeItem) treeView.getLastSelectedPathComponent();
-        item.add(new TreeItem(newNode));
-        treeView.updateUI();
-    }
 
-    @Override
-    public void delete(TreeItem node) {
-        TreeItem delete = (TreeItem) node;
-        ((TreeItem)delete.getParent()).remove(delete);
-        treeView.updateUI();
-    }
+
+
 
     @Override
     public TreeItem getSelectedTreeItem() {

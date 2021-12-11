@@ -1,6 +1,6 @@
 package app.controller.actions;
 
-import app.model.node.NodeComposit;
+import app.model.node.NodeComposite;
 import app.model.node.NodeModel;
 import app.model.repository.Document;
 import app.model.repository.File;
@@ -35,29 +35,23 @@ public class NewAction extends MyAbstractAction {
 
         if(item.getModel() instanceof Workspace){
             name = getName((Workspace)item.getModel(),"File");
-
             newNode = new File(name,(Workspace) item.getModel());
-            frame.getITree().addNew(newNode);
             ((Workspace) item.getModel()).addChild(newNode);
         }
         else if(item.getModel() instanceof File){
             name = getName((File)item.getModel(),"Presentation");
-
             newNode = new Document(name,(File) item.getModel());
-            frame.getITree().addNew(newNode);
             ((File) item.getModel()).addChild(newNode);
         }
         else if(item.getModel() instanceof Document){
             name = getName((Document)item.getModel(),"Slide");
-
             newNode = new Page(name,(Document) item.getModel());
-            frame.getITree().addNew(newNode);
             ((Document) item.getModel()).addChild(newNode);
 
         }
     }
 
-    private String getName(NodeComposit model,String name){
+    public String getName(NodeComposite model,String name){
         int num = 1;
         while(model.getChildByName(name + " " + num) != null) {
             ++num;

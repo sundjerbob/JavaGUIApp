@@ -20,6 +20,7 @@ public class DeleteAction extends MyAbstractAction{
         putValue(SHORT_DESCRIPTION,"Delete selected component");
         setEnabled(false);
         MainFrame.getInstance().getITree().getTreeView().getSelectionListener().addSubscriber(this);
+
     }
 
     @Override
@@ -30,7 +31,6 @@ public class DeleteAction extends MyAbstractAction{
 
 
             item.getModel().getParent().removeChild(item.getModel());
-            frame.getITree().delete(item);
             frame.getITree().setRootSelected();
 
 

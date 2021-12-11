@@ -24,7 +24,7 @@ public class SetAuthorAction extends MyAbstractAction  {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SetAuthorPopup popup = new SetAuthorPopup();
+        new SetAuthorPopup(null);
     }
 
     @Override

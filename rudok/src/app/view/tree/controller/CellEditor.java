@@ -62,8 +62,6 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
     public void actionPerformed(ActionEvent e) {
 
 
-
-        item.setName(e.getActionCommand());
         item.getModel().setName(e.getActionCommand());
         MainFrame.getInstance().getITree().getTreeView().updateUI();
     }

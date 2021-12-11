@@ -5,20 +5,20 @@ import app.observer.NotificationType;
 
 import java.util.ArrayList;
 
-public abstract class NodeComposit extends NodeModel {
+public abstract class NodeComposite extends NodeModel {
 
 
     private ArrayList<NodeModel> children = null;
 
 
 
-    public NodeComposit(String name,NodeComposit parent) {
+    public NodeComposite(String name,NodeComposite parent) {
         super(name, parent);
         children = new ArrayList<NodeModel>();
     }
 
 
-    public NodeComposit(String name,NodeComposit parent,ArrayList<NodeModel> children){
+    public NodeComposite(String name,NodeComposite parent,ArrayList<NodeModel> children){
         super(name,parent);
         this.children = children;
     }

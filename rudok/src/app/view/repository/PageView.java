@@ -16,7 +16,7 @@ public class PageView extends JPanel implements ISubscriber {
     private JLabel label;
     private DocumentView parentView;
     private Image image;
-    private JPanel bgPanel;
+    private JPanel bgPanel; //im drawing background image on this panel and putting it behind pagePanel and making pageOpaque null so the background is visible
 
     public PageView(Page model,DocumentView parent) {
         super(new BorderLayout());
@@ -50,26 +50,13 @@ public class PageView extends JPanel implements ISubscriber {
         Notification n = notification;
 
         if(n.getType() == NotificationType.DOUBLE_CLICK){
-
             parentView.setCurrentPage(this);
-            parentView.display();
+            if(WorkspaceView.getCurrentlyOpened() != parentView)
+                parentView.getParentView().getParentView().display(parentView);
         }
 
 
-        else if(n.getType() == NotificationType.REMOVE_ACTION){
-            int i = parentView.getIndexOfPage(this);
-            if(parentView.getCurrentPage() == this ){
-                if(i == 0) {
-                    if(parentView.getPages().size() == 1) {
-                        parentView.setCurrentPage(null);
-                    }
-                    else if(parentView.getPages().size() > 1){
-                        parentView.setCurrentPage(parentView.getPages().get(i+1));
-                    }
-                }
-                    else
-                        parentView.setCurrentPage(parentView.getPages().get(i-1));
-            }
+        else if (n.getType() == NotificationType.REMOVE_ACTION){
             parentView.removePage(this);
         }
 
@@ -85,15 +72,9 @@ public class PageView extends JPanel implements ISubscriber {
             bgPanel.setOpaque(false);
 
         bgPanel.updateUI();
-
     }
 
     public NodeModel getModel() {
         return model;
-    }
-
-
-    public DocumentView getParentView() {
-        return parentView;
     }
 }

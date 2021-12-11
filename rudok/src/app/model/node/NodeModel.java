@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public abstract class NodeModel implements IPublisher {
 
-    private NodeComposit parent;
+    private NodeComposite parent;
     private String name;
     private ArrayList<ISubscriber> subscribers;
 
-    public NodeModel (String name,NodeComposit parent){
+    public NodeModel (String name,NodeComposite parent){
         this.name = name;
         this.parent = parent;
     }
@@ -61,10 +61,6 @@ public abstract class NodeModel implements IPublisher {
         }
     }
 
-    @Override
-    public String toString(){
-        return name;
-    }
 
     @Override
     public boolean equals(Object o){
@@ -73,7 +69,7 @@ public abstract class NodeModel implements IPublisher {
         return false;
     }
 
-    public void setParent(NodeComposit parent) {
+    public void setParent(NodeComposite parent) {
         this.parent = parent;
     }
 
@@ -81,10 +77,14 @@ public abstract class NodeModel implements IPublisher {
         return name;
     }
 
-    public NodeComposit getParent(){
+    public NodeComposite getParent(){
         return parent;
     }
 
+    @Override
+    public String toString(){
+        return name;
+    }
 
 
 }

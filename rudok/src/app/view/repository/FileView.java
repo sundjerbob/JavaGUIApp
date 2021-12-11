@@ -1,5 +1,6 @@
 package app.view.repository;
 
+import app.controller.popup.SetAuthorPopup;
 import app.model.repository.Document;
 import app.model.repository.File;
 import app.observer.ISubscriber;
@@ -41,26 +42,35 @@ public class FileView extends JPanel implements ISubscriber  {
         }
 
         else if(n.getType() == NotificationType.ADD_ACTION){
+            DocumentView newDocument = new DocumentView((Document) n.getNotificationObject(), this);
+
             if(documents == null)
                 documents = new ArrayList<DocumentView>();
-            documents.add(new DocumentView((Document) n.getNotificationObject(),this));
+
+            documents.add(newDocument);
+            new SetAuthorPopup(newDocument);
+
             if(curr == this)
                 display();
         }
         else if(n.getType() == NotificationType.REMOVE_ACTION){
                 parentView.removeFile(this);
+
                 if(curr == this || curr == parentView.getFileExplorer())
                     parentView.setFileExplorer();
+
                 if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
                     parentView.setFileExplorer();
         }
         else if(n.getType() == NotificationType.RENAME_ACTION){
             if(curr == this)
                 parentView.display(this);
+
             else if(curr == parentView.getFileExplorer())
                 parentView.setFileExplorer();
+
             else if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
-                ((DocumentView) curr).display();
+                ((DocumentView) curr).getParentView().getParentView().display(curr);
         }
     }
 

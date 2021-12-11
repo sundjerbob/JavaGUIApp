@@ -12,7 +12,6 @@ public class NameAlrExists {
 
 
     public void showError(JDialog parent){
-        System.out.println("mmm");
         JOptionPane.showMessageDialog(parent,"u can not set nothing for a name");
     }
 

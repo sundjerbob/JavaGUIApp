@@ -1,33 +1,40 @@
 package app.view.repository;
 
+import app.model.node.NodeComposite;
 import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
-import app.view.gui.Button;
 import app.view.gui.MainFrame;
-import app.view.tree.model.TreeItem;
+import app.view.state.StateManager;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.TreePath;
+
 import java.awt.*;
+
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
 public class DocumentView extends JPanel implements ISubscriber {
 
+    private static final String SLIDE_SHOW = "2";
+    private static final String  EDIT_MODE = "1";
+    private static final String BLANK = "0";
+
+
     private Document model;
     private FileView parentView;
     private ArrayList<PageView> pages;
     private PageView currentPage;
+    private StateManager stateManager;
     private JLabel author;
-    private JPanel center;
-    private JPanel left;
-    private JPanel right;
-    Button previousPage;
-    Button nextPage;
+    private JPanel pagesStack;
+    private JPanel content;
+
 
     public DocumentView(Document model,FileView parentView){
         super(new BorderLayout());
@@ -36,33 +43,103 @@ public class DocumentView extends JPanel implements ISubscriber {
         model.addSubscriber(this);
 
         setBackground(Color.cyan.darker());
-        author = new JLabel();
-        author.setPreferredSize(new Dimension(0,40));
-        author.setHorizontalAlignment(SwingConstants.LEFT);
+
+        author = new JLabel((ImageIcon)loadIcon("images/userLabel.png"));
+        author.setHorizontalAlignment(SwingConstants.CENTER);
+        author.setPreferredSize(new Dimension(0,20));
+        author.setBorder(new EmptyBorder(0,0,0,10));
+        author.setHorizontalAlignment(SwingConstants.RIGHT);
         author.setVerticalAlignment(SwingConstants.CENTER);
+        author.setBackground(Color.cyan.darker());
+        author.setOpaque(true);
         add(author,BorderLayout.NORTH);
 
-        JPanel bottom = new JPanel();
-        bottom.setPreferredSize(new Dimension(0,14 ));
-        bottom.setBackground(Color.CYAN.darker());
-        add(bottom,BorderLayout.SOUTH);
+        stateManager = new StateManager();
 
-        left = new JPanel(new BorderLayout());
-        left.setBackground(new Color(0xC6F9F4));
-        left.setBorder(new EmptyBorder(100, 10, 100, 10));
+        pagesStack = new JPanel(new CardLayout());
+
+        content = new JPanel(new CardLayout());
+        add(content, BorderLayout.CENTER);
+
+        SlideshowMode slideshowMode = new SlideshowMode(this);
+        EditMode editMode = new EditMode(this);
+        JPanel blank = new JPanel(new BorderLayout());
+        blank.setBackground(Color.cyan.darker());
+
+        JLabel blankLabel = new JLabel("Add first page!",loadIcon("images/firstPage.png"),SwingConstants.CENTER);
+
+        blankLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                String name = MainFrame.getInstance().getActionManager().getNewAction().getName((NodeComposite) model,
+                        "Slide");
+                model.addChild(new Page(name, model));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                blankLabel.setBackground(Color.cyan);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                blankLabel.setBackground(Color.lightGray);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                blankLabel.setBackground(Color.lightGray);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                blankLabel.setBackground(Color.cyan.darker());
+                updateUI();
+
+            }
+        });
+        blankLabel.setBackground(Color.CYAN.darker());
+        blankLabel.setOpaque(true);
+        blankLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        blank.add(blankLabel, BorderLayout.CENTER);
 
 
-        right = new JPanel(new BorderLayout());
-        right.setBorder(new EmptyBorder(100, 10, 100, 10));
-        right.setBackground(new Color(0xC6F9F4));
+        content.add(SLIDE_SHOW, slideshowMode);
+        content.add(EDIT_MODE, editMode);
+        content.add(BLANK, blank);
 
-        add(right,BorderLayout.EAST);
-        add(left, BorderLayout.WEST);
-
-        center = new JPanel(new BorderLayout());
-        add(center,BorderLayout.CENTER);
+        ((CardLayout)content.getLayout()).show(content, BLANK);
     }
 
+    public void setModeState(String s){
+        switch (s){
+            case SLIDE_SHOW -> {
+                ((CardLayout) content.getLayout()).show(content, SLIDE_SHOW);
+                stateManager.setSlideshowState();
+            }
+
+            case EDIT_MODE-> {
+                ((CardLayout) content.getLayout()).show(content, EDIT_MODE);
+                stateManager.setSlideshowState();
+            }
+            case BLANK -> ((CardLayout) content.getLayout()).show(content, BLANK);
+        }
+    }
+
+    public void setCurrentPage(PageView currentPage) {
+        if(currentPage == null)
+            setModeState(BLANK);
+        else
+            ((CardLayout) pagesStack.getLayout()).show(pagesStack, currentPage.getModel().getName());
+        //the line above changes page that's ont top of pages stack and
+        // pages stack is displaying in slideshow mode and edit mode
+        this.currentPage = currentPage;
+    }
 
     @Override
     public void update(Notification notification) {
@@ -72,24 +149,28 @@ public class DocumentView extends JPanel implements ISubscriber {
 
         if(n.getType() == NotificationType.DOUBLE_CLICK){
             if(curr != this)
-                display();
+                parentView.getParentView().display(this);
         }
 
         else if(n.getType() == NotificationType.ADD_ACTION){
-            if(pages == null)
-                pages = new ArrayList<PageView>();
-            PageView newPage = new PageView((Page) n.getNotificationObject(),
-                    this);
+            if(pages == null){
+                pages = new ArrayList<PageView>();      //when u add page to document for the first time u go
+                setModeState(SLIDE_SHOW);               //to edit mode by default
+            }
+
+            PageView newPage = new PageView((Page) n.getNotificationObject(), this);
             pages.add(newPage);
+            pagesStack.add(newPage.getModel().getName(),newPage);       //adding in both
             setCurrentPage(newPage);
+
             if(curr == this)
-                display(); //setting most resent added page to the
+                parentView.getParentView().display(this); //setting most resent added page to the
         }
 
         else if(n.getType() == NotificationType.REMOVE_ACTION){
             parentView.removeDocument(this);
             if( curr == this ||
-                    WorkspaceView.getCurrentlyOpened() == parentView)
+                    curr == parentView)
                 parentView.display();
         }
 
@@ -97,13 +178,13 @@ public class DocumentView extends JPanel implements ISubscriber {
             if( curr == parentView)
                 parentView.display();
             else if( curr == this )
-                display();
+                parentView.getParentView().display(this);
         }
 
         else if(n.getType() == NotificationType.AUTHOR_SET){
-            author.setText("Author : " + model.getAuthor());
-            if(WorkspaceView.getCurrentlyOpened() == this)
-                updateUI();
+            author.setText(model.getAuthor());
+            if(curr == this)
+                repaint();
 
         }
         else if(n.getType() == NotificationType.THEME_SET){
@@ -115,66 +196,22 @@ public class DocumentView extends JPanel implements ISubscriber {
         }
     }
 
-    public void display(){
-        parentView.getParentView().display(this);
-    }
+    public void removePage(PageView toRemove){
+        int pageIndex = pages.indexOf(toRemove);
 
-    public int getIndexOfPage(PageView page){
-        if(pages == null || pages.size() == 0)
-            return -1;
-        return pages.indexOf(page);
-    }
-
-    public void setCurrentPage(PageView currentPage) {
-        center.removeAll();
-        right.removeAll();
-        left.removeAll();
-        if(currentPage == null){
-            updateUI();
-            return;
+        if(currentPage == toRemove){
+            if(pages.size() == 1) {
+                setModeState(BLANK);
+                setCurrentPage(null);
+            }
+            else if(pageIndex >= 1)
+                setCurrentPage(pages.get(pageIndex - 1));
+            else if(pageIndex < pages.size() - 1)
+                setCurrentPage(pages.get(pageIndex + 1));
         }
-        this.currentPage = currentPage;
-
-        center.add(currentPage,BorderLayout.CENTER);
-
-        previousPage = new Button(null){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (currentPage != null) {
-                    if (getIndexOfPage(currentPage) > 0) {
-                        setCurrentPage(pages.get(getIndexOfPage(currentPage) - 1));
-                    }
-                }
-            }
-        };
-        previousPage.setIcon(loadIcon("images/prev.png"));
-        left.add(previousPage,BorderLayout.CENTER);
-
-        nextPage = new Button(null){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(currentPage != null){
-                    if(getIndexOfPage(currentPage) < pages.size() - 1){
-                        setCurrentPage(pages.get(getIndexOfPage(currentPage) + 1));
-                    }
-                }
-            }
-        };
-        nextPage.setIcon(loadIcon("images/next.png"));
-        right.add(nextPage, BorderLayout.CENTER);
-
-        TreeItem item =  MainFrame.getInstance().getITree().findItemByModel(currentPage.getModel());
-        MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
-
-        updateUI();
+        pagesStack.remove(toRemove);
+        pages.remove(toRemove);
     }
-
-    public void removePage(PageView me){
-        pages.remove(me);
-    }
-
 
     private Icon loadIcon(String fileName){
         URL imageURL = getClass().getResource(fileName);
@@ -186,6 +223,7 @@ public class DocumentView extends JPanel implements ISubscriber {
             System.out.println("DocumentView - load icon failed");
         return icon;
     }
+
 
     public Document getModel() {
         return model;
@@ -201,5 +239,13 @@ public class DocumentView extends JPanel implements ISubscriber {
 
     public ArrayList<PageView> getPages(){
         return pages;
+    }
+
+    public StateManager getStateManager() {
+        return stateManager;
+    }
+
+    public JPanel getPagesStack() {
+        return pagesStack;
     }
 }

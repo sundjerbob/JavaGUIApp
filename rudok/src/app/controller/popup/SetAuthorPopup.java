@@ -5,6 +5,7 @@ import app.factory.ErrorType;
 import app.factory.NameAlrExists;
 import app.model.repository.Document;
 import app.view.gui.MainFrame;
+import app.view.repository.DocumentView;
 import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
@@ -17,15 +18,17 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
 
     private JTextField text;
     private  TreeItem item;
+    private DocumentView document;
 
-    public SetAuthorPopup(){
+    public SetAuthorPopup(DocumentView document){
         super(MainFrame.getInstance());
         setTitle("Set document author window");
         setModal(true);
         Image icon = getImage("../actions/images/authorLarge.png");
         setIconImage(icon);
+        setSize(400,200);
         setLocationRelativeTo(null);
-        setSize(600,400);
+        this.document = document;
 
 
         JPanel mainPanel = new JPanel();
@@ -33,20 +36,22 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
         mainPanel.setBackground(Color.cyan.darker());
 
 
-        item = (TreeItem) MainFrame.getInstance().getITree().getTreeView().getLastSelectedPathComponent();
 
         JLabel label = new JLabel("Set author for this document:");
         label.setOpaque(false);
 
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setBounds(mainPanel.getLocation().x + 200,mainPanel.getLocation().y + 100,200,25);
+        label.setBounds(mainPanel.getLocation().x + 100,mainPanel.getLocation().y + 50,200,25);
 
+        text = new JTextField();
 
-        text = new JTextField(((Document)item.getModel()).getAuthor());
+        if(this.document == null){
+           item = MainFrame.getInstance().getITree().getSelectedTreeItem();
+           text.setText(((Document)item.getModel()).getAuthor());
+        }
         text.addActionListener(this);
         text.setOpaque(true);
-        text.setBounds(mainPanel.getLocation().x + 250, mainPanel.getLocation().y + 135, 100,30 );
-
+        text.setBounds(mainPanel.getLocation().x +  150, mainPanel.getLocation().y + 80, 100,25 );
         text.setBackground(Color.cyan);
 
         mainPanel.add(label);
@@ -59,20 +64,25 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         NameAlrExists d;
-        if(text.getText() == ""){
+        String str = text.getText();
+        if(str == ""){
             d = AbstractFactory.getInstance().createPopup(ErrorType.EMPTY_NAME);
             d.showError(this);
         }
-        if(item.getModel() instanceof Document) {
-            ((Document) item.getModel()).setAuthor(text.getText());
-            dispose();
-        }
+
+        else if(document != null)
+            document.getModel().setAuthor(str);
+
+        else if(item.getModel() instanceof Document)
+                ((Document) item.getModel()).setAuthor(str);
+
+        dispose();
+
     }
 
 
     private Image getImage(String fileName){
         URL imageURL = getClass().getResource(fileName);
-
 
         if(imageURL != null)
             return new ImageIcon(imageURL).getImage();

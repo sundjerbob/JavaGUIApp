@@ -8,9 +8,6 @@ import app.view.gui.MainFrame;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 public class TreeItem extends DefaultMutableTreeNode implements ISubscriber {
 
@@ -27,7 +24,7 @@ public class TreeItem extends DefaultMutableTreeNode implements ISubscriber {
     @Override
     public void update(Notification notification) {
     if(notification.getType() == NotificationType.ADD_ACTION){
-        add(new TreeItem(notification.getNotificationObject()));
+        add(new TreeItem((NodeModel) notification.getNotificationObject()));
         MainFrame.getInstance().getITree().getTreeView().updateUI();
     }
     else if(notification.getType() == NotificationType.REMOVE_ACTION){
@@ -55,13 +52,10 @@ public class TreeItem extends DefaultMutableTreeNode implements ISubscriber {
     }
 
 
-
     @Override
     public String toString(){
         return model.getName();
     }
-
-
 
 
     public NodeModel getModel() {
@@ -69,11 +63,9 @@ public class TreeItem extends DefaultMutableTreeNode implements ISubscriber {
     }
 
 
-
     public void setModel(NodeModel model) {
         this.model = model;
     }
-
 
 
 }

@@ -18,7 +18,7 @@ public class NewAction extends MyAbstractAction {
 
 
     public NewAction(){
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4,ActionEvent.ALT_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.SHIFT_MASK,true));
         putValue(SMALL_ICON, loadIcon("images/new.small.png"));
         putValue(LARGE_ICON_KEY, loadIcon("images/new.png"));
         putValue(NAME,"New");
@@ -30,7 +30,7 @@ public class NewAction extends MyAbstractAction {
 
         MainFrame frame = MainFrame.getInstance();
         TreeItem item = frame.getITree().getSelectedTreeItem();
-        NodeModel newNode = null;
+        NodeModel newNode;
         String name;
 
         if(item.getModel() instanceof Workspace){

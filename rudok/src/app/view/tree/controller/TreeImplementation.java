@@ -1,16 +1,14 @@
 package app.view.tree.controller;
 
-import app.model.node.NodeComposite;
 import app.model.node.NodeModel;
 import app.model.repository.Workspace;
 import app.view.tree.ITree;
 import app.view.tree.model.TreeItem;
 import app.view.tree.view.TreeView;
-import org.w3c.dom.Node;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
+
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 

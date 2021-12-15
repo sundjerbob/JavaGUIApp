@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public class FileView extends JPanel implements ISubscriber  {
 
     private static final int colNum = 4;
-    private File model;
+    private final File model;
 
-    private WorkspaceView parentView;
+    private final WorkspaceView parentView;
     private ArrayList<DocumentView> documents;
 
     public FileView(File model,WorkspaceView parentView){
@@ -28,55 +28,6 @@ public class FileView extends JPanel implements ISubscriber  {
 
 
     }
-
-
-
-    @Override
-    public void update(Notification notification) {
-
-        Notification n = notification;
-        JPanel curr = WorkspaceView.getCurrentlyOpened();
-
-        if(n.getType() == NotificationType.DOUBLE_CLICK){
-            display();
-        }
-
-        else if(n.getType() == NotificationType.ADD_ACTION){
-            DocumentView newDocument = new DocumentView((Document) n.getNotificationObject(), this);
-
-            if(documents == null)
-                documents = new ArrayList<DocumentView>();
-
-            documents.add(newDocument);
-            new SetAuthorPopup(newDocument);
-
-            if(curr == this)
-                display();
-        }
-        else if(n.getType() == NotificationType.REMOVE_ACTION){
-                parentView.removeFile(this);
-
-                if(curr == this || curr == parentView.getFileExplorer())
-                    parentView.setFileExplorer();
-
-                if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
-                    parentView.setFileExplorer();
-        }
-        else if(n.getType() == NotificationType.RENAME_ACTION){
-            if(curr == this)
-                parentView.display(this);
-
-            else if(curr == parentView.getFileExplorer())
-                parentView.setFileExplorer();
-
-            else if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
-                ((DocumentView) curr).getParentView().getParentView().display(curr);
-        }
-    }
-
-
-
-
 
     public void display(){
 
@@ -113,18 +64,60 @@ public class FileView extends JPanel implements ISubscriber  {
                 curr = new DocumentPreview(documents.get(index));
                 curr.setBounds(startingLocationX + docPreviewWidth * j, startingLocationY + docPreviewHeight * i,
                         docPreviewWidth, docPreviewHeight);
-                    add(curr);
+                add(curr);
             }
         }
         parentView.display(this);
     }
 
+    @Override
+    public void update(Notification notification) {
 
 
+        JPanel curr = WorkspaceView.getCurrentlyOpened();
 
-    public ArrayList<DocumentView> getDocuments() {
-        return documents;
+        if(notification.getType() == NotificationType.DOUBLE_CLICK){
+            display();
+        }
+
+        else if(notification.getType() == NotificationType.ADD_ACTION){
+            DocumentView newDocument = new DocumentView((Document) notification.getNotificationObject(), this);
+
+            if(documents == null)
+                documents = new ArrayList<>();
+
+            documents.add(newDocument);
+            new SetAuthorPopup(newDocument);
+
+            if(curr == this)
+                display();
+        }
+        else if(notification.getType() == NotificationType.REMOVE_ACTION){
+                parentView.removeFile(this);
+
+                if(curr == this || curr == parentView.getFileExplorer())
+                    parentView.setFileExplorer();
+
+                if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
+                    parentView.setFileExplorer();
+        }
+        else if(notification.getType() == NotificationType.RENAME_ACTION){
+            if(curr == this)
+                parentView.display(this);
+
+            else if(curr == parentView.getFileExplorer())
+                parentView.setFileExplorer();
+
+            else if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
+                ((DocumentView) curr).getParentView().getParentView().display(curr);
+        }
     }
+
+
+
+
+
+
 
     public File getModel() {
         return model;

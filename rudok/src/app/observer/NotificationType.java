@@ -8,5 +8,6 @@ public enum NotificationType {
     DOUBLE_CLICK,
     AUTHOR_SET,
     THEME_SET,
-    SELECTION_EVENT;
+    SELECTION_EVENT,
+    SLIDE_CHANGE
 }

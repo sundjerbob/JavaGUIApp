@@ -15,14 +15,13 @@ import java.awt.event.MouseListener;
 
 public class TreeView extends JTree implements MouseListener {
 
-    private TreeItem root;
-    private SelectionListener selectionListener;
+
+    private final SelectionListener selectionListener;
 
      public TreeView(TreeModel treeModel){
      setBorder(new EmptyBorder(8,8, 10,0));
      setBackground(Color.cyan.darker());
 
-     root = (TreeItem) treeModel.getRoot();
      setModel(treeModel);
      setRootVisible(false);
 
@@ -41,7 +40,7 @@ public class TreeView extends JTree implements MouseListener {
      @Override
      public void mouseClicked(MouseEvent e) {
        if(getRowForLocation(e.getX(),e.getY()) == -1)
-       setSelectionPath(new TreePath(root));
+       setSelectionPath(new TreePath(getModel().getRoot()));
      }
 
      @Override
@@ -67,4 +66,6 @@ public class TreeView extends JTree implements MouseListener {
      public SelectionListener getSelectionListener() {
      return selectionListener;
      }
+
+
 }

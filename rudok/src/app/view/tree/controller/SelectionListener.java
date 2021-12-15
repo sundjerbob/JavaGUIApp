@@ -1,6 +1,6 @@
 package app.view.tree.controller;
 
-import app.controller.actions.ActionManager;
+
 import app.observer.IPublisher;
 import app.observer.ISubscriber;
 import app.observer.Notification;
@@ -31,15 +31,11 @@ public class SelectionListener implements TreeSelectionListener, IPublisher {
     @Override
     public void addSubscriber(ISubscriber subscriber) {
         if(subscribers == null)
-            subscribers = new ArrayList<ISubscriber>();
+            subscribers = new ArrayList<>();
         subscribers.add(subscriber);
     }
 
-    @Override
-    public void removeSubscriber(ISubscriber subscriber) {
-        if(subscribers != null && subscribers.contains(subscriber))
-            subscribers.remove(subscriber);
-    }
+
 
     @Override
     public void notifySubscribers(Notification notification) {

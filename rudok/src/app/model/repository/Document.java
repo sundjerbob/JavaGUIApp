@@ -2,7 +2,6 @@ package app.model.repository;
 
 
 import app.model.node.NodeComposite;
-import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
 
@@ -30,11 +29,11 @@ public class Document extends NodeComposite {
 
         String fileName;
         switch (theme){
-            case 1 : fileName = "../../controller/popup/images/spring.jpg"; break;
-            case 2 : fileName = "../../controller/popup/images/summer.png"; break;
-            case 3 : fileName = "../../controller/popup/images/fall.jpg"; break;
-            case 4 : fileName = "../../controller/popup/images/winter.png"; break;
-            default : fileName = null;
+            case 1 -> fileName = "../../controller/popup/images/spring.jpg";
+            case 2 -> fileName = "../../controller/popup/images/summer.png";
+            case 3 -> fileName = "../../controller/popup/images/fall.jpg";
+            case 4 -> fileName = "../../controller/popup/images/winter.png";
+            default -> fileName = null;
         }
 
         if(fileName == null){
@@ -52,7 +51,6 @@ public class Document extends NodeComposite {
         }
         else {
             System.out.println("class: Document setTheme failed.");
-            return ;
         }
 
     }

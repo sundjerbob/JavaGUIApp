@@ -6,8 +6,11 @@ import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
 import app.view.gui.Label;
+import app.view.gui.MainFrame;
+import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -16,14 +19,11 @@ public class WorkspaceView extends JPanel implements ISubscriber {
     private static final int colNum = 5; //layout will have 5 previews per row
     private static JPanel currentlyOpened;
 
-
-
-
-    private Workspace model;
-    private  JPanel currView  ;
+    private final Workspace model;
+    private final JPanel currView ;
     private ArrayList<FileView> files;
-    private JPanel fileExplorer;
-    private Label label;
+    private final JPanel fileExplorer;
+    private final Label label;
 
 
 
@@ -38,37 +38,49 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
         currView = new JPanel(new BorderLayout()); //all content that is opened will be in this panel
         add(currView,BorderLayout.CENTER);
-        currView.setBackground(Color.pink);
 
-        fileExplorer = new JPanel(); //this panel is used for generating a matrix-like view of Previews
-        fileExplorer.setLayout(null);
+
+        fileExplorer = new JPanel(null); //this panel is used for generating a matrix-like view of Previews
+
         fileExplorer.setBackground(Color.CYAN.darker());
 
         display(fileExplorer);
     }
 
 
-    public void display(JPanel setView){        //this method is used by FileView and DocumentView to display them
-        currView.removeAll();                   //on workspace
+    public void display(JPanel setView){ //this method is used by FileView and DocumentView to display them self's on workspace
 
-        JScrollPane scrollPane = new JScrollPane(setView);
-        scrollPane.setHorizontalScrollBar(null);
-        currView.add(scrollPane);
+        currentlyOpened = setView;//changed
 
-        currentlyOpened = setView;      //changed
+        currView.removeAll();
         label.setCurrPath();            //refreshing the upper label every time the displaying content is
 
+        if(setView == fileExplorer || setView instanceof FileView ) {//if workspace view or some file is open we need scroll
+            if(setView == fileExplorer)
+                MainFrame.getInstance().getITree().setRootSelected();
+            else {
+                TreeItem item = MainFrame.getInstance().getITree().findItemByModel(((FileView)setView).getModel());
+                MainFrame.getInstance().getITree().getTreeView().setSelectionPath(
+                        new TreePath(item.getPath()));
+            }
+            JScrollPane scrollPane = new JScrollPane(setView);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            currView.add(scrollPane);
+        }
+        else
+        {
+            currView.add(setView);
+        }
         updateUI();
     }
 
 
     @Override
     public void update(Notification notification) {
-
         if(notification.getNotificationObject() instanceof File &&
                 notification.getType() == NotificationType.ADD_ACTION){
             if(files == null){
-                files = new ArrayList<FileView>();
+                files = new ArrayList<>();
             }
             files.add(new FileView((File) notification.getNotificationObject(),this));
             if(currentlyOpened == fileExplorer)
@@ -79,13 +91,12 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
 
     public void setFileExplorer(){              //this method is used by WorkspaceView to display File Explorer view
-
         fileExplorer.removeAll();
 
-        if (files == null || files.size() == 0) {
+        if (files.isEmpty()){
                 display(fileExplorer);
                 return;
-            }
+        }
 
         //calculating how many rows we need to display previews for all files
         int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
@@ -99,7 +110,6 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
         FilePreview curr;
         int index ;
-
 
         for (int i = 0; i < rowNum; i++) {
             for (int j = 0; j < colNum; j++) {
@@ -134,12 +144,6 @@ public class WorkspaceView extends JPanel implements ISubscriber {
     public static JPanel getCurrentlyOpened() {
         return currentlyOpened;
     }
-
-
-    private static void setCurrentlyOpened(JPanel currentlyOpened) {
-        WorkspaceView.currentlyOpened = currentlyOpened;
-    }
-
 }
 
 

@@ -15,7 +15,7 @@ public class RenameAction extends  MyAbstractAction  {
 
     public RenameAction(){
 
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK,true));
         putValue(SMALL_ICON, loadIcon("images/editingSmall.png"));
         putValue(LARGE_ICON_KEY, loadIcon("images/editing.png"));
         putValue(NAME,"Rename");

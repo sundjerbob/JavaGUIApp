@@ -8,15 +8,15 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
+
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.net.URL;
 
 public class DocumentPreview extends JPanel  {
 
-    private DocumentView myView;
-    private Button shortcut;
+    private final DocumentView myView;
+
 
     public DocumentPreview(DocumentView document){
 
@@ -28,7 +28,7 @@ public class DocumentPreview extends JPanel  {
         JPanel p = new JPanel(new BorderLayout());
         add(p,BorderLayout.CENTER);
 
-        shortcut = new Button(null){
+        Button shortcut = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 TreeItem item = MainFrame.getInstance().getITree().findItemByModel(myView.getModel());
@@ -38,7 +38,9 @@ public class DocumentPreview extends JPanel  {
                 }
             }
         };
-        shortcut.setIcon(getLabelIcon("images/presentationShortcut.png"));
+        URL url = getClass().getResource("images/presentationShortcut.png");
+        if(url != null)
+            shortcut.setIcon(new ImageIcon(url));
         shortcut.setBorderPainted(false);
 
 
@@ -47,13 +49,4 @@ public class DocumentPreview extends JPanel  {
     }
 
 
-
-    private ImageIcon getLabelIcon(String path){
-        URL url = getClass().getResource(path);
-        if(url == null) {
-            System.out.println("problem");
-            return null;
-        }
-        return new ImageIcon(url);
-    }
 }

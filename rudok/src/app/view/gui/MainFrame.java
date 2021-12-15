@@ -7,7 +7,7 @@ import app.view.repository.WorkspaceView;
 import app.view.tree.ITree;
 import app.view.tree.controller.TreeImplementation;
 import app.view.tree.view.TreeView;
-import com.sun.source.tree.Tree;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,12 @@ public class MainFrame extends JFrame {
 
 
     private static MainFrame instance = null;
-    private Color color = Color.cyan;
+    private final Color color = Color.cyan;
     private ITree iTree;
     private ActionManager actionManager;
-    private ToolBar toolBar;
-    private JMenuBar menuBar;
+    private JSplitPane split;
+
+
 
 
     private MainFrame(){}
@@ -38,8 +39,8 @@ public class MainFrame extends JFrame {
         iTree = new TreeImplementation();
         TreeView treeView = (TreeView) iTree.generateTreeView(new Workspace("workspace"));//new JTree
         actionManager = new ActionManager();
-        toolBar = new ToolBar();
-        menuBar = new MenuBar(color);
+        ToolBar toolBar = new ToolBar();
+        JMenuBar menuBar = new MenuBar();
 
 
         //Main app window settings
@@ -60,8 +61,15 @@ public class MainFrame extends JFrame {
 
         //left side for tree view
         JPanel left = new JPanel(new BorderLayout());
-        JLabel label = new JLabel("Workspace",getLabelIcon("../repository/images/workspace.png"),SwingConstants.CENTER);
+
+        URL url = getClass().getResource("../repository/images/workspace.png");
+        if(url == null)
+            System.out.println("workspace icon can not");
+
+        JLabel label = new JLabel("Workspace",new ImageIcon(url),SwingConstants.CENTER);
         left.add(label,BorderLayout.NORTH);
+
+        label.setFont(new Font(label.getFont().getName(),Font.TYPE1_FONT,15));
         label.setPreferredSize( new Dimension (label.getWidth(),40) ) ;
         label.setBackground(new Color(0xC6F9F4));
         label.setOpaque(true);
@@ -78,17 +86,19 @@ public class MainFrame extends JFrame {
         //rightScroll.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 
        //splitting
-        JSplitPane split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, workspaceView);
-        split.setDividerLocation(getSize().width/4);
+        split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, workspaceView);
+        split.setDividerLocation(getSize().width/5);
 
         add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
         add(split,BorderLayout.CENTER);         //adding splitPane view to center
         setJMenuBar(menuBar);
-
+        setVisible(true);
     }
 
-    public ToolBar getToolBar(){
-        return toolBar;
+    @Override
+    public void paint(Graphics g) {
+        split.setDividerLocation(getWidth() / 5);
+        super.paintComponents(g);
     }
 
     public  ActionManager getActionManager(){
@@ -101,17 +111,6 @@ public class MainFrame extends JFrame {
 
     public ITree getITree(){
         return iTree;
-    }
-
-
-
-    private ImageIcon getLabelIcon(String path){
-        URL url = getClass().getResource(path);
-        if(url == null) {
-            System.out.println("problem");
-            return null;
-        }
-        return new ImageIcon(url);
     }
 }
 

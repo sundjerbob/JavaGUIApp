@@ -1,42 +1,42 @@
 package app.view.state;
 
+import app.view.repository.DocumentView;
+
 public class StateManager {
 
+    private final DocumentView document;
     private IModeState currModeState;
     private IDrawState currDrawState;
 
-    private EditState editState;
-    private SlideshowState slideshowState;
+    private final EditState editState;
+    private final SlideshowState slideshowState;
 
-    public StateManager() {
-    }
-
-
-    public IModeState getCurrModeState() {
-        return currModeState;
-    }
-
-    public IDrawState getCurrDrawState() {
-        return currDrawState;
-    }
-
-    public void setEditState(){
-        if(editState == null)
-            editState = new EditState();
+    public StateManager(DocumentView doc) {
+        document = doc;
+        editState = new EditState( doc);
+        slideshowState = new SlideshowState(doc);
         currModeState = editState;
     }
 
+    public void setEditState() {
+        if(currModeState != editState) {
+            currModeState = editState;
+        }
+        currModeState.set();
+    }
     public void setSlideshowState(){
-        if(slideshowState == null)
-            slideshowState = new SlideshowState();
-        currModeState = slideshowState;
+        if(currModeState != slideshowState) {
+            currModeState = slideshowState;
+        }
+        currModeState.set();
+
     }
 
-    public SlideshowState getSlideshowState() {
-        return slideshowState;
+    public IModeState getCurrModeState(){
+        return currModeState;
     }
 
-    public EditState getEditState() {
-        return editState;
+    public IDrawState getCurrDrawState(){
+        return currDrawState;
     }
 }

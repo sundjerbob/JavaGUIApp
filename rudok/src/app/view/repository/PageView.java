@@ -8,73 +8,161 @@ import app.observer.Notification;
 import app.observer.NotificationType;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PageView extends JPanel implements ISubscriber {
 
-    private Page model;
-    private JLabel label;
-    private DocumentView parentView;
-    private Image image;
-    private JPanel bgPanel; //im drawing background image on this panel and putting it behind pagePanel and making pageOpaque null so the background is visible
 
-    public PageView(Page model,DocumentView parent) {
-        super(new BorderLayout());
+    private final Page model;
+    private final DocumentView parentView;
+    private final JPanel bgPanel;
+    private final PageThumbnail pageThumbnail;
+    private Image image;
+
+
+    public PageView (Page model, DocumentView parent) {
+        super(new GridBagLayout());
+
         this.model = model;
         model.addSubscriber(this);
         parentView = parent;
 
-
-        setBackground(Color.white);
-        label = new JLabel(model.getName(), SwingConstants.CENTER);
-        label.setOpaque(true);
-        add(label, BorderLayout.SOUTH);
-
-        bgPanel = new JPanel(new BorderLayout()) {
+        bgPanel = new JPanel() {
             @Override
-            protected void paintComponent(Graphics g) {
+            public void paintComponent (Graphics g) {
                 super.paintComponent(g);
                 if (image != null)
-                    g.drawImage(image, 0, 0, null);
+                    g.drawImage(image, 0, 0, getWidth(),getHeight(), null);
+                else {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
             }
         };
+        bgPanel.setPreferredSize(new Dimension(800,800));
+        bgPanel.setMinimumSize(new Dimension(600,600));
+        add(bgPanel);
         setBackgroundTheme();
-        bgPanel.add(label, BorderLayout.SOUTH);
-        add(bgPanel, BorderLayout.CENTER);
+        setBackground(Color.lightGray);
 
+        pageThumbnail = new PageThumbnail();
     }
+
+    public void setSel (boolean arg){
+        if(arg)
+           pageThumbnail.setBackground(Color.cyan);
+        else
+            pageThumbnail.setBackground(Color.lightGray);
+    }
+
+    class PageThumbnail extends JPanel {
+
+
+
+        public PageThumbnail () {
+            super(new BorderLayout());
+            setBackground(Color.lightGray);
+
+            JLabel name = new JLabel(model.getName(),SwingConstants.CENTER);
+            name.setVerticalAlignment(JLabel.CENTER);
+            name.setPreferredSize(new Dimension(0, 30));
+            name.setFont(new Font(getFont().getName(),Font.BOLD,14));
+            name.setBackground(Color.cyan.darker());
+            name.setOpaque(true);
+            add(name,BorderLayout.SOUTH);
+
+            JPanel label = new JPanel(){
+                @Override
+                public void paint (Graphics g) {
+                    super.paint(g);
+                    g.setColor(Color.black);
+                    g.drawRect( 0, 0,getWidth() - 1, getHeight() - 1);
+                    if(image != null)
+                        g.drawImage(image,0,0,getWidth(),getHeight(),null);
+                    else{
+                        g.setColor(Color.WHITE);
+                        g.fillRect(0, 0, getWidth(), getHeight());
+                    }
+                }
+            };
+            label.setPreferredSize(new Dimension(140, 140));
+            JPanel cont = new JPanel();
+            cont.setOpaque(false);
+            cont.setBorder(new EmptyBorder(10, 31, 20, 29));
+            cont.add(label);
+            add(cont, BorderLayout.CENTER);
+
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                    name.setBackground(new Color(0x528B8B));
+                    parentView.setCurrentPage(parentView.getPages().indexOf(PageView.this));
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    name.setBackground(Color.cyan);
+                }
+
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    name.setBackground(new Color(0x528B8B));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    name.setBackground(Color.cyan.darker());
+                }
+            });
+        }
+    }
+
+
+
+
 
 
     @Override
-    public void update(Notification notification) {
-        Notification n = notification;
+    public void update (Notification notification) {
 
-        if(n.getType() == NotificationType.DOUBLE_CLICK){
-            parentView.setCurrentPage(this);
+        if(notification.getType() == NotificationType.DOUBLE_CLICK){
+            int index = parentView.getCurrentPage();
+
             if(WorkspaceView.getCurrentlyOpened() != parentView)
                 parentView.getParentView().getParentView().display(parentView);
+
+            if(parentView.getCurrentPage() != index)
+                parentView.setCurrentPage(index);
         }
 
-
-        else if (n.getType() == NotificationType.REMOVE_ACTION){
-            parentView.removePage(this);
+        else if (notification.getType() == NotificationType.REMOVE_ACTION){
+           parentView.removePage(this);
         }
-
-
-
     }
 
-    public void setBackgroundTheme(){
+    public void setBackgroundTheme () {
         image = ((Document) getModel().getParent()).getTheme();
-        if (image == null) {
-            bgPanel.setOpaque(true);
-        } else
-            bgPanel.setOpaque(false);
 
-        bgPanel.updateUI();
+        if(pageThumbnail != null && bgPanel != null) {
+            pageThumbnail.repaint();
+            bgPanel.repaint();
+        }
     }
 
-    public NodeModel getModel() {
+    public NodeModel getModel () {
         return model;
+    }
+
+    public PageThumbnail getPageThumbnail () {
+        return pageThumbnail;
     }
 }

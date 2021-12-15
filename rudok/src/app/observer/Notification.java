@@ -5,9 +5,9 @@ import app.model.node.NodeModel;
 public class Notification {
 
     private NotificationType type;
-    private NodeModel notificationObject;
+    private Object notificationObject;
 
-    public Notification(NodeModel obj, NotificationType type){
+    public Notification(Object obj, NotificationType type){
         this.type = type;
         notificationObject = obj;
     }
@@ -16,7 +16,7 @@ public class Notification {
         return type;
     }
 
-    public NodeModel getNotificationObject(){
+    public Object getNotificationObject(){
         return notificationObject;
     }
 }

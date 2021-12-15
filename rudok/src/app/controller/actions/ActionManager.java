@@ -8,6 +8,7 @@ public class ActionManager {
     private final RenameAction renameAction;
     private final EditDocumentAction editDocumentAction;
     private final SetAuthorAction setAuthorAction;
+    private final ChangeModeAction changeModeAction;
 
     public ActionManager(){
         newAction = new NewAction();
@@ -16,6 +17,7 @@ public class ActionManager {
         renameAction = new RenameAction();
         editDocumentAction = new EditDocumentAction();
         setAuthorAction = new SetAuthorAction();
+        changeModeAction = new ChangeModeAction();
     }
 
 
@@ -42,5 +44,9 @@ public class ActionManager {
 
     public SetAuthorAction getSetAuthorAction(){
         return setAuthorAction;
+    }
+
+    public ChangeModeAction getChangeModeAction(){
+        return changeModeAction;
     }
 }

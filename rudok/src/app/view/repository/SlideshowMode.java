@@ -1,149 +1,148 @@
 package app.view.repository;
 
 
+
+
+import app.view.gui.Button;
+import app.view.gui.MainFrame;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
 
-public class SlideshowMode extends JPanel  {
+public class SlideshowMode extends JPanel {
 
-    private JPanel left;
-    private JPanel right;
-    private JLabel previousPage;
-    private JLabel nextPage;
-    private JPanel pagesStack;
-    private DocumentView document;
+    private final DocumentView document;
+    private final JPanel content;
+    private final JLabel previousPage;
+    private final JLabel nextPage;
 
-    public SlideshowMode(DocumentView document){
+    public SlideshowMode(DocumentView document) {
         super(new BorderLayout());
         this.document = document;
-        pagesStack = document.getPagesStack();
-        left = new JPanel();
-        right = new JPanel();
 
-        previousPage = new JLabel();
-        setBackground(Color.cyan.darker());
+        JToolBar toolBar = new JToolBar(SwingConstants.VERTICAL);
+        content = new JPanel(new BorderLayout());
+        toolBar.add(new Button(MainFrame.getInstance().getActionManager().getChangeModeAction()));
+        add(toolBar,BorderLayout.EAST);
+        toolBar.setBorder(new EmptyBorder(10,5,0,5));
+        toolBar.setBackground(new Color(0xC6F9F4));
+        add(content,BorderLayout.CENTER);
+
+        previousPage = new JLabel(loadIcon("images/prev.png"),SwingConstants.CENTER);
         previousPage.setOpaque(true);
         previousPage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        previousPage.setForeground(Color.BLACK);
+        previousPage.setPreferredSize(new Dimension(100,100));
+        previousPage.setBackground(Color.cyan.darker());
         previousPage.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                goPrev();
+                if(document.getCurrentPage() > 0)
+                    document.setCurrentPage(document.getCurrentPage() - 1);
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                setBackground(new Color(0x164040));
+                previousPage.setBackground(new Color(0x528B8B));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                setBackground(Color.cyan.darker());
+                previousPage.setBackground(Color.cyan.darker());
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                setBackground(new Color(0x032727));
+                previousPage.setBackground(Color.gray);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                setBackground(new Color(0x194242));
+                previousPage.setBackground(new Color(0x528B8B));
             }
         });
 
-        nextPage = new JLabel();
-        setBackground(Color.cyan.darker());
+        nextPage = new JLabel(loadIcon("images/next.png"),SwingConstants.CENTER);
         nextPage.setOpaque(true);
         nextPage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        nextPage.setPreferredSize(new Dimension(100,100));
+        nextPage.setBackground(Color.cyan.darker());
+        nextPage.setForeground(Color.BLACK);
         nextPage.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                goNext();
+                if(document.getCurrentPage() < document.getPages().size() - 1)
+                    document.setCurrentPage(document.getCurrentPage() + 1);
+                else
+                    System.out.println("go prev????????????????");
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                setBackground(new Color(0x164040));
+                nextPage.setBackground(new Color(0x528B8B));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
-                setBackground(Color.cyan.darker());
+                nextPage.setBackground(Color.cyan.darker());
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                setBackground(new Color(0x032727));
+                nextPage.setBackground(Color.gray);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                setBackground(new Color(0x194242));
+                nextPage.setBackground(new Color(0x528B8B));
+
             }
         });
 
-
-
-
-        left.add(previousPage);
-        right.add(nextPage);
-
-        add(left, BorderLayout.WEST);
-        add(right, BorderLayout.EAST);
-        add(pagesStack, BorderLayout.CENTER);
-
-
+        content.add(nextPage, BorderLayout.EAST);
+        content.add(previousPage, BorderLayout.WEST);
+        //content.add(document.getPagesStack(), BorderLayout.CENTER);
     }
 
-    private void goPrev(){
-        DocumentView document = (DocumentView)WorkspaceView.getCurrentlyOpened();
-
-        int index = document.getPages().indexOf(document.getCurrentPage());
-
-        if(index == -1){
-            previousPage.setEnabled(false);
-            nextPage.setEnabled(false);
+    public void updateArrows(){
+        int index = document.getCurrentPage();
+        if(document.getPages().size() == 1) {
+            previousPage.setVisible(false);
+            nextPage.setVisible(false);
         }
-
-        if(index >= 1) {
-            document.setCurrentPage(document.getPages().get(--index));
-            ((CardLayout) pagesStack.getLayout()).show(pagesStack, document.getCurrentPage().getModel().getName());
+        else if(index > 0 && index < document.getPages().size() - 1){
+            previousPage.setVisible(true);
+            nextPage.setVisible(true);
         }
-        if(index == 0)
-            previousPage.setEnabled(false);
-        else
-            previousPage.setEnabled(true);
+        else if(index == 0){
+            nextPage.setVisible(true);
+            previousPage.setVisible(false);
+        }
+        else if(index  ==  document.getPages().size() - 1){
+             nextPage.setVisible(false);
+             previousPage.setVisible(true);
+        }
     }
 
-    private void goNext(){
-
-        int index = document.getPages().indexOf(document.getCurrentPage());
-
-        if(index < document.getPages().size() - 1)
-            document.setCurrentPage(document.getPages().get(++index));
-
-        else if(index == document.getPages().size() - 1)
-            nextPage.setEnabled(false);
-
-        else
-            nextPage.setEnabled(true);
+    public void setPageStack(JPanel pageStack){
+        content.add(pageStack,BorderLayout.CENTER);
     }
 
-    private Icon loadIcon(String fileName){
+    private Icon loadIcon(String fileName) {
         URL imageURL = getClass().getResource(fileName);
         Icon icon = null;
 
@@ -153,7 +152,6 @@ public class SlideshowMode extends JPanel  {
             System.out.println("SlideshowMode - load icon failed");
         return icon;
     }
-
 
 
 }

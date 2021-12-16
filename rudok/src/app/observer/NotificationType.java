@@ -9,5 +9,6 @@ public enum NotificationType {
     AUTHOR_SET,
     THEME_SET,
     SELECTION_EVENT,
-    SLIDE_CHANGE
+    SLOT_ADDED,
+    SLOT_REMOVED;
 }

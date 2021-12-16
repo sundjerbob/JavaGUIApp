@@ -1,6 +1,5 @@
 package app.observer;
 
-import app.model.node.NodeModel;
 
 public class Notification {
 

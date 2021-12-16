@@ -6,19 +6,26 @@ public class ActionManager {
     private final DeleteAction deleteAction;
     private final InfoAction infoAction;
     private final RenameAction renameAction;
-    private final EditDocumentAction editDocumentAction;
+    private final SetThemeAction setThemeAction;
     private final SetAuthorAction setAuthorAction;
     private final ChangeModeAction changeModeAction;
+    private final AddSlotStateAction addSlotStateAction;
+    private final DelSlotStateAction delSlotStateAction;
+    private final SelectStateAction selectStateAction;
 
     public ActionManager(){
         newAction = new NewAction();
         deleteAction = new DeleteAction();
         infoAction = new InfoAction();
         renameAction = new RenameAction();
-        editDocumentAction = new EditDocumentAction();
+        setThemeAction = new SetThemeAction();
         setAuthorAction = new SetAuthorAction();
         changeModeAction = new ChangeModeAction();
+        addSlotStateAction = new AddSlotStateAction();
+        delSlotStateAction = new DelSlotStateAction();
+        selectStateAction = new SelectStateAction();
     }
+
 
 
 
@@ -38,8 +45,8 @@ public class ActionManager {
         return renameAction;
     }
 
-    public EditDocumentAction getEditDocumentAction() {
-        return editDocumentAction;
+    public SetThemeAction getEditDocumentAction() {
+        return setThemeAction;
     }
 
     public SetAuthorAction getSetAuthorAction(){
@@ -48,5 +55,17 @@ public class ActionManager {
 
     public ChangeModeAction getChangeModeAction(){
         return changeModeAction;
+    }
+
+    public AddSlotStateAction getAddSlotStateAction() {
+        return addSlotStateAction;
+    }
+
+    public DelSlotStateAction getDelSlotStateAction() {
+        return delSlotStateAction;
+    }
+
+    public SelectStateAction getSelectStateAction() {
+        return selectStateAction;
     }
 }

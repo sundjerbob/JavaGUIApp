@@ -6,7 +6,6 @@ import app.model.repository.Workspace;
 import app.observer.Notification;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

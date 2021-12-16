@@ -60,7 +60,6 @@ public class TreeImplementation implements ITree {
         if(node instanceof Workspace){
             return root;
         }
-
         TreeItem item = findItemByModel(node.getParent());
         return (TreeItem) item.getChildAt(node.getParent().getChildren().indexOf(node));
     }

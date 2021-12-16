@@ -25,9 +25,9 @@ public class MainFrame extends JFrame {
 
 
 
-    private MainFrame(){}
+    private MainFrame() { }
 
-    public static MainFrame getInstance(){
+    public static MainFrame getInstance() {
         if(instance == null)
             instance = new MainFrame();
         return instance;
@@ -47,11 +47,11 @@ public class MainFrame extends JFrame {
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension d = kit.getScreenSize();
-        d.width = (int)(d.width * 0.8);
-        d.height = (int)(d.height * 0.8);
+        d.width = (int)(d.width * 0.75);
+        d.height = (int)(d.height * 0.75);
+
         setSize(d);
         setLocationRelativeTo(null);
-
 
         //listener for custom close popup
 
@@ -95,11 +95,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        split.setDividerLocation(getWidth() / 5);
-        super.paintComponents(g);
-    }
+
 
     public  ActionManager getActionManager(){
         return actionManager;

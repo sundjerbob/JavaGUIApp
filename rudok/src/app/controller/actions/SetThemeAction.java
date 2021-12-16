@@ -10,11 +10,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class EditDocumentAction extends MyAbstractAction {
+public class SetThemeAction extends MyAbstractAction {
 
 
 
-    public EditDocumentAction(){
+    public SetThemeAction(){
 
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
         putValue(SMALL_ICON, loadIcon("images/pictureSmall.png"));

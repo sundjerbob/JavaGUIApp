@@ -27,8 +27,14 @@ public class SlotView implements ISubscriber {
 
     void paint(Graphics g,  Object preview){
         Graphics2D g2 = (Graphics2D) g;
+        int stroke = model.getStroke();
+        float scale;
+        if(preview instanceof PageView.PageThumbnail)
+            scale = 140f / 600f;
+        else
+            scale = parentView.getPageFramework().getWidth() / 600f;
 
-        g2.setStroke(model.getStroke());
+        g2.setStroke(new BasicStroke((int)Math.ceil(stroke * scale)));
         g2.setColor(model.getOutLineColor());
         setShape(preview);
         g2.draw(shape);
@@ -37,7 +43,7 @@ public class SlotView implements ISubscriber {
         g2.fill(shape);
 
         if(selected){
-            g2.setStroke(new BasicStroke(5));
+            g2.setStroke(new BasicStroke((int)Math.ceil(5 * scale)));
             g2.setColor(Color.blue);
             g2.draw(shape);
         }

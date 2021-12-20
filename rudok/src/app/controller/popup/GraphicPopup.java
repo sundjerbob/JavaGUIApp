@@ -21,7 +21,7 @@ public class GraphicPopup extends JDialog {
     private final JPanel outColPanel;
     private final JPanel preview;
     private final JTextField strokeField;
-    private Stroke stroke ;
+    private int stroke ;
     private Color insideColor ;
     private Color outLineColor;
 
@@ -61,7 +61,7 @@ public class GraphicPopup extends JDialog {
         else if(page.getSlots() == null){
             insideColor = Color.black;
             outLineColor = Color.yellow;
-            stroke = new BasicStroke(5);
+            stroke = 5;
         }
          preview = new JPanel(){
 
@@ -76,18 +76,31 @@ public class GraphicPopup extends JDialog {
                 shape.lineTo(getWidth() / 4,(getWidth() / 4) * 3);
                 shape.closePath();
 
+                BasicStroke path = new BasicStroke(stroke);
 
-                ((Graphics2D) g).setStroke(stroke);
+                ((Graphics2D) g).setStroke(path);
                 g.setColor(outLineColor);
                 ((Graphics2D) g).draw(shape);
                 g.setColor(insideColor);
                 ((Graphics2D) g).fill(shape);
 
+                g.setColor(Color.cyan);
+                ((Graphics2D) g).setStroke(new BasicStroke(8));
+                g.drawRect(0,0,preview.getWidth(),preview.getHeight());
 
             }
         };
+        preview.setBackground(Color.white);
 
-        inColPanel = new JPanel();
+        inColPanel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.black);
+                ((Graphics2D)g).setStroke(new BasicStroke(3));
+                g.drawRect(0,0,inColPanel.getWidth(),inColPanel.getHeight());
+            }
+        };
         inColPanel.setBackground(insideColor);
         inColPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -99,7 +112,15 @@ public class GraphicPopup extends JDialog {
         });
 
 
-        outColPanel = new JPanel();
+        outColPanel = new JPanel(){
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.black);
+                ((Graphics2D)g).setStroke(new BasicStroke(3));
+                g.drawRect(0,0,outColPanel.getWidth(),outColPanel.getHeight());
+            }
+        };
         outColPanel.setBackground(outLineColor);
         outColPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -120,7 +141,7 @@ public class GraphicPopup extends JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(!strokeField.getText().equals(""))
-                    stroke = new BasicStroke(Integer.parseInt(strokeField.getText()));
+                    stroke =Integer.parseInt(strokeField.getText());
                 preview.repaint();
             }
         };
@@ -134,7 +155,7 @@ public class GraphicPopup extends JDialog {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (page.getSelectedSlot() == null)
-                    ((Page) page.getModel()).setSlotSettings(insideColor,outLineColor,stroke,null);
+                    ((Page) page.getModel()).setSlotSettings(insideColor,outLineColor, stroke,null);
                 else
                     ((Page) page.getModel()).setSlotSettings(insideColor,outLineColor,stroke,
                             page.getSelectedSlot().getModel());

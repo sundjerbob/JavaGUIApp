@@ -30,7 +30,7 @@ public class Page extends NodeModel {
         toRemove.notifySubscribers(new Notification( toRemove, NotificationType.SLOT_REMOVED));
     }
 
-    public void setSlotSettings(Color fil,Color line,Stroke stroke,Slot sel){
+    public void setSlotSettings(Color fil,Color line,int stroke,Slot sel){
         if(sel != null)
         {   System.out.println("IMA LEBA");
             sel.setOutLineColor(line);

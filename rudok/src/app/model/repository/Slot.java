@@ -15,14 +15,14 @@ public class Slot implements IPublisher {
     private Dimension size ;
     private Color outLineColor;
     private Color insideColor;
-    private Stroke stroke;
+    private int stroke;
     private ArrayList<ISubscriber> subscribers;
 
     public Slot(Point point,Page page) {
         this.point = point;
         parent = page;
         size = new Dimension(100,100);
-        stroke = new BasicStroke(5);
+        stroke = 5;
         insideColor = Color.black;
         outLineColor = Color.yellow;
     }
@@ -53,11 +53,11 @@ public class Slot implements IPublisher {
         this.outLineColor = outLineColor;
     }
 
-    void setStroke(Stroke stroke) {
+    void setStroke(int stroke) {
         this.stroke = stroke;
     }
 
-    public Stroke getStroke() {
+    public int getStroke() {
         return stroke;
     }
 

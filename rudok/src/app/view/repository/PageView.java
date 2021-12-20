@@ -84,10 +84,13 @@ public class PageView extends JPanel implements ISubscriber {
 
         if(notification.getType() == NotificationType.DOUBLE_CLICK){
             int index = parentView.getCurrentPage();
-
+            if(WorkspaceView.getCurrentlyOpened() != parentView)
                 parentView.getParentView().getParentView().display(parentView);
+            if(parentView.getPages().get(parentView.getCurrentPage() )!= this)
+                parentView.setCurrentPage(parentView.getPages().indexOf(this));
 
-                parentView.setCurrentPage(index);
+
+
         }
 
         else if (notification.getType() == NotificationType.REMOVE_ACTION){
@@ -106,7 +109,7 @@ public class PageView extends JPanel implements ISubscriber {
 
         else if(notification.getType() == NotificationType.SLOT_RELOCATED ||
                 notification.getType() == NotificationType.SLOT_CHANGED){
-            System.out.println("UPDAAAAAAATE");
+
             pageFramework.repaint();
             pageThumbnail.repaint();
         }

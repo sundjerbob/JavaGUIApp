@@ -9,25 +9,23 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URL;
 
 public class FilePreview extends JPanel  {
 
 
-    private FileView myView;
-    private Button shortcut;
+    private final FileView myView;
+    private final Button shortcut;
 
     public FilePreview(FileView file){
         super(new BorderLayout());
         myView = file;
-        setBorder(new EmptyBorder(50,50,50,50));
-        setBackground(Color.CYAN.darker());
+        setBorder(new EmptyBorder(40,40,40,40));
+        setBackground(Color.cyan.darker());
 
-        JPanel p = new JPanel(new BorderLayout());
-        add(p,BorderLayout.CENTER);
-
-        add(new JLabel(myView.getModel().getName(),SwingConstants.CENTER),BorderLayout.SOUTH);
+        JLabel label = new JLabel(myView.getModel().getName(),SwingConstants.CENTER);
+        label.setFont(new Font(label.getFont().getName(),Font.BOLD,15));
+        add(label,BorderLayout.SOUTH);
 
         shortcut = new Button(null){
             @Override
@@ -42,25 +40,14 @@ public class FilePreview extends JPanel  {
                 }
             }
         };
-        shortcut.setIcon(getLabelIcon("images/folderShortcut.png"));
+        URL url = getClass().getResource("images/folderShortcut.png");
+        if(url == null)
+            System.out.println("mmm" +
+                    "");
+            shortcut.setIcon( new ImageIcon(url));
         shortcut.setBorderPainted(false);
-        p.add(shortcut, BorderLayout.CENTER);
+        add(shortcut, BorderLayout.CENTER);
     }
 
-
-
-
-
-
-
-
-    private ImageIcon getLabelIcon(String path){
-        URL url = getClass().getResource(path);
-        if(url == null) {
-            System.out.println("problem");
-            return null;
-        }
-        return new ImageIcon(url);
-    }
 
 }

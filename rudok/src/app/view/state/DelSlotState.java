@@ -1,19 +1,31 @@
 package app.view.state;
 
-import app.view.repository.DocumentView;
+import app.model.repository.Page;
 
+import app.view.repository.PageView;
 import java.awt.event.MouseEvent;
 
 public class DelSlotState implements IDrawState{
 
-    private DocumentView document;
 
-    public DelSlotState(DocumentView documentView){
-        document = documentView;
+    @Override
+    public void mousePressed(MouseEvent e) {
+        PageView p = ((PageView.PageFramework)e.getSource()).getPage();
+        if(p.getSlots() != null){
+
+            for(int i = p.getSlots().size() - 1;i >= 0; i--){
+                if(p.getSlots().get(i).elementAt( e.getPoint() ) ) {
+                    System.out.println("delete");
+                    ((Page)p.getModel()).removeSlot(p.getSlots().get(i).getModel());
+                    return;
+                }
+            }
+        }
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
 
     }
 }
+

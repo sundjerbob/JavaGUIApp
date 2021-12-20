@@ -1,23 +1,24 @@
 package app.view.state;
-
 import app.model.repository.Page;
-import app.model.repository.Slot;
-import app.view.repository.DocumentView;
-import app.view.repository.PageView;
 
+import app.view.repository.PageView;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class AddSlotState implements  IDrawState{
 
-    private final DocumentView document;
 
-    public AddSlotState(DocumentView documentView){
-        document = documentView;
+    @Override
+    public void mousePressed(MouseEvent e) {
+        PageView p = ((PageView.PageFramework)e.getSource()).getPage();
+
+        float scale =  600f / p.getPageFramework().getWidth(); //WE SCALE MODEL INPUT COORDINATES RELATIVE TO PANEL WIDTH OF 600px
+        ((Page)p.getModel()).addSlot(new Point((int)(e.getPoint().x * scale),(int)(e.getPoint().y  * scale)));
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        PageView p = document.getPages().get(document.getCurrentPage());
-        ((Page)p.getModel()).addSlot(e.getPoint());
+    public void mouseDragged(MouseEvent e) {
+
     }
+
 }

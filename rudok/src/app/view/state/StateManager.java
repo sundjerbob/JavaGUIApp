@@ -21,10 +21,11 @@ public class StateManager {
         document = doc;
         editState = new EditState(doc);
         slideshowState = new SlideshowState(doc);
-        addSlotState = new AddSlotState(document);
-        selectState = new SelectState(document);
-        delSlotState = new DelSlotState(document);
+        addSlotState = new AddSlotState();
+        selectState = new SelectState();
+        delSlotState = new DelSlotState();
         currModeState = editState;
+        currDrawState = selectState;
     }
 
     public void setEditState() {
@@ -46,7 +47,7 @@ public class StateManager {
     }
 
     public void setSelectState() {
-        if(currDrawState != slideshowState)
+        if(currDrawState != selectState)
         currDrawState = selectState;
     }
 
@@ -61,5 +62,17 @@ public class StateManager {
 
     public IDrawState getCurrDrawState(){
         return currDrawState;
+    }
+
+    public AddSlotState getAddSlotState() {
+        return addSlotState;
+    }
+
+    public DelSlotState getDelSlotState() {
+        return delSlotState;
+    }
+
+    public SelectState getSelectState() {
+        return selectState;
     }
 }

@@ -1,14 +1,17 @@
 package app.controller.actions;
 import app.observer.Notification;
+import app.view.repository.DocumentView;
+import app.view.repository.WorkspaceView;
+import app.view.state.SelectState;
+
 import java.awt.event.ActionEvent;
 
 
 public class SelectStateAction extends MyAbstractAction{
 
     public SelectStateAction() {
-        putValue(SMALL_ICON, loadIcon("images/editingSmall.png"));
-        putValue(LARGE_ICON_KEY, loadIcon("images/point.png"));
-        putValue(NAME,"Select");
+        putValue(LARGE_ICON_KEY, loadIcon("images/clicker.png"));
+
         putValue(SHORT_DESCRIPTION,"Select");
     }
     @Override
@@ -18,6 +21,7 @@ public class SelectStateAction extends MyAbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        DocumentView doc = (DocumentView)WorkspaceView.getCurrentlyOpened();
+        doc.setDrawState(doc.getStateManager().getSelectState());
     }
 }

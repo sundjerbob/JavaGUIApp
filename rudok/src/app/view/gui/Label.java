@@ -61,12 +61,11 @@ public class Label extends JPanel   {
     }
 
     public void setCurrPath(){
-       removeAll();
        panel.removeAll();
 
-       JPanel currView = WorkspaceView.getCurrentlyOpened();
+       JPanel view = WorkspaceView.getCurrentlyOpened();
 
-       if(currView instanceof FileView){
+       if(view instanceof FileView){
            panel.add(backToWorkspace);
            panel.add(Box.createHorizontalStrut(25));
 
@@ -74,20 +73,20 @@ public class Label extends JPanel   {
                @Override
                public void mouseClicked(MouseEvent e) {
                    super.mouseClicked(e);
-                   FileView curr = (FileView) WorkspaceView.getCurrentlyOpened();
-                   TreeItem item = MainFrame.getInstance().getITree().findItemByModel(curr.getModel());
+
+                   TreeItem item = MainFrame.getInstance().getITree().findItemByModel(((FileView)view).getModel());
                    MainFrame.getInstance().getITree().getTreeView().setSelectionPath(
                            new TreePath(item.getPath()));
                }
            };
            currFile.setToolTipText("You are currently in this file");
-           currFile.setText(((FileView)currView).getModel().getName());
+           currFile.setText(((FileView)view).getModel().getName());
            currFile.setIcon(loadIcon("../repository/images/open-folder.png"));
            currFile.setForeground(Color.cyan);
            panel.add(currFile);
        }
 
-       else if(currView instanceof DocumentView){
+       else if(view instanceof DocumentView){
 
            panel.add(backToWorkspace);
 
@@ -103,13 +102,13 @@ public class Label extends JPanel   {
                    }
                }
            };
-           currFile.setText(((DocumentView)currView).getParentView().getModel().getName());
+           currFile.setText(((DocumentView)view).getParentView().getModel().getName());
            currFile.setToolTipText("Go back to file of this presentation");
            currFile.setIcon(loadIcon("../repository/images/open-folder.png"));
            panel.add(currFile);
            panel.add(Box.createHorizontalStrut(25));
 
-           currDocument.setText(((DocumentView)currView).getModel().getName());
+           currDocument.setText(((DocumentView)view).getModel().getName());
            currDocument.setForeground(Color.cyan);
            panel.add(currDocument);
        }
@@ -117,8 +116,6 @@ public class Label extends JPanel   {
 
         add(panel, BorderLayout.CENTER);
     }
-
-
 
     private Icon loadIcon(String fileName){
         URL imageURL = getClass().getResource(fileName);

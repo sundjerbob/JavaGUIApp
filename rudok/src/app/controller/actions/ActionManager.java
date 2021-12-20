@@ -12,6 +12,7 @@ public class ActionManager {
     private final AddSlotStateAction addSlotStateAction;
     private final DelSlotStateAction delSlotStateAction;
     private final SelectStateAction selectStateAction;
+    private final GraphicsAction graphicsAction;
 
     public ActionManager(){
         newAction = new NewAction();
@@ -24,6 +25,7 @@ public class ActionManager {
         addSlotStateAction = new AddSlotStateAction();
         delSlotStateAction = new DelSlotStateAction();
         selectStateAction = new SelectStateAction();
+        graphicsAction = new GraphicsAction();
     }
 
 
@@ -45,10 +47,9 @@ public class ActionManager {
         return renameAction;
     }
 
-    public SetThemeAction getEditDocumentAction() {
+    public SetThemeAction getSetThemeAction() {
         return setThemeAction;
     }
-
     public SetAuthorAction getSetAuthorAction(){
         return setAuthorAction;
     }
@@ -68,4 +69,12 @@ public class ActionManager {
     public SelectStateAction getSelectStateAction() {
         return selectStateAction;
     }
+
+    public GraphicsAction getGraphicsAction() {
+        return graphicsAction;
+    }
+
 }
+
+
+

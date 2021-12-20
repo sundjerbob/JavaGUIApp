@@ -3,22 +3,28 @@ package app.model.repository;
 import app.observer.IPublisher;
 import app.observer.ISubscriber;
 import app.observer.Notification;
+import app.observer.NotificationType;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Slot implements IPublisher {
 
+    private final Page parent;
     private Point point;
-    private int with = 100, height = 100;
-    private Color outLineColor = Color.yellow;
-    private Color insideColor = Color.black;
-    private Stroke stroke ;
+    private Dimension size ;
+    private Color outLineColor;
+    private Color insideColor;
+    private Stroke stroke;
     private ArrayList<ISubscriber> subscribers;
 
-    public Slot(Point point) {
+    public Slot(Point point,Page page) {
         this.point = point;
+        parent = page;
+        size = new Dimension(100,100);
         stroke = new BasicStroke(5);
+        insideColor = Color.black;
+        outLineColor = Color.yellow;
     }
 
 
@@ -36,21 +42,25 @@ public class Slot implements IPublisher {
             curr.update(notification);
     }
 
-    public void setInsideColor(Color insideColor) {
+
+
+
+    void setInsideColor(Color insideColor) {
         this.insideColor = insideColor;
     }
 
-    public void setOutLineColor(Color outLineColor) {
+    void setOutLineColor(Color outLineColor) {
         this.outLineColor = outLineColor;
     }
 
-    public void setStroke(Stroke stroke) {
+    void setStroke(Stroke stroke) {
         this.stroke = stroke;
     }
 
     public Stroke getStroke() {
         return stroke;
     }
+
 
     public Color getOutLineColor() {
         return outLineColor;
@@ -60,15 +70,22 @@ public class Slot implements IPublisher {
         return insideColor;
     }
 
-    public int getWith() {
-        return with;
+
+    public Dimension getSize() {
+        return size;
     }
 
-    public int getHeight() {
-        return height;
-    }
+
 
     public Point getPoint() {
         return point;
+    }
+
+    public void setSize(Dimension d){
+        size = d;
+    }
+    public void setPoint(Point point) {
+        this.point = point;
+        parent.notifySubscribers(new Notification(point, NotificationType.SLOT_RELOCATED));
     }
 }

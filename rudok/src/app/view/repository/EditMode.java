@@ -1,10 +1,7 @@
 package app.view.repository;
 
-
-import app.view.gui.Button;
-import app.view.gui.MainFrame;
+import app.view.gui.DrawToolBar;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class EditMode extends JPanel {
@@ -14,28 +11,14 @@ public class EditMode extends JPanel {
     private final JScrollPane scrollPane;
 
 
-    public EditMode (DocumentView documentView) {
+    public EditMode (DocumentView documentView, DrawToolBar toolBar) {
+
         super(new BorderLayout());
         document = documentView;
-        JToolBar toolBar = new JToolBar(SwingConstants.VERTICAL);
-        toolBar.add(new Button(MainFrame.getInstance().getActionManager().getChangeModeAction()));
 
-        JButton b = toolBar.add(MainFrame.getInstance().getActionManager().getAddSlotStateAction());
-        b.setFocusPainted(false);
-        b.setBorderPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        b = toolBar.add(MainFrame.getInstance().getActionManager().getSelectStateAction());
-        b.setFocusPainted(false);
-        b.setBorderPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        b = toolBar.add(MainFrame.getInstance().getActionManager().getDelSlotStateAction());
-        b.setFocusPainted(false);
-        b.setBorderPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        toolBar.setBorder(new EmptyBorder(10,5,0,5));
         add(toolBar,BorderLayout.EAST);
-        toolBar.setBackground(new Color(0xC6F9F4));
         add(documentView.getPagesStack(),BorderLayout.CENTER);
+
         thumbnail = new JPanel(null);
         thumbnail.setBackground(new Color(0xC6F9F4));
         thumbnail.setPreferredSize(new Dimension(240,0));
@@ -43,6 +26,7 @@ public class EditMode extends JPanel {
         scrollPane.setHorizontalScrollBar(null);
         scrollPane.setVerticalScrollBar(new JScrollBar());
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
         add( scrollPane ,BorderLayout.WEST);
     }
 

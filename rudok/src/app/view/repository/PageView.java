@@ -7,13 +7,14 @@ import app.model.repository.Slot;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
+import app.view.state.EditState;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 
@@ -22,132 +23,60 @@ public class PageView extends JPanel implements ISubscriber {
 
     private final Page model;
     private final DocumentView parentView;
-    private final JPanel content;
+    private final PageFramework pageFramework;
     private final PageThumbnail pageThumbnail;
     private Image image;
-    private ArrayList<SlotView> slots;
+    private ArrayList <SlotView> slots;
+    private SlotView selectedSlot;
 
 
     public PageView (Page model, DocumentView parent) {
-        super(new GridBagLayout());
+        super( new GridBagLayout() );
 
         this.model = model;
         model.addSubscriber(this);
         parentView = parent;
-
-        content = new JPanel() {
-            @Override
-            public void paintComponent (Graphics g) {
-                super.paintComponent(g);
-                if (image != null)
-                    g.drawImage(image, 0, 0, getWidth(),getHeight(), null);
-                else {
-                    g.setColor(Color.WHITE);
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
-                Graphics2D g2 = (Graphics2D) g;
-                if(slots != null)
-                for(SlotView curr : slots ){
-                    curr.paint(g);
-                }
-
-            }
-        };
-        content.setPreferredSize(new Dimension(800,800));
-        content.setMinimumSize(new Dimension(600,600));
-        add(content);
-        content.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if(parent.getStateManager().getCurrDrawState() != null)
-                    parent.getStateManager().getCurrDrawState().mouseClicked(e);
-            }
-        });
-
-        setBackgroundTheme();
         setBackground(new Color(210,220,230));
 
+
+        pageFramework = new PageFramework();
+        add(pageFramework);
+
+        setBackgroundTheme();
         pageThumbnail = new PageThumbnail();
     }
 
+
     public void setSel (boolean arg){
         if(arg)
-           pageThumbnail.setBackground(Color.cyan);
+            pageThumbnail.setBackground(Color.cyan);
         else
-            setBackground(new Color(210,220,230));
+            pageThumbnail.setBackground(new Color(210,220,230));
     }
 
-    class PageThumbnail extends JPanel {
+    public void selectSlot(SlotView selected){
+        if(selected == selectedSlot)
+            return;
+        if(selectedSlot != null)
+            selectedSlot.setSelected(false);
+        if(selected != null){
+            selected.setSelected(true);
+            slots.remove(selected);
+            slots.add(selected);
+        }
+        selectedSlot = selected;
+        pageFramework.repaint();
+        pageThumbnail.label.repaint();
+    }
 
+    public void setBackgroundTheme () {
+        image = ((Document) getModel().getParent()).getTheme();
 
-
-        public PageThumbnail () {
-            super(new BorderLayout());
-            setBackground(new Color(210,220,230));
-
-            JLabel name = new JLabel(model.getName(),SwingConstants.CENTER);
-            name.setVerticalAlignment(JLabel.CENTER);
-            name.setPreferredSize(new Dimension(0, 30));
-            name.setFont(new Font(getFont().getName(),Font.BOLD,14));
-            name.setBackground(Color.cyan.darker());
-            name.setOpaque(true);
-            add(name,BorderLayout.SOUTH);
-
-            JPanel label = new JPanel(){
-                @Override
-                public void paint (Graphics g) {
-                    super.paint(g);
-                    g.setColor(Color.black);
-                    g.drawRect( 0, 0,getWidth() - 1, getHeight() - 1);
-                    if(image != null)
-                        g.drawImage(image,0,0,getWidth(),getHeight(),null);
-                    else{
-                        g.setColor(Color.WHITE);
-                        g.fillRect(0, 0, getWidth(), getHeight());
-                    }
-                }
-            };
-            label.setPreferredSize(new Dimension(140, 140));
-            JPanel cont = new JPanel();
-            cont.setOpaque(false);
-            cont.setBorder(new EmptyBorder(10, 31, 20, 29));
-            cont.add(label);
-            add(cont, BorderLayout.CENTER);
-
-            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            addMouseListener(new MouseAdapter() {
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                    name.setBackground(new Color(0x528B8B));
-                    parentView.setCurrentPage(parentView.getPages().indexOf(PageView.this));
-
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    name.setBackground(Color.cyan);
-                }
-
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    name.setBackground(new Color(0x528B8B));
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    name.setBackground(Color.cyan.darker());
-                }
-            });
+        if(pageThumbnail != null && pageFramework != null) {
+            pageThumbnail.repaint();
+            pageFramework.repaint();
         }
     }
-
-
-
-
 
 
     @Override
@@ -156,10 +85,8 @@ public class PageView extends JPanel implements ISubscriber {
         if(notification.getType() == NotificationType.DOUBLE_CLICK){
             int index = parentView.getCurrentPage();
 
-            if(WorkspaceView.getCurrentlyOpened() != parentView)
                 parentView.getParentView().getParentView().display(parentView);
 
-            if(parentView.getCurrentPage() != index)
                 parentView.setCurrentPage(index);
         }
 
@@ -168,25 +95,25 @@ public class PageView extends JPanel implements ISubscriber {
         }
 
         else if(notification.getType() == NotificationType.SLOT_ADDED){
+
             if(slots == null )
                 slots = new ArrayList<>();
-            slots.add(new SlotView((Slot) notification.getNotificationObject()));
-            content.repaint();
-        }
-        else if(notification.getType() == NotificationType.SLOT_REMOVED)
-        {
-            slots.remove(slots.get((int) notification.getNotificationObject()));
-        }
-    }
 
-    public void setBackgroundTheme () {
-        image = ((Document) getModel().getParent()).getTheme();
+            slots.add(new SlotView((Slot) notification.getNotificationObject(),this));
+            pageFramework.repaint();
+            pageThumbnail.label.repaint();
+        }
 
-        if(pageThumbnail != null && content != null) {
+        else if(notification.getType() == NotificationType.SLOT_RELOCATED ||
+                notification.getType() == NotificationType.SLOT_CHANGED){
+            System.out.println("UPDAAAAAAATE");
+            pageFramework.repaint();
             pageThumbnail.repaint();
-            content.repaint();
         }
+
     }
+
+
 
     public NodeModel getModel () {
         return model;
@@ -196,7 +123,155 @@ public class PageView extends JPanel implements ISubscriber {
         return pageThumbnail;
     }
 
-    public JPanel getContent() {
-        return content;
+    public PageFramework getPageFramework() {
+        return pageFramework;
     }
+
+    public ArrayList<SlotView> getSlots() {
+        return slots;
+    }
+
+    public SlotView getSelectedSlot() {
+        return selectedSlot;
+    }
+
+
+
+    public class PageFramework extends JPanel{
+
+        private PageFramework(){
+            setPreferredSize(new Dimension(800,800));
+            setMinimumSize(new Dimension(600,600));
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (parentView.getStateManager().getCurrModeState() instanceof EditState)
+                        parentView.getStateManager().getCurrDrawState().mousePressed(e);
+
+                }
+            });
+            addMouseMotionListener(new MouseMotionAdapter(){
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    if (parentView.getStateManager().getCurrModeState() instanceof EditState)
+                    parentView.getStateManager().getCurrDrawState().mouseDragged(e);
+                }
+
+
+            });
+        }
+
+
+
+        @Override
+        public void paintComponent(Graphics g) {
+
+            if (image != null)
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            else {
+                g.setColor(Color.WHITE);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+            if (slots != null){
+            for( SlotView curr : slots)
+                    curr.paint(g,this);
+            }
+
+
+
+
+            g.setColor(Color.cyan.darker());
+            ((Graphics2D) g).setStroke(new BasicStroke(8));
+            g.drawRect(0, 0, getWidth(), getHeight());
+
+        }
+
+        public PageView getPage(){
+            return PageView.this;
+        }
+
+    }
+
+
+
+     class PageThumbnail extends JPanel {
+
+         public final JPanel label;
+
+
+         public PageThumbnail() {
+             super(new BorderLayout());
+             setBackground(new Color(210, 220, 230));
+
+             JLabel name = new JLabel( model.getName(), SwingConstants.CENTER);
+             name.setVerticalAlignment(JLabel.CENTER);
+             name.setPreferredSize(new Dimension(0, 30));
+             name.setFont(new Font(getFont().getName(), Font.BOLD, 14));
+             name.setBackground(Color.cyan.darker());
+             name.setOpaque(true);
+             add(name, BorderLayout.SOUTH);
+
+             label = new JPanel() {
+                 @Override
+                 public void paintComponent(Graphics g) {
+
+                     if (image != null)
+                         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+                     else {
+                         g.setColor(Color.WHITE);
+                         g.fillRect(0, 0, getWidth(), getHeight());
+                     }
+                     if (slots != null) {
+                         for (SlotView curr : slots){
+                             curr.paint(g,PageThumbnail.this);
+                         }
+                     }
+
+                     g.setColor(Color.cyan.darker());
+                     ((Graphics2D) g).setStroke(new BasicStroke(8));
+                     g.drawRect(0, 0, getWidth(), getHeight());
+
+
+                 }
+             };
+             label.setPreferredSize(new Dimension(140, 140));
+             JPanel cont = new JPanel();
+             cont.setOpaque(false);
+             cont.setBorder(new EmptyBorder(10, 30, 20, 30));
+             cont.add(label);
+             add(cont, BorderLayout.CENTER);
+
+             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+             addMouseListener(new MouseAdapter() {
+
+                 @Override
+                 public void mouseReleased(MouseEvent e) {
+
+                     name.setBackground(new Color(0x528B8B));
+                     parentView.setCurrentPage(parentView.getPages().indexOf(PageView.this));
+
+                 }
+
+                 @Override
+                 public void mousePressed(MouseEvent e) {
+                     name.setBackground(Color.cyan);
+                 }
+
+
+                 @Override
+                 public void mouseEntered(MouseEvent e) {
+                     name.setBackground(new Color(0x528B8B));
+                 }
+
+                 @Override
+                 public void mouseExited(MouseEvent e) {
+                     name.setBackground(Color.cyan.darker());
+                 }
+             });
+         }
+     }
 }
+
+
+

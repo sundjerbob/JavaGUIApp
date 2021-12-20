@@ -10,5 +10,7 @@ public enum NotificationType {
     THEME_SET,
     SELECTION_EVENT,
     SLOT_ADDED,
-    SLOT_REMOVED;
+    SLOT_REMOVED,
+    SLOT_RELOCATED,
+    SLOT_CHANGED;
 }

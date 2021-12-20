@@ -3,14 +3,11 @@ package app.view.repository;
 import app.view.gui.Button;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-
 import java.awt.event.MouseEvent;
-
 import java.net.URL;
 
 public class DocumentPreview extends JPanel  {
@@ -23,10 +20,16 @@ public class DocumentPreview extends JPanel  {
         super(new BorderLayout());
 
         myView = document;
+        setBorder(new EmptyBorder(40,40,40,40));
         setBackground(Color.cyan.darker());
-        setBorder(new EmptyBorder(60,60,60,60));
+
         JPanel p = new JPanel(new BorderLayout());
         add(p,BorderLayout.CENTER);
+
+        JLabel label = new JLabel(myView.getModel().getName(),SwingConstants.CENTER);
+        label.setFont(new Font(label.getFont().getName(),Font.BOLD,15));
+        add(label,BorderLayout.SOUTH);
+
 
         Button shortcut = new Button(null){
             @Override
@@ -38,13 +41,13 @@ public class DocumentPreview extends JPanel  {
                 }
             }
         };
+
         URL url = getClass().getResource("images/presentationShortcut.png");
         if(url != null)
             shortcut.setIcon(new ImageIcon(url));
         shortcut.setBorderPainted(false);
 
 
-        add(new JLabel(myView.getModel().getName(),SwingConstants.CENTER),BorderLayout.SOUTH);
         p.add(shortcut,BorderLayout.CENTER);
     }
 

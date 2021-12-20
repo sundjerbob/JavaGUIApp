@@ -44,8 +44,8 @@ public abstract class NodeModel implements IPublisher {
     @Override
     public void notifySubscribers (Notification notification) {
         if(!subscribers.isEmpty())
-            for(ISubscriber curr : subscribers){
-                curr.update(notification);
+            for(int i = 0; i < subscribers.size(); i++){
+                subscribers.get(i).update(notification);
         }
     }
 

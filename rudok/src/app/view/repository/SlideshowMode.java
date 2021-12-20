@@ -115,7 +115,7 @@ public class SlideshowMode extends JPanel {
 
         content.add(nextPage, BorderLayout.EAST);
         content.add(previousPage, BorderLayout.WEST);
-        //content.add(document.getPagesStack(), BorderLayout.CENTER);
+        add(content,BorderLayout.CENTER);
     }
 
     public void updateArrows(){

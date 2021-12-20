@@ -1,8 +1,5 @@
 package app.view.gui;
 
-
-
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -39,7 +36,7 @@ public class MenuBar extends JMenuBar {
         item.setBackground(color);
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        item = editDocument.add(MainFrame.getInstance().getActionManager().getEditDocumentAction());
+        item = editDocument.add(MainFrame.getInstance().getActionManager().getSetThemeAction());
         item.setBackground(color);
         item.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 

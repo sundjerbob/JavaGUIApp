@@ -29,6 +29,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
     public WorkspaceView(Workspace root){
         super(new BorderLayout());
+        setBorder(null);
 
         model = root;
         root.addSubscriber(this);
@@ -46,20 +47,20 @@ public class WorkspaceView extends JPanel implements ISubscriber {
                 fileExplorer.removeAll();
 
                 if (files == null || files.isEmpty()){
-                    display(fileExplorer);
                     super.paint(g);
                     return;
                 }
                 int filePreviewWith = 200;
                 int filePreviewHeight = (int) (filePreviewWith * 1.3);
 
-                int colNum =  (currView.getWidth() / filePreviewWith == 0)? 1 : currView.getWidth() / filePreviewWith ;
+                int colNum =  ((currView.getWidth() - 40) / filePreviewWith == 0)? 1 : (currView.getWidth() - 40) / filePreviewWith ;
                 //calculating how many rows we need to display previews  all files
                 int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
 
                 // w is filePreviewWith of File/Doc preview and h is the filePreviewHeight(relative)
-                int x = currView.getLocation().x + 20;
-                int y = currView.getLocation().y - 40 ; // location where would be the first preview(upper left corner of WorkspaceView)
+                int x = 20;
+                int y = 0;
+                // location where would be the first preview(upper left corner of WorkspaceView)
 
                 fileExplorer.setPreferredSize(new Dimension(currView.getWidth() - 40, rowNum * filePreviewHeight));
 
@@ -78,14 +79,12 @@ public class WorkspaceView extends JPanel implements ISubscriber {
                     }
                 }
                 super.paint(g);
-
             }
         };
-        fileExplorer.setBackground(Color.CYAN.darker());
 
+        fileExplorer.setBackground(Color.CYAN.darker());
         display(fileExplorer);
     }
-
 
     public void display(JPanel setView){ //this method is used by FileView and DocumentView to display them self's on workspace
 
@@ -109,6 +108,8 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         }
         else
         {
+            TreeItem item = MainFrame.getInstance().getITree().findItemByModel(((DocumentView)setView).getModel());
+            MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
             currView.add(setView,BorderLayout.CENTER);
         }
         updateUI();
@@ -123,11 +124,9 @@ public class WorkspaceView extends JPanel implements ISubscriber {
                 files = new ArrayList<>();
             }
             files.add(new FileView((File) notification.getNotificationObject(),this));
-            if(currentlyOpened == fileExplorer)
-                setFileExplorer();
+            setFileExplorer();
             updateUI();
         }
-
     }
 
 

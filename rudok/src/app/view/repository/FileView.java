@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class FileView extends JPanel implements ISubscriber  {
 
-    private static final int colNum = 4;
+
     private final File model;
 
     private final WorkspaceView parentView;
@@ -28,25 +28,26 @@ public class FileView extends JPanel implements ISubscriber  {
 
 
     }
-
-    public void display(){
+    @Override
+    public void paint(Graphics g) {
 
         removeAll();
 
         if(documents == null || documents.size() == 0){
-
-            parentView.display(this);
-
+            super.paint(g);
             return;
         }
 
-        //calculating how many rows we need to display previews for all files
+        int docPreviewWidth = 300;
+        int docPreviewHeight = 300;
+
+        //calculating how many rows and columns we need to display previews for all files
+        int colNum = (parentView.getCurrView().getWidth() - 40) / docPreviewWidth  ;
         int rowNum = (documents.size() % colNum == 0)? documents.size() / colNum : documents.size() / colNum + 1;
 
-        int docPreviewWidth = (parentView.getCurrView().getWidth() - 40) / colNum;
-        int docPreviewHeight = (int) (docPreviewWidth * 1.3);
 
-        int startingLocationX = parentView.getCurrView().getLocation().x + 20; //20 is te horizontal
+
+        int startingLocationX = parentView.getCurrView().getLocation().x + 20;
         int startingLocationY = parentView.getCurrView().getLocation().y - 40 ;
 
         setPreferredSize(new Dimension(parentView.getCurrView().getWidth() - 40,
@@ -67,6 +68,9 @@ public class FileView extends JPanel implements ISubscriber  {
                 add(curr);
             }
         }
+        super.paint(g);
+    }
+    public void display(){
         parentView.display(this);
     }
 
@@ -90,6 +94,8 @@ public class FileView extends JPanel implements ISubscriber  {
             new SetAuthorPopup(newDocument);
 
             if(curr == this)
+                parentView.display(newDocument);
+            else
                 display();
         }
         else if(notification.getType() == NotificationType.REMOVE_ACTION){
@@ -103,7 +109,7 @@ public class FileView extends JPanel implements ISubscriber  {
         }
         else if(notification.getType() == NotificationType.RENAME_ACTION){
             if(curr == this)
-                parentView.display(this);
+                display();
 
             else if(curr == parentView.getFileExplorer())
                 parentView.setFileExplorer();

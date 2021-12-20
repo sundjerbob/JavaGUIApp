@@ -7,7 +7,6 @@ import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,8 +63,7 @@ public class RenamePopup extends JDialog implements ActionListener{
         /////////
         mainPanel.add(label);
         mainPanel.add(text);
-        //BoxLayout layout = new BoxLayout(mainPanel,BoxLayout.Y_AXIS);
-        //mainPanel.setLayout(layout);
+
 
 
 

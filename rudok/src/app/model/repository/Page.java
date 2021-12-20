@@ -18,17 +18,35 @@ public class Page extends NodeModel {
     }
 
     public void addSlot(Point point) {
-        Slot newSlot = new Slot(new Point(point.x - 50,point.y - 50));
-        slots.add(newSlot);//first we add than we not
+        Slot newSlot = new Slot(new Point(point.x - 50,point.y - 50),this);
+        slots.add(newSlot);
         notifySubscribers(new Notification(newSlot, NotificationType.SLOT_ADDED));
     }
 
     public void removeSlot(Slot toRemove) {
         if(!slots.contains(toRemove))
             return;
-        int i = slots.indexOf(toRemove);
         slots.remove(toRemove);
-        notifySubscribers(new Notification( i, NotificationType.SLOT_REMOVED));
+        toRemove.notifySubscribers(new Notification( toRemove, NotificationType.SLOT_REMOVED));
+    }
+
+    public void setSlotSettings(Color fil,Color line,Stroke stroke,Slot sel){
+        if(sel != null)
+        {   System.out.println("IMA LEBA");
+            sel.setOutLineColor(line);
+            sel.setStroke(stroke);
+            sel.setInsideColor(fil);
+        }
+        else if(slots != null && !slots.isEmpty()) {
+            for (Slot curr : slots) {
+                System.out.println("MEnjamnjemanj");
+                curr.setInsideColor(fil);
+                System.out.println(line);
+                curr.setStroke(stroke);
+                curr.setOutLineColor(line);
+            }
+        }
+        notifySubscribers(new Notification(this,NotificationType.SLOT_CHANGED));
     }
 
     public ArrayList<Slot> getSlots() {

@@ -1,18 +1,23 @@
 package app.view.repository;
 
 
+import app.controller.actions.AddSlotStateAction;
+import app.controller.actions.DelSlotStateAction;
+import app.controller.actions.SelectStateAction;
 import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
 import app.observer.Notification;
 import app.observer.NotificationType;
+import app.view.gui.DrawToolBar;
 import app.view.gui.MainFrame;
-import app.view.state.EditState;
-import app.view.state.StateManager;
+import app.view.state.*;
+import app.view.tree.model.TreeItem;
 
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.TreePath;
 
 import java.awt.*;
 
@@ -38,6 +43,7 @@ public class DocumentView extends JPanel implements ISubscriber {
     private final EditMode editMode;
     private ArrayList<PageView> pages;
     private int currentPage;
+    private final DrawToolBar drawToolBar;
 
 
 
@@ -74,6 +80,7 @@ public class DocumentView extends JPanel implements ISubscriber {
         JPanel blank = new JPanel(new BorderLayout());
         blank.setBackground(Color.cyan.darker());
         JLabel blankLabel = new JLabel("Add first page!",loadIcon("images/firstPage.png"), SwingConstants.CENTER);
+        blankLabel.setFont(new Font(Font.SERIF,Font.PLAIN,20));
         blankLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -114,8 +121,8 @@ public class DocumentView extends JPanel implements ISubscriber {
         blankLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         blank.add(blankLabel, BorderLayout.CENTER);
 
-
-        editMode = new EditMode(this);
+        drawToolBar = new DrawToolBar();
+        editMode = new EditMode(this,drawToolBar);
         slideshowMode = new SlideshowMode(this);
 
         documentContent.add(editMode,EDIT_MODE);//mode 1(default mode)
@@ -140,6 +147,8 @@ public class DocumentView extends JPanel implements ISubscriber {
             ((CardLayout) pagesStack.getLayout()).show(pagesStack, curr.getModel().getName());//curr page on top
             slideLabel.setText(curr.getModel().getName());
             stateManager.getCurrModeState().set();//if we have pages to work with we set current state panel
+            TreeItem item = MainFrame.getInstance().getITree().findItemByModel(curr.getModel());
+            MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
         }
         currentPage = currentPageIndex;
         slideshowMode.updateArrows();
@@ -158,8 +167,8 @@ public class DocumentView extends JPanel implements ISubscriber {
         else if(currentPage == index){
             if(index < pages.size()) {
                 setCurrentPage(index);
-
-            } else {
+            }
+            else {
                 setCurrentPage(index - 1);
             }
         }
@@ -167,15 +176,31 @@ public class DocumentView extends JPanel implements ISubscriber {
         slideshowMode.updateArrows();
     }
 
-    public void switchMode() {
-        if(stateManager.getCurrModeState() instanceof EditState) {
+    public void switchMode() {  //document toggles between 2 states with this method (initially state is EditState)
+        if(stateManager.getCurrModeState() instanceof EditState)
             stateManager.setSlideshowState();
-        }
         else
             stateManager.setEditState();
     }
 
-    // This method is used to toggle between 2 ways of viewing documents content
+    public void setDrawState(Object o ){ // this method is for setting draw state of this document
+        if(o instanceof AddSlotState){
+            stateManager.setAddSlotState();
+            drawToolBar.setCurrActive(o);
+        }
+        if(o instanceof SelectState){
+            stateManager.setSelectState();
+            drawToolBar.setCurrActive(o);
+        }
+
+        if(o instanceof DelSlotState) {
+            stateManager.setDelSlotState();
+            drawToolBar.setCurrActive(o);
+        }
+        else
+            drawToolBar.setCurrActive(o);
+    }
+
     public void setModeState(String s) {
         if(s.equals(SLIDE_SHOW) )
             slideshowMode.setPageStack(pagesStack);
@@ -184,7 +209,6 @@ public class DocumentView extends JPanel implements ISubscriber {
         ((CardLayout) documentContent.getLayout()).show(documentContent, s);
         if(s.equals(BLANK))
             slideLabel.setText("");
-
     }
 
     @Override
@@ -198,15 +222,22 @@ public class DocumentView extends JPanel implements ISubscriber {
         }
 
         else if( notification.getType() == NotificationType.ADD_ACTION ) {
+
             if( pages == null ){
                 pages = new ArrayList<>();
             }
+
             PageView newPage = new PageView((Page) notification.getNotificationObject(), this);
             pages.add(newPage);//added in array so, we have access to it with its index
             pagesStack.add(newPage.getModel().getName(),newPage);
-            if( pages.size() == 1 ){
-                stateManager.getCurrModeState().set();
+
+            if(  pages.size() == 1){
                 setCurrentPage(pages.indexOf(newPage));
+                stateManager.getCurrModeState().set();
+            }
+
+            if(WorkspaceView.getCurrentlyOpened() != this){
+                parentView.getParentView().display(this);
             }
 
             editMode.updateThumbnail();
@@ -235,9 +266,10 @@ public class DocumentView extends JPanel implements ISubscriber {
         }
         else if(notification.getType() == NotificationType.THEME_SET){
 
-            if(!pages.isEmpty())
-                for(PageView pageView : pages){
-                pageView.setBackgroundTheme();
+            if(pages != null)
+                if(!pages.isEmpty())
+                    for(PageView pageView : pages){
+                    pageView.setBackgroundTheme();
                 }
         }
     }

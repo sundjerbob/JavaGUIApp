@@ -32,14 +32,14 @@ public class Page extends NodeModel {
 
     public void setSlotSettings(Color fil,Color line,int stroke,Slot sel){
         if(sel != null)
-        {   System.out.println("IMA LEBA");
+        {
             sel.setOutLineColor(line);
             sel.setStroke(stroke);
             sel.setInsideColor(fil);
         }
         else if(slots != null && !slots.isEmpty()) {
             for (Slot curr : slots) {
-                System.out.println("MEnjamnjemanj");
+
                 curr.setInsideColor(fil);
                 System.out.println(line);
                 curr.setStroke(stroke);

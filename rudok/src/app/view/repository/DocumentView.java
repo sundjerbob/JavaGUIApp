@@ -1,9 +1,5 @@
 package app.view.repository;
 
-
-import app.controller.actions.AddSlotStateAction;
-import app.controller.actions.DelSlotStateAction;
-import app.controller.actions.SelectStateAction;
 import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
@@ -13,8 +9,6 @@ import app.view.gui.DrawToolBar;
 import app.view.gui.MainFrame;
 import app.view.state.*;
 import app.view.tree.model.TreeItem;
-
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.TreePath;
@@ -111,9 +105,6 @@ public class DocumentView extends JPanel implements ISubscriber {
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 blankLabel.setBackground(Color.cyan.darker());
-
-                updateUI();
-
             }
         });
         blankLabel.setBackground(Color.CYAN.darker());
@@ -183,22 +174,23 @@ public class DocumentView extends JPanel implements ISubscriber {
             stateManager.setEditState();
     }
 
-    public void setDrawState(Object o ){ // this method is for setting draw state of this document
+    public void setDrawState(Object o){ // this method is for setting draw state of this document
+
         if(o instanceof AddSlotState){
             stateManager.setAddSlotState();
-            drawToolBar.setCurrActive(o);
+            pages.get(currentPage).selectSlot(null);
         }
+
         if(o instanceof SelectState){
             stateManager.setSelectState();
-            drawToolBar.setCurrActive(o);
         }
 
         if(o instanceof DelSlotState) {
             stateManager.setDelSlotState();
-            drawToolBar.setCurrActive(o);
+            pages.get(currentPage).selectSlot(null);
         }
-        else
-            drawToolBar.setCurrActive(o);
+
+         drawToolBar.setCurrActive(o);
     }
 
     public void setModeState(String s) {

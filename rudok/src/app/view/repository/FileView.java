@@ -15,9 +15,9 @@ public class FileView extends JPanel implements ISubscriber  {
 
 
     private final File model;
-
     private final WorkspaceView parentView;
     private ArrayList<DocumentView> documents;
+
 
     public FileView(File model,WorkspaceView parentView){
         super(null);
@@ -28,9 +28,11 @@ public class FileView extends JPanel implements ISubscriber  {
 
 
     }
+
+
     @Override
     public void paint(Graphics g) {
-
+        super.paint(g);
         removeAll();
 
         if(documents == null || documents.size() == 0){
@@ -41,14 +43,12 @@ public class FileView extends JPanel implements ISubscriber  {
         int docPreviewWidth = 300;
         int docPreviewHeight = 300;
 
-        //calculating how many rows and columns we need to display previews for all files
-        int colNum = (parentView.getCurrView().getWidth() - 40) / docPreviewWidth  ;
+        //calculating how many rows and columns we need to display previews for all documents
+        int colNum = ((parentView.getCurrView().getWidth() - 40) / docPreviewWidth  == 0)?  1 : (parentView.getCurrView().getWidth() - 40) / docPreviewWidth ;
         int rowNum = (documents.size() % colNum == 0)? documents.size() / colNum : documents.size() / colNum + 1;
 
-
-
-        int startingLocationX = parentView.getCurrView().getLocation().x + 20;
-        int startingLocationY = parentView.getCurrView().getLocation().y - 40 ;
+        int startingLocationX =  20;
+        int startingLocationY = 0  ;
 
         setPreferredSize(new Dimension(parentView.getCurrView().getWidth() - 40,
                 rowNum * docPreviewHeight + 40));
@@ -68,8 +68,10 @@ public class FileView extends JPanel implements ISubscriber  {
                 add(curr);
             }
         }
-        super.paint(g);
+
     }
+
+
     public void display(){
         parentView.display(this);
     }

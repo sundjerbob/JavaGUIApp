@@ -34,8 +34,10 @@ public class DocumentPreview extends JPanel  {
         Button shortcut = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 TreeItem item = MainFrame.getInstance().getITree().findItemByModel(myView.getModel());
                 MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
+
                 if(e.getClickCount() == 2){
                     myView.getParentView().getParentView().display(myView);
                 }

@@ -12,12 +12,12 @@ public class DelSlotState implements IDrawState{
     public void mousePressed(MouseEvent e) {
         PageView p = ((PageView.PageFramework)e.getSource()).getPage();
         if(p.getSlots() != null){
-
             for(int i = p.getSlots().size() - 1;i >= 0; i--){
+
                 if(p.getSlots().get(i).elementAt( e.getPoint() ) ) {
-                    System.out.println("delete");
                     ((Page)p.getModel()).removeSlot(p.getSlots().get(i).getModel());
                     return;
+
                 }
             }
         }

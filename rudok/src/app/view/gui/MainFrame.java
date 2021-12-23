@@ -63,13 +63,17 @@ public class MainFrame extends JFrame {
         JPanel left = new JPanel(new BorderLayout());
 
         URL url = getClass().getResource("../repository/images/workspace.png");
-        if(url == null)
-            System.out.println("workspace icon can not");
+        JLabel label;
+        if(url != null)
+            label = new JLabel("Workspace",new ImageIcon(url),SwingConstants.CENTER);
+        else{
+            System.out.println("url is null");
+            return;
+        }
 
-        JLabel label = new JLabel("Workspace",new ImageIcon(url),SwingConstants.CENTER);
         left.add(label,BorderLayout.NORTH);
 
-        label.setFont(new Font(label.getFont().getName(),Font.TYPE1_FONT,15));
+        label.setFont(new Font(label.getFont().getName(),Font.BOLD,15));
         label.setPreferredSize( new Dimension (label.getWidth(),40) ) ;
         label.setBackground(new Color(0xC6F9F4));
         label.setOpaque(true);
@@ -87,7 +91,7 @@ public class MainFrame extends JFrame {
 
        //splitting
         split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, workspaceView);
-        split.setDividerLocation(getSize().width/5);
+        split.setDividerLocation(getSize().width / 5);
 
         add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
         add(split,BorderLayout.CENTER);         //adding splitPane view to center

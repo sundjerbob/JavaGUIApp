@@ -83,7 +83,7 @@ public class PageView extends JPanel implements ISubscriber {
     public void update (Notification notification) {
 
         if(notification.getType() == NotificationType.DOUBLE_CLICK){
-            int index = parentView.getCurrentPage();
+
             if(WorkspaceView.getCurrentlyOpened() != parentView)
                 parentView.getParentView().getParentView().display(parentView);
             if(parentView.getPages().get(parentView.getCurrentPage() )!= this)

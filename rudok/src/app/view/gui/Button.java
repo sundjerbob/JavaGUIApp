@@ -35,8 +35,6 @@ public class Button extends JButton implements MouseListener {
         }
         else
             setBackground(Color.lightGray);
-
-
     }
 
     @Override
@@ -63,11 +61,10 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-       if(getAction() != null){
-           if(getAction().isEnabled())
-               setBackground(Color.cyan.darker());
-       }
-       else
-           setBackground(Color.cyan.darker());
+        if (getAction() != null) {
+            if (getAction().isEnabled())
+                setBackground(Color.cyan.darker());
+        } else
+            setBackground(Color.cyan.darker());
     }
 }

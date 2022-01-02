@@ -1,5 +1,6 @@
 package app.controller.actions;
 
+import app.factory.Factory;
 import app.model.node.NodeComposite;
 import app.model.node.NodeModel;
 import app.model.repository.Document;
@@ -25,39 +26,21 @@ public class NewAction extends MyAbstractAction {
         putValue(SHORT_DESCRIPTION,"New");
         MainFrame.getInstance().getITree().getTreeView().getSelectionListener().addSubscriber(this);
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
 
-        MainFrame frame = MainFrame.getInstance();
-        TreeItem item = frame.getITree().getSelectedTreeItem();
-        NodeModel newNode;
-        String name;
+     @Override
+     public void actionPerformed(ActionEvent e) {
 
-        if(item.getModel() instanceof Workspace){
-            name = getName((Workspace)item.getModel(),"File");
-            newNode = new File(name,(Workspace) item.getModel());
-            ((Workspace) item.getModel()).addChild(newNode);
-        }
-        else if(item.getModel() instanceof File){
-            name = getName((File)item.getModel(),"Presentation");
-            newNode = new Document(name,(File) item.getModel());
-            ((File) item.getModel()).addChild(newNode);
-        }
-        else if(item.getModel() instanceof Document){
-            name = getName((Document)item.getModel(),"Slide");
-            newNode = new Page(name,(Document) item.getModel());
-            ((Document) item.getModel()).addChild(newNode);
+         MainFrame frame = MainFrame.getInstance();
+         TreeItem item = frame.getITree().getSelectedTreeItem();
+         NodeModel newNode;
+         String name;
 
-        }
-    }
+         if (item.getModel() instanceof NodeComposite)
+             Factory.getMe().getFactory((NodeComposite) item.getModel()).create();
 
-    public String getName(NodeComposite model,String name){
-        int num = 1;
-        while(model.getChildByName(name + " " + num) != null) {
-            ++num;
-        }
-        return name + " " + num;
-    }
+
+     }
+
 
     @Override
     public void update(Notification notification) {
@@ -66,4 +49,5 @@ public class NewAction extends MyAbstractAction {
         else
             setEnabled(true);
     }
+
 }

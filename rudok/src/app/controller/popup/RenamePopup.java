@@ -1,8 +1,7 @@
 package app.controller.popup;
 
-import app.factory.AbstractFactory;
-import app.factory.ErrorType;
-import app.factory.NameAlrExists;
+import app.errorHandler.ErrorHandler;
+import app.errorHandler.ErrorType;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -47,28 +46,11 @@ public class RenamePopup extends JDialog implements ActionListener{
         text.addActionListener(this);
         text.setOpaque(true);
         text.setBounds(mainPanel.getLocation().x + 250, mainPanel.getLocation().y + 135, 100,30 );
-
         text.setBackground(Color.cyan);
-
-
-
-
-
-        label.setBounds(mainPanel.getLocation().x + 200,mainPanel.getLocation().y + 100,200,25);
-
-
-        ///////////
-        Insets insets = getInsets();
-        System.out.println(insets);
-        /////////
-        mainPanel.add(label);
         mainPanel.add(text);
 
-
-
-
-
-
+        label.setBounds(mainPanel.getLocation().x + 200,mainPanel.getLocation().y + 100,200,25);
+        mainPanel.add(label);
 
         JButton renameButton = new JButton("Rename");
         renameButton.setForeground(Color.CYAN);
@@ -79,14 +61,12 @@ public class RenamePopup extends JDialog implements ActionListener{
             public void mouseClicked(MouseEvent e) {
 
                 String t = text.getText();
+
                 if(t == "")
+                    ErrorHandler.getInstance().createPopup(ErrorType.EMPTY_NAME);
 
-
-                //System.out.println("radi");
                 super.mouseClicked(e);
                 item.getModel().setName(t);
-
-
 
                 MainFrame.getInstance().getITree().getTreeView().updateUI();
                 dispose();
@@ -96,43 +76,32 @@ public class RenamePopup extends JDialog implements ActionListener{
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setForeground(Color.CYAN);
         cancelButton.setBackground(new Color(0x528B8B));
+
         cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //System.out.println("i ovo radi");
                 super.mouseClicked(e);
                 dispose();
             }
         });
 
-
         renameButton.setBounds(mainPanel.getLocation().x + 150, mainPanel.getLocation().y + 250, 100, 50);
         cancelButton.setBounds(mainPanel.getLocation().x + 350,mainPanel.getLocation().y + 250, 100, 50);
 
-        mainPanel.add(renameButton);    mainPanel.add(cancelButton);
+        mainPanel.add(renameButton);
+        mainPanel.add(cancelButton);
 
+        setContentPane(mainPanel);
 
-
-
-
-
-        setContentPane(mainPanel); //JDialog setuje mainPanel za svoj content holder
         setVisible(true);
-
     }
-
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String t = text.getText();
         System.out.println(t);
-        NameAlrExists d;
         if(t.equals("")) {
-            d = AbstractFactory.getInstance().createPopup(ErrorType.EMPTY_NAME);
-            d.showError(this);
-
+            ErrorHandler.getInstance().createPopup(ErrorType.EMPTY_NAME);
         }
         else {
         item.getModel().setName(text.getText());

@@ -35,6 +35,7 @@ public class EditMode extends JPanel {
 
         thumbnail.removeAll();
         thumbnail.setPreferredSize(new Dimension(240,230 * document.getPages().size() + 15 ));
+
         PageView curr;
         for(int i = 0; i < document.getPages().size(); i++){
             curr = document.getPages().get(i);
@@ -42,6 +43,7 @@ public class EditMode extends JPanel {
                     200,200);
             thumbnail.add(curr.getPageThumbnail());
         }
+
         thumbnail.repaint();
     }
 }

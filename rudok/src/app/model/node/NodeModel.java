@@ -17,18 +17,17 @@ public abstract class NodeModel implements IPublisher {
         this.name = name;
         this.parent = parent;
         subscribers = new ArrayList<>();
+
+        if(parent != null)
+            parent.addChild(this);
     }
 
-
-
         //////////////////
-
 
     public void setName(String name) {
         this.name = name;
         notifySubscribers(new Notification(this, NotificationType.RENAME_ACTION));
     }
-
 
         //////////////////
 
@@ -39,13 +38,11 @@ public abstract class NodeModel implements IPublisher {
 
     }
 
-
-
     @Override
     public void notifySubscribers (Notification notification) {
         if(!subscribers.isEmpty())
-            for(int i = 0; i < subscribers.size(); i++){
-                subscribers.get(i).update(notification);
+            for(ISubscriber curr : subscribers){
+                curr.update(notification);
         }
     }
 
@@ -59,9 +56,11 @@ public abstract class NodeModel implements IPublisher {
     public String getName(){
         return name;
     }
+
     public NodeComposite getParent(){
         return parent;
     }
+
     @Override
     public String toString(){
         return name;

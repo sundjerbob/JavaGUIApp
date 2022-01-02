@@ -1,5 +1,7 @@
 package app.controller.popup;
 
+import app.errorHandler.ErrorHandler;
+import app.errorHandler.ErrorType;
 import app.model.repository.Page;
 import app.view.gui.Button;
 import app.view.gui.MainFrame;
@@ -21,7 +23,7 @@ public class GraphicPopup extends JDialog {
     private final JPanel outColPanel;
     private final JPanel preview;
     private final JTextField strokeField;
-    private int stroke ;
+    private int stroke;
     private Color insideColor ;
     private Color outLineColor;
 
@@ -84,7 +86,7 @@ public class GraphicPopup extends JDialog {
                 g.setColor(insideColor);
                 ((Graphics2D) g).fill(shape);
 
-                g.setColor(Color.cyan);
+                g.setColor(Color.cyan.darker());
                 ((Graphics2D) g).setStroke(new BasicStroke(8));
                 g.drawRect(0,0,preview.getWidth(),preview.getHeight());
 
@@ -140,8 +142,14 @@ public class GraphicPopup extends JDialog {
         Button apply = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!strokeField.getText().equals(""))
-                    stroke =Integer.parseInt(strokeField.getText());
+                if(!strokeField.getText().equals("")){
+                    try {
+                        stroke = Integer.parseInt(strokeField.getText());
+                    }
+                    catch (Exception exception){
+                        ErrorHandler.getInstance().createPopup(ErrorType.WRONG_FORMAT);
+                    }
+                }
                 preview.repaint();
             }
         };

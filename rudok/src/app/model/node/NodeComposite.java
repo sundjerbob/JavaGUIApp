@@ -47,11 +47,12 @@ public abstract class NodeComposite extends NodeModel {
 
 
     public NodeModel getChildByName(String name){
+
         for(NodeModel cur : children){
             if(cur.getName().equals(name))
                 return cur;
         }
-        //System.out.println("there is no child with that name here.");
+
         return null;
     }
 

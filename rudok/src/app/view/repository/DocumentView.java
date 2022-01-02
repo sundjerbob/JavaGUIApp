@@ -1,5 +1,6 @@
 package app.view.repository;
 
+import app.factory.Factory;
 import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
@@ -19,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ArrayList;
+
 public class DocumentView extends JPanel implements ISubscriber {
 
     public static final String SLIDE_SHOW = "2";
@@ -71,16 +73,16 @@ public class DocumentView extends JPanel implements ISubscriber {
         documentContent = new JPanel(new CardLayout());
         add(documentContent, BorderLayout.CENTER);
 
+        /******BLANK PANEL******/
         JPanel blank = new JPanel(new BorderLayout());
         blank.setBackground(Color.cyan.darker());
-        JLabel blankLabel = new JLabel("Add first page!",loadIcon("images/firstPage.png"), SwingConstants.CENTER);
+        JLabel blankLabel = new JLabel("Add first slide!",loadIcon("images/firstPage.png"), SwingConstants.CENTER);
         blankLabel.setFont(new Font(Font.SERIF,Font.PLAIN,20));
         blankLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String name = MainFrame.getInstance().getActionManager().getNewAction().getName(model, "Slide");
-                model.addChild(new Page(name, model));
+                Factory.getMe().getFactory(model).create();
             }
 
             @Override
@@ -124,23 +126,28 @@ public class DocumentView extends JPanel implements ISubscriber {
 
 
 
-    public void setCurrentPage(int  currentPageIndex) {
-        if(currentPageIndex == currentPage)
-            return;
-        if(!pages.isEmpty() && currentPage > -1 )
+    public void setCurrentPage(int currentPageIndex) {
+
+
+        if(pages != null && !pages.isEmpty() && currentPage > -1 && pages.size() > currentPage)
             pages.get(currentPage).setSel(false);
-        else
+
+        if(currentPageIndex == -1)
             setModeState(BLANK);
 
-        if(currentPageIndex != -1) {
+        else {
             PageView curr = pages.get(currentPageIndex);
             curr.setSel(true);
             ((CardLayout) pagesStack.getLayout()).show(pagesStack, curr.getModel().getName());//curr page on top
             slideLabel.setText(curr.getModel().getName());
-            stateManager.getCurrModeState().set();//if we have pages to work with we set current state panel
+            stateManager.getCurrModeState().set();//if we have pages to work with we set current state
+            repaint();
             TreeItem item = MainFrame.getInstance().getITree().findItemByModel(curr.getModel());
             MainFrame.getInstance().getITree().getTreeView().setSelectionPath(new TreePath(item.getPath()));
+
         }
+
+
         currentPage = currentPageIndex;
         slideshowMode.updateArrows();
         editMode.updateThumbnail();
@@ -154,15 +161,20 @@ public class DocumentView extends JPanel implements ISubscriber {
 
         if(pages.isEmpty()) {
             setCurrentPage(-1);
+            return;
         }
-        else if(currentPage == index){
+        if(currentPage == index){
+
             if(index < pages.size()) {
+                System.out.println("if 1");
                 setCurrentPage(index);
             }
             else {
+                System.out.println("if 2");
                 setCurrentPage(index - 1);
             }
         }
+
         editMode.updateThumbnail();
         slideshowMode.updateArrows();
     }
@@ -194,11 +206,15 @@ public class DocumentView extends JPanel implements ISubscriber {
     }
 
     public void setModeState(String s) {
+
         if(s.equals(SLIDE_SHOW) )
             slideshowMode.setPageStack(pagesStack);
+
         else if( s.equals(EDIT_MODE) )
             editMode.add(pagesStack,BorderLayout.CENTER);
+
         ((CardLayout) documentContent.getLayout()).show(documentContent, s);
+
         if(s.equals(BLANK))
             slideLabel.setText("");
     }

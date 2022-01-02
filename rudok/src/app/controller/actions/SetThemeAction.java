@@ -28,7 +28,7 @@ public class SetThemeAction extends MyAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SetThemePopup popup = new SetThemePopup();
+        new SetThemePopup();
 
     }
 

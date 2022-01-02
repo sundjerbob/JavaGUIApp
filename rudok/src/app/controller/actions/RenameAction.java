@@ -26,7 +26,7 @@ public class RenameAction extends  MyAbstractAction  {
     @Override
     public void actionPerformed(ActionEvent e) {
         TreeItem item = (TreeItem)MainFrame.getInstance().getITree().getTreeView().getLastSelectedPathComponent();
-        RenamePopup popup = new RenamePopup(item);
+        new RenamePopup(item);
     }
 
     @Override

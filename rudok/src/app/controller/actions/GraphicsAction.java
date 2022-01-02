@@ -7,30 +7,21 @@ import java.awt.event.ActionEvent;
 
 
 public class GraphicsAction extends MyAbstractAction{
+
     public GraphicsAction() {
         putValue(LARGE_ICON_KEY, loadIcon("images/color-picker.png"));
-
         putValue(SHORT_DESCRIPTION,"Graphic settings");
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
         DocumentView doc = (DocumentView) WorkspaceView.getCurrentlyOpened();
         doc.setDrawState(this);
-        GraphicPopup popup = new GraphicPopup(doc);
-        doc.setDrawState(doc.getStateManager().getCurrDrawState());
+        new GraphicPopup(doc);
     }
-
-
-
 
     @Override
-    public void update(Notification notification) {
-
-
-    }
+    public void update(Notification notification) { }
 
 
 }

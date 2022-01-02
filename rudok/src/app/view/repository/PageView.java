@@ -82,22 +82,19 @@ public class PageView extends JPanel implements ISubscriber {
     @Override
     public void update (Notification notification) {
 
-        if(notification.getType() == NotificationType.DOUBLE_CLICK){
-
+        if(notification.getType() == NotificationType.DOUBLE_CLICK) {
             if(WorkspaceView.getCurrentlyOpened() != parentView)
                 parentView.getParentView().getParentView().display(parentView);
+
             if(parentView.getPages().get(parentView.getCurrentPage() )!= this)
                 parentView.setCurrentPage(parentView.getPages().indexOf(this));
-
-
-
         }
 
-        else if (notification.getType() == NotificationType.REMOVE_ACTION){
+        else if (notification.getType() == NotificationType.REMOVE_ACTION) {
            parentView.removePage(this);
         }
 
-        else if(notification.getType() == NotificationType.SLOT_ADDED){
+        else if(notification.getType() == NotificationType.SLOT_ADDED) {
 
             if(slots == null )
                 slots = new ArrayList<>();
@@ -108,7 +105,7 @@ public class PageView extends JPanel implements ISubscriber {
         }
 
         else if(notification.getType() == NotificationType.SLOT_RELOCATED ||
-                notification.getType() == NotificationType.SLOT_CHANGED){
+                notification.getType() == NotificationType.SLOT_CHANGED) {
 
             pageFramework.repaint();
             pageThumbnail.repaint();
@@ -143,8 +140,10 @@ public class PageView extends JPanel implements ISubscriber {
     public class PageFramework extends JPanel{
 
         private PageFramework(){
+
             setPreferredSize(new Dimension(800,800));
             setMinimumSize(new Dimension(600,600));
+
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

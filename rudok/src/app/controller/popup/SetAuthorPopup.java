@@ -1,8 +1,7 @@
 package app.controller.popup;
 
-import app.factory.AbstractFactory;
-import app.factory.ErrorType;
-import app.factory.NameAlrExists;
+import app.errorHandler.ErrorHandler;
+import app.errorHandler.ErrorType;
 import app.model.repository.Document;
 import app.view.gui.MainFrame;
 import app.view.repository.DocumentView;
@@ -63,11 +62,11 @@ public class SetAuthorPopup extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NameAlrExists d;
+
         String str = text.getText();
         if(str == ""){
-            d = AbstractFactory.getInstance().createPopup(ErrorType.EMPTY_NAME);
-            d.showError(this);
+            ErrorHandler.getInstance().createPopup(ErrorType.EMPTY_NAME);
+
         }
 
         else if(document != null)

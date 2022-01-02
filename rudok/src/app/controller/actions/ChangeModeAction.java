@@ -2,7 +2,6 @@ package app.controller.actions;
 
 
 import app.observer.Notification;
-import app.view.gui.MainFrame;
 import app.view.repository.DocumentView;
 import app.view.repository.WorkspaceView;
 import app.view.state.SlideshowState;
@@ -22,7 +21,7 @@ public class ChangeModeAction extends MyAbstractAction{
     public void actionPerformed(ActionEvent e) {
 
         if(WorkspaceView.getCurrentlyOpened() instanceof DocumentView){
-            System.out.println("jjjsajsdnajsdna");
+
             DocumentView doc = ((DocumentView) WorkspaceView.getCurrentlyOpened());
             doc.switchMode();
             if(doc.getStateManager().getCurrModeState() instanceof SlideshowState) {

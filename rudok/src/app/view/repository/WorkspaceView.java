@@ -47,37 +47,33 @@ public class WorkspaceView extends JPanel implements ISubscriber {
 
                 fileExplorer.removeAll();
 
-                if (files == null || files.isEmpty()){
-                    super.paint(g);
-                    return;
-                }
+                if (files != null && !files.isEmpty()){
+                    int filePreviewWith = 200;
+                    int filePreviewHeight = (int) (filePreviewWith * 1.3);
 
-                int filePreviewWith = 200;
-                int filePreviewHeight = (int) (filePreviewWith * 1.3);
+                    int colNum =  ((currView.getWidth() - 40) / filePreviewWith == 0)? 1 : (currView.getWidth() - 40) / filePreviewWith ;
+                    int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
 
-                int colNum =  ((currView.getWidth() - 40) / filePreviewWith == 0)? 1 : (currView.getWidth() - 40) / filePreviewWith ;
-                int rowNum = (files.size() % colNum == 0)? files.size() / colNum : files.size() / colNum + 1;
+                    int x = 20;
+                    int y = 0;
 
-                int x = 20;
-                int y = 0;
+                    fileExplorer.setPreferredSize(new Dimension(currView.getWidth() - 40, rowNum * filePreviewHeight));
 
-                fileExplorer.setPreferredSize(new Dimension(currView.getWidth() - 40, rowNum * filePreviewHeight));
+                    FilePreview curr;
+                    int index ;
 
-                FilePreview curr;
-                int index ;
+                    for (int i = 0; i < rowNum; i++) {
+                        for (int j = 0; j < colNum; j++) {
+                            index = i * colNum + j;
+                            if (index == files.size())
+                                break;
 
-                for (int i = 0; i < rowNum; i++) {
-                    for (int j = 0; j < colNum; j++) {
-                        index = i * colNum + j;
-                        if (index == files.size())
-                            break;
-
-                        curr = new FilePreview(files.get(index));
-                        curr.setBounds(x + filePreviewWith * j, y + filePreviewHeight * i, filePreviewWith, filePreviewHeight);
-                        fileExplorer.add(curr);
+                            curr = new FilePreview(files.get(index));
+                            curr.setBounds(x + filePreviewWith * j, y + filePreviewHeight * i, filePreviewWith, filePreviewHeight);
+                            fileExplorer.add(curr);
+                        }
                     }
                 }
-
 
             }
         };

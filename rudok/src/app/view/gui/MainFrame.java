@@ -1,6 +1,7 @@
 package app.view.gui;
 
 import app.controller.actions.ActionManager;
+import app.controller.command.CommandManager;
 import app.controller.popup.ClosePopup;
 import app.model.repository.Workspace;
 import app.view.repository.WorkspaceView;
@@ -16,12 +17,12 @@ import java.net.URL;
 public class MainFrame extends JFrame {
 
 
-    private static MainFrame instance = null;
-    private final Color color = Color.cyan;
+    private static MainFrame instance;
     private ITree iTree;
     private ActionManager actionManager;
     private JSplitPane split;
-
+    private WorkspaceView workspace;
+    private CommandManager commandManager;
 
 
 
@@ -35,10 +36,17 @@ public class MainFrame extends JFrame {
 
     //initialising mainFrame
     public void init(){
+
+
+
         //Instancing objects for the components of the main window
         iTree = new TreeImplementation();
-        TreeView treeView = (TreeView) iTree.generateTreeView(new Workspace("workspace"));//new JTree
+        Workspace workspaceModel = new Workspace("workspace"); //repository which you work in
+        TreeView treeView = (TreeView) iTree.generateTreeView(workspaceModel);//new JTree
+        workspace = new WorkspaceView(workspaceModel);
         actionManager = new ActionManager();
+        commandManager = new CommandManager();
+
         ToolBar toolBar = new ToolBar();
         JMenuBar menuBar = new MenuBar();
 
@@ -83,14 +91,10 @@ public class MainFrame extends JFrame {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         left.add(scroll,BorderLayout.CENTER);
 
-       //right side for work space panel
-        WorkspaceView workspaceView = new WorkspaceView((Workspace) iTree.getRoot().getModel());
 
 
-        //rightScroll.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
 
-       //splitting
-        split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, workspaceView);
+        split  = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, workspace);
         split.setDividerLocation(getSize().width / 5);
 
         add(toolBar,BorderLayout.NORTH);        //adding toolbar to north
@@ -100,17 +104,22 @@ public class MainFrame extends JFrame {
     }
 
 
+    public WorkspaceView getWorkspace() {
+        return workspace;
+    }
 
     public  ActionManager getActionManager(){
         return actionManager;
     }
 
-    public Color getColor(){
-        return color;
-    }
-
     public ITree getITree(){
         return iTree;
     }
+
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
 }
 

@@ -1,6 +1,7 @@
 package app.controller.actions;
 
 
+import app.controller.command.RemoveCommand;
 import app.model.repository.Workspace;
 import app.observer.Notification;
 import app.view.gui.MainFrame;
@@ -25,12 +26,11 @@ public class DeleteAction extends MyAbstractAction{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        MainFrame frame = MainFrame.getInstance();
-        TreeItem item = frame.getITree().getSelectedTreeItem();
+        TreeItem item = MainFrame.getInstance().getITree().getSelectedTreeItem();
 
 
-            item.getModel().getParent().removeChild(item.getModel());
-            frame.getITree().setRootSelected();
+            MainFrame.getInstance().getCommandManager().addCommand(new RemoveCommand(item.getModel()));
+
 
 
     }

@@ -1,6 +1,6 @@
 package app.view.gui;
 
-import app.view.gui.MainFrame;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,12 @@ public class ToolBar extends JToolBar {
         add(new Button(MainFrame.getInstance().getActionManager().getRenameAction()));
         add(new Button(MainFrame.getInstance().getActionManager().getSetThemeAction()));
         add(new Button(MainFrame.getInstance().getActionManager().getSetAuthorAction()));
+        add(new Button(MainFrame.getInstance().getActionManager().getShareAction()));
         add(new Button(MainFrame.getInstance().getActionManager().getInfoAction()));
+        addSeparator(new Dimension(4, 10));
+        add(new Button(MainFrame.getInstance().getActionManager().getUndoAction()));
+        add(new Button( MainFrame.getInstance().getActionManager().getRedoAction()));
+
         setFloatable(false);
 
     }

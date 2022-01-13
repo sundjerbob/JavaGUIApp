@@ -115,7 +115,7 @@ public class WorkspaceView extends JPanel implements ISubscriber {
     @Override
     public void update(Notification notification) {
         if(notification.getNotificationObject() instanceof File &&
-                notification.getType() == NotificationType.ADD_ACTION){
+                notification.getType() == NotificationType.ADD_ACTION) {
             if(files == null){
                 files = new ArrayList<>();
             }
@@ -136,19 +136,20 @@ public class WorkspaceView extends JPanel implements ISubscriber {
         files.remove(me);
     }
 
-
     public JPanel getCurrView() {
         return currView;
     }
-
 
     public JPanel getFileExplorer() {
         return fileExplorer;
     }
 
-
     public static JPanel getCurrentlyOpened() {
         return currentlyOpened;
+    }
+
+    public Workspace getModel() {
+        return model;
     }
 }
 

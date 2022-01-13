@@ -1,4 +1,4 @@
-package app.errorHandler;
+package app.controller.errorHandler;
 
 import app.view.gui.MainFrame;
 import javax.swing.*;

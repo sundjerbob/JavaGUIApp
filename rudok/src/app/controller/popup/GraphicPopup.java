@@ -1,7 +1,7 @@
 package app.controller.popup;
 
-import app.errorHandler.ErrorHandler;
-import app.errorHandler.ErrorType;
+import app.controller.errorHandler.ErrorHandler;
+import app.controller.errorHandler.ErrorType;
 import app.model.repository.Page;
 import app.view.gui.Button;
 import app.view.gui.MainFrame;
@@ -50,9 +50,9 @@ public class GraphicPopup extends JDialog {
 
         if(page.getSelectedSlot() != null){
             SlotView selectedSlot = page.getSelectedSlot();
-             stroke = selectedSlot.getModel().getStroke();
-             outLineColor = selectedSlot.getModel().getOutLineColor();
-             insideColor = selectedSlot.getModel().getInsideColor();
+            stroke = selectedSlot.getModel().getStroke();
+            outLineColor = selectedSlot.getModel().getOutLineColor();
+            insideColor = selectedSlot.getModel().getInsideColor();
         }
         else if(page.getSlots() != null && page.getSlots().size() > 0) {
             SlotView anySlot = page.getSlots().get(0);
@@ -101,39 +101,64 @@ public class GraphicPopup extends JDialog {
                 g.setColor(Color.black);
                 ((Graphics2D)g).setStroke(new BasicStroke(3));
                 g.drawRect(0,0,inColPanel.getWidth(),inColPanel.getHeight());
+                preview.repaint();
             }
         };
         inColPanel.setBackground(insideColor);
+
         inColPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Color newColor = JColorChooser.showDialog(GraphicPopup.this,"Select a color",insideColor);
-                insideColor = newColor;
-                inColPanel.setBackground(newColor);
+                Color newColor = JColorChooser.showDialog(GraphicPopup.this,
+                        "Select a color",insideColor);
+                if(insideColor  != newColor){
+                    inColPanel.setBackground(newColor);
+                    insideColor = newColor;
+                }
             }
         });
 
 
-        outColPanel = new JPanel(){
+        outColPanel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(Color.black);
                 ((Graphics2D)g).setStroke(new BasicStroke(3));
                 g.drawRect(0,0,outColPanel.getWidth(),outColPanel.getHeight());
+                preview.repaint();
             }
         };
+
         outColPanel.setBackground(outLineColor);
+
         outColPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Color newColor = JColorChooser.showDialog(GraphicPopup.this,"Select a color",outLineColor);
-                outLineColor = newColor;
-                outColPanel.setBackground(newColor);
+                Color newColor = JColorChooser.showDialog(GraphicPopup.this,
+                        "Select a color",outLineColor);
+                if(outLineColor  != newColor){
+                    outColPanel.setBackground(newColor);
+                    outLineColor = newColor;
+                }
             }
         });
 
-        strokeField = new JTextField();
+        strokeField = new JTextField() {
+            @Override
+            public void paint(Graphics g) {
+                if(!strokeField.getText().equals("")){
+                    try {
+                        stroke = Integer.parseInt(strokeField.getText());
+                    }
+                    catch (Exception exception){
+                        ErrorHandler.getInstance().createPopup(ErrorType.WRONG_FORMAT);
+                        setText("");
+                    }
+                }
+                super.paint(g);
+            }
+        };
 
         JLabel inColLabel = new JLabel("Set fill color.");
         JLabel outColLabel = new JLabel("Set outline color.");
@@ -142,24 +167,17 @@ public class GraphicPopup extends JDialog {
         Button apply = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!strokeField.getText().equals("")){
-                    try {
-                        stroke = Integer.parseInt(strokeField.getText());
-                    }
-                    catch (Exception exception){
-                        ErrorHandler.getInstance().createPopup(ErrorType.WRONG_FORMAT);
-                    }
+                if (page.getSelectedSlot() == null)
+                    ((Page) page.getModel()).setSlotSettings(insideColor,outLineColor, stroke,null);
+                else
+                    ((Page) page.getModel()).setSlotSettings(insideColor,outLineColor,stroke,
+                            page.getSelectedSlot().getModel());
+                dispose();
+                doc.setDrawState(doc.getStateManager().getCurrDrawState());
                 }
-                preview.repaint();
-            }
+
         };
         Button cancel = new Button(null){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                dispose();
-            }
-        };
-        Button ok = new Button(null){
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (page.getSelectedSlot() == null)
@@ -170,9 +188,9 @@ public class GraphicPopup extends JDialog {
                 dispose();
             }
         };
+
         apply.setText("Apply");
         cancel.setText("Cancel");
-        ok.setText("Ok");
 
 
         /*****************************layout*******************************/
@@ -185,8 +203,8 @@ public class GraphicPopup extends JDialog {
         strokeLabel.setBounds(100,470, 150,30);
         strokeField.setBounds(250 ,470,50,30);
         cancel.setBounds(50,550, 100,30);
-        apply.setBounds(200,550,70,30);
-        ok.setBounds(300,550,70,30);
+        apply.setBounds(250,550,70,30);
+
 
         JPanel content = new JPanel(null);
         content.setBackground(new Color(210,220,230));
@@ -200,7 +218,6 @@ public class GraphicPopup extends JDialog {
         content.add(strokeLabel);
         content.add(cancel);
         content.add(apply);
-        content.add(ok);
 
         setContentPane(content);
         setVisible(true);

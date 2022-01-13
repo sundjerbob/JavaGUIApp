@@ -1,7 +1,9 @@
 package app.controller.popup;
 
-import app.errorHandler.ErrorHandler;
-import app.errorHandler.ErrorType;
+import app.controller.command.RenameCommand;
+import app.controller.errorHandler.ErrorHandler;
+import app.controller.errorHandler.ErrorType;
+import app.model.node.NodeComposite;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
 
@@ -59,16 +61,11 @@ public class RenamePopup extends JDialog implements ActionListener{
         renameButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
-                String t = text.getText();
-
-                if(t == "")
+                if(text.getText().equals(""))
                     ErrorHandler.getInstance().createPopup(ErrorType.EMPTY_NAME);
 
-                super.mouseClicked(e);
-                item.getModel().setName(t);
 
-                MainFrame.getInstance().getITree().getTreeView().updateUI();
+                MainFrame.getInstance().getCommandManager().addCommand(new RenameCommand(text.getText(), (NodeComposite) item.getModel()));
                 dispose();
             }
         });

@@ -1,7 +1,7 @@
 package app.controller.popup;
 
-import app.errorHandler.ErrorHandler;
-import app.errorHandler.ErrorType;
+import app.controller.errorHandler.ErrorHandler;
+import app.controller.errorHandler.ErrorType;
 import app.model.repository.Document;
 import app.view.gui.MainFrame;
 import app.view.repository.DocumentView;

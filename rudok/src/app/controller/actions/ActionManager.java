@@ -13,6 +13,9 @@ public class ActionManager {
     private final DelSlotStateAction delSlotStateAction;
     private final SelectStateAction selectStateAction;
     private final GraphicsAction graphicsAction;
+    private final ShareAction shareAction;
+    private final UndoAction undoAction;
+    private final RedoAction redoAction;
 
     public ActionManager(){
         newAction = new NewAction();
@@ -26,9 +29,10 @@ public class ActionManager {
         delSlotStateAction = new DelSlotStateAction();
         selectStateAction = new SelectStateAction();
         graphicsAction = new GraphicsAction();
+        shareAction = new ShareAction();
+        undoAction = new UndoAction();
+        redoAction = new RedoAction();
     }
-
-
 
 
     public NewAction getNewAction(){
@@ -50,6 +54,7 @@ public class ActionManager {
     public SetThemeAction getSetThemeAction() {
         return setThemeAction;
     }
+
     public SetAuthorAction getSetAuthorAction(){
         return setAuthorAction;
     }
@@ -74,6 +79,17 @@ public class ActionManager {
         return graphicsAction;
     }
 
+    public ShareAction getShareAction() {
+        return shareAction;
+    }
+
+    public RedoAction getRedoAction() {
+        return redoAction;
+    }
+
+    public UndoAction getUndoAction() {
+        return undoAction;
+    }
 }
 
 

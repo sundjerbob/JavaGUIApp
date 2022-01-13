@@ -12,5 +12,7 @@ public enum NotificationType {
     SLOT_ADDED,
     SLOT_REMOVED,
     SLOT_RELOCATED,
-    SLOT_CHANGED;
+    SLOT_CHANGED,
+    DOCUMENT_SHARED,
+    DOCUMENT_UNSHARED;
 }

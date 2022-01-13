@@ -1,4 +1,4 @@
-package app.factory;
+package app.model.factory;
 
 import app.model.node.NodeComposite;
 import app.model.repository.File;
@@ -21,14 +21,12 @@ public class Factory {
     public static Factory getMe() {
         if(me == null)
             me = new Factory();
-
         return me;
     }
 
     public IFactory getFactory(NodeComposite node) {
         if(node instanceof Workspace){
-
-            fileFactory.setPathParent((node));
+            fileFactory.setPathParent(node);
             return fileFactory;
         }
         else if(node instanceof File){

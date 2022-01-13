@@ -1,6 +1,7 @@
 package app.view.repository;
 
-import app.factory.Factory;
+import app.controller.command.AddCommand;
+import app.model.factory.Factory;
 import app.model.repository.Document;
 import app.model.repository.Page;
 import app.observer.ISubscriber;
@@ -82,7 +83,7 @@ public class DocumentView extends JPanel implements ISubscriber {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                Factory.getMe().getFactory(model).create();
+                MainFrame.getInstance().getCommandManager().addCommand(new AddCommand(DocumentView.this.model));
             }
 
             @Override
@@ -127,7 +128,6 @@ public class DocumentView extends JPanel implements ISubscriber {
 
 
     public void setCurrentPage(int currentPageIndex) {
-
 
         if(pages != null && !pages.isEmpty() && currentPage > -1 && pages.size() > currentPage)
             pages.get(currentPage).setSel(false);
@@ -244,7 +244,7 @@ public class DocumentView extends JPanel implements ISubscriber {
                 stateManager.getCurrModeState().set();
             }
 
-            if(WorkspaceView.getCurrentlyOpened() != this){
+            if(WorkspaceView.getCurrentlyOpened() != this) {
                 parentView.getParentView().display(this);
             }
 
@@ -252,14 +252,13 @@ public class DocumentView extends JPanel implements ISubscriber {
             slideshowMode.updateArrows();
         }
 
-        else if(notification.getType() == NotificationType.REMOVE_ACTION){
+        else if(notification.getType() == NotificationType.REMOVE_ACTION) {
             parentView.removeDocument(this);
-            if( curr == this ||
-                    curr == parentView)
+            if( curr == this || curr == parentView)
                 parentView.display();
         }
 
-        else if(notification.getType() == NotificationType.RENAME_ACTION){
+        else if(notification.getType() == NotificationType.RENAME_ACTION) {
             if( curr == parentView)
                 parentView.display();
             else if( curr == this )

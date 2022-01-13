@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class NodeComposite extends NodeModel {
 
 
-    private ArrayList<NodeModel> children = null;
+    private ArrayList<NodeModel> children ;
 
 
 
@@ -30,9 +30,9 @@ public abstract class NodeComposite extends NodeModel {
 
     //observer
     public void addChild(NodeModel newNode){
-        if(children.contains(newNode))
-            return;
-        children.add(newNode);
+        if(!children.contains(newNode))
+            children.add(newNode);
+
         notifySubscribers(new Notification(newNode, NotificationType.ADD_ACTION));
     }
 
@@ -42,7 +42,6 @@ public abstract class NodeComposite extends NodeModel {
             children.remove(unwantedChild);
             unwantedChild.notifySubscribers(new Notification(unwantedChild,NotificationType.REMOVE_ACTION));
         }
-        return;
     }
 
 

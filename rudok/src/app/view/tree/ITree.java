@@ -3,6 +3,7 @@ package app.view.tree;
 
 import app.model.node.NodeModel;
 import app.model.repository.Workspace;
+import app.view.tree.controller.SelectionListener;
 import app.view.tree.model.TreeItem;
 import app.view.tree.view.TreeView;
 
@@ -19,6 +20,7 @@ public interface ITree {
     TreeView getTreeView();
     TreeItem getRoot();
     TreeItem setRootSelected();
+    SelectionListener getSelectionListener();
 
 
 }

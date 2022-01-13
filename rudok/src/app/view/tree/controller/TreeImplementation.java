@@ -21,7 +21,7 @@ public class TreeImplementation implements ITree {
 
     @Override
     public JTree generateTreeView(Workspace workspace) {
-        root = new TreeItem(workspace);
+        root = new TreeItem(workspace,true);
         treeModel = new DefaultTreeModel(root);
         treeView = new TreeView(treeModel);
         treeView.setSelectionPath(new TreePath(root));
@@ -43,6 +43,11 @@ public class TreeImplementation implements ITree {
     public TreeItem setRootSelected(){
         treeView.setSelectionPath(new TreePath(root));
         return root;
+    }
+
+    @Override
+    public SelectionListener getSelectionListener() {
+        return treeView.getSelectionListener();
     }
 
     @Override

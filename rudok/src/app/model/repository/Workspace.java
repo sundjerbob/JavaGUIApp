@@ -7,7 +7,6 @@ public class Workspace extends NodeComposite {
 
 public Workspace(String name){
     super(name,null);
-
 }
 
 

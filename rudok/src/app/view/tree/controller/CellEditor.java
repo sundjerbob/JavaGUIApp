@@ -1,5 +1,7 @@
 package app.view.tree.controller;
 
+import app.controller.command.RenameCommand;
+import app.model.node.NodeComposite;
 import app.model.repository.Page;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
@@ -61,9 +63,7 @@ public class CellEditor extends DefaultTreeCellEditor implements ActionListener 
 
     public void actionPerformed(ActionEvent e) {
 
-
-        item.getModel().setName(e.getActionCommand());
-        MainFrame.getInstance().getITree().getTreeView().updateUI();
+        MainFrame.getInstance().getCommandManager().addCommand(new RenameCommand(e.getActionCommand(), (NodeComposite) item.getModel()));
     }
 
 

@@ -1,4 +1,4 @@
-package app.errorHandler;
+package app.controller.errorHandler;
 
 public enum ErrorType {
     EMPTY_NAME,

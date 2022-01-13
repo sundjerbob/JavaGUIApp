@@ -86,20 +86,21 @@ public class FileView extends JPanel implements ISubscriber  {
             display();
         }
 
-        else if(notification.getType() == NotificationType.ADD_ACTION){
+        else if(notification.getType() == NotificationType.ADD_ACTION) {
             DocumentView newDocument = new DocumentView((Document) notification.getNotificationObject(), this);
 
             if(documents == null)
                 documents = new ArrayList<>();
 
             documents.add(newDocument);
-            new SetAuthorPopup(newDocument);
+
 
             if(curr == this)
                 parentView.display(newDocument);
             else
                 display();
         }
+
         else if(notification.getType() == NotificationType.REMOVE_ACTION){
                 parentView.removeFile(this);
 
@@ -109,6 +110,7 @@ public class FileView extends JPanel implements ISubscriber  {
                 if(curr instanceof DocumentView && ((DocumentView)curr).getParentView() == this)
                     parentView.setFileExplorer();
         }
+
         else if(notification.getType() == NotificationType.RENAME_ACTION){
             if(curr == this)
                 display();

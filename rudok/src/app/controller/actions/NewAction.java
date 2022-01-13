@@ -1,15 +1,12 @@
 package app.controller.actions;
 
-import app.factory.Factory;
+import app.controller.command.AddCommand;
 import app.model.node.NodeComposite;
-import app.model.node.NodeModel;
-import app.model.repository.Document;
-import app.model.repository.File;
 import app.model.repository.Page;
-import app.model.repository.Workspace;
 import app.observer.Notification;
 import app.view.gui.MainFrame;
 import app.view.tree.model.TreeItem;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -32,12 +29,9 @@ public class NewAction extends MyAbstractAction {
 
          MainFrame frame = MainFrame.getInstance();
          TreeItem item = frame.getITree().getSelectedTreeItem();
-         NodeModel newNode;
-         String name;
 
          if (item.getModel() instanceof NodeComposite)
-             Factory.getMe().getFactory((NodeComposite) item.getModel()).create();
-
+            MainFrame.getInstance().getCommandManager().addCommand(new AddCommand((NodeComposite) item.getModel()));
 
      }
 

@@ -1,6 +1,7 @@
 package app.controller.actions;
 
 import app.controller.popup.RenamePopup;
+import app.model.node.NodeComposite;
 import app.model.repository.Page;
 import app.model.repository.Workspace;
 import app.observer.Notification;
@@ -12,7 +13,7 @@ import java.awt.event.KeyEvent;
 
 public class RenameAction extends  MyAbstractAction  {
 
-    public RenameAction(){
+    public RenameAction() {
 
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK,true));
         putValue(SMALL_ICON, loadIcon("images/editingSmall.png"));
@@ -26,15 +27,17 @@ public class RenameAction extends  MyAbstractAction  {
     @Override
     public void actionPerformed(ActionEvent e) {
         TreeItem item = (TreeItem)MainFrame.getInstance().getITree().getTreeView().getLastSelectedPathComponent();
-        new RenamePopup(item);
+        if(item.getModel() instanceof NodeComposite)
+            new RenamePopup(item);
     }
 
     @Override
     public void update(Notification notification) {
+        setEnabled(true);
+
         if(notification.getNotificationObject() instanceof Workspace ||
         notification.getNotificationObject() instanceof Page)
             setEnabled(false);
-        else
-            setEnabled(true);
+
     }
 }

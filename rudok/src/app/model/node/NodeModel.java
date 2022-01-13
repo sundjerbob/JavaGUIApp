@@ -18,8 +18,8 @@ public abstract class NodeModel implements IPublisher {
         this.parent = parent;
         subscribers = new ArrayList<>();
 
-        if(parent != null)
-            parent.addChild(this);
+/*        if(parent != null)
+            parent.addChild(this);*/
     }
 
         //////////////////
@@ -52,6 +52,7 @@ public abstract class NodeModel implements IPublisher {
             return ((NodeModel)o).getName().equals(this.name);
         return false;
     }
+
 
     public String getName(){
         return name;

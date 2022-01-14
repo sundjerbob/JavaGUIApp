@@ -150,6 +150,7 @@ public class GraphicPopup extends JDialog {
                 if(!strokeField.getText().equals("")){
                     try {
                         stroke = Integer.parseInt(strokeField.getText());
+                        preview.repaint();
                     }
                     catch (Exception exception){
                         ErrorHandler.getInstance().createPopup(ErrorType.WRONG_FORMAT);
